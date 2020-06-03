@@ -1,0 +1,14 @@
+require: rubocop-rails
+
+AllCops:
+  DisplayCopNames: true
+  NewCops: enable
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Style/Documentation:
+  Enabled: false
