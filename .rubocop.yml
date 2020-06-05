@@ -18,3 +18,9 @@ Style/BlockComments:
 
 Bundler/OrderedGems:
   Enabled: false
+
+Layout/LineLength:
+  Max: 140
+
+Metrics/BlockLength:
+  Max: 50
