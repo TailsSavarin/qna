@@ -12,3 +12,9 @@ Style/EmptyMethod:
 
 Style/Documentation:
   Enabled: false
+
+Style/BlockComments:
+  Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false

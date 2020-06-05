@@ -31,6 +31,9 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Rubocop, static code analyzer and code formatter. Read more: https://github.com/rubocop-hq/rubocop-rails
 gem 'rubocop-rails', require: false
 
+# Slim templates generator. Read more: https://github.com/slim-template/slim-rails
+gem 'slim-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -57,6 +60,8 @@ group :test do
   gem 'webdrivers'
   # For RSpec. Read more: https://github.com/thoughtbot/shoulda-matchers
   gem 'shoulda-matchers'
+  # Tests for controllers
+  gem 'rails-controller-testing'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
