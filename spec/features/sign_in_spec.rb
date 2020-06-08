@@ -7,7 +7,6 @@ feature 'User can sign in', %q(
 ) do
   given(:user) { create(:user) }
 
-  # Boot path
   background { visit new_user_session_path }
 
   scenario 'Registered user with valid data tries to sign in' do
