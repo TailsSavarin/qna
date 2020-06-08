@@ -9,8 +9,7 @@ feature 'User can sign out', %q(
 
   scenario 'Authenticated user tries to sign out' do
     sign_in(user)
-
-    click_on 'Log out'
+    click_link 'Log out'
     expect(page).to have_content 'Signed out successfully.'
   end
 end
