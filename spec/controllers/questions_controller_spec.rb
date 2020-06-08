@@ -1,6 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  describe 'GET #index' do
+    let(:questions) { create_list(:question, 5) }
+
+    before { get :index }
+
+    it 'populates an array of all questions' do
+      expect(response).to render_template :index
+    end
+  end
+
   describe 'GET #show' do
     let(:question) { create(:question) }
 
@@ -30,7 +40,9 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves a new question in the database' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+        expect {
+          post :create, params: { question: attributes_for(:question) }
+        }.to change(Question, :count).by(1)
       end
 
       it 'redirects to show view' do
@@ -41,7 +53,9 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with invalid attributes' do
       it 'does not save the question' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
+        expect {
+          post :create, params: { question: attributes_for(:question, :invalid) }
+        }.to_not change(Question, :count)
       end
 
       it 're-renders new view' do

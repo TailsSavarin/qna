@@ -19,6 +19,12 @@ Style/BlockComments:
 Bundler/OrderedGems:
   Enabled: false
 
+Style/BlockDelimiters:
+  BracesRequiredMethods: ['expect']
+
+Style/RedundantPercentQ:
+  Enabled: false
+
 Layout/LineLength:
   Max: 140
 
