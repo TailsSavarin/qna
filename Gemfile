@@ -65,6 +65,8 @@ group :test do
   gem 'shoulda-matchers'
   # Tests for controllers
   gem 'rails-controller-testing'
+  # For save_and_open_page option
+  gem 'launchy'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
