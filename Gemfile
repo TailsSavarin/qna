@@ -34,6 +34,9 @@ gem 'rubocop-rails', require: false
 # Slim templates generator. Read more: https://github.com/slim-template/slim-rails
 gem 'slim-rails'
 
+# Authentication. Read more: https://github.com/heartcombo/devise
+gem 'devise'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
