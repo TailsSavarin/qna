@@ -5,7 +5,6 @@ feature 'User can create question', %q(
   As an user
   I'd like to be able to create a question
 ) do
-
   background do
     visit questions_path
     click_on 'Create question'
