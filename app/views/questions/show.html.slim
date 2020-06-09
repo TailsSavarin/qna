@@ -1,2 +1,9 @@
 h1= @question.title
 p= @question.body
+
+h2 Answers:
+
+div
+  ul= render @question.answers
+
+p= link_to 'Back', questions_path
