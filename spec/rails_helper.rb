@@ -33,6 +33,11 @@ end
 RSpec.configure do |config|
   # FactoryBot module for RSpec
   config.include FactoryBot::Syntax::Methods
+  # Devise module for Rspec
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  # Custiom module for controllers/
+  config.include ControllerHelpers, type: :controller
+  # Custom module for features/
   config.include FeatureHelpers, type: :feature
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

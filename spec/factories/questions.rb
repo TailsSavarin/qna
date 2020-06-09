@@ -1,4 +1,5 @@
 FactoryBot.define do
+  # Sequence of some uniq values for creating an title
   sequence :title do |n|
     "QuestionTitle#{n}"
   end

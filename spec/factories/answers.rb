@@ -1,4 +1,5 @@
 FactoryBot.define do
+  # Sequence of some uniq values for creating an body
   sequence :body do |n|
     "AnswerBody#{n}"
   end
