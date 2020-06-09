@@ -5,8 +5,8 @@ feature 'User can watch all the questions', %q(
   As an user
   I'd like to be able to watch all the questions
 ) do
-  given!(:questions) { create_list(:question, 5) }
   given(:user) { create(:user) }
+  given!(:questions) { create_list(:question, 5, author: user) }
 
   scenario 'Authenticated user tries to watch all the questions' do
     sign_in(user)
