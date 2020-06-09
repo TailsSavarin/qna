@@ -1,6 +1,7 @@
 h1 Questions List
 
-- @questions.each do |question|
-  p= link_to question.title, question
+div
+  ol
+    =render @questions
 
 p= link_to 'Create question', new_question_path
