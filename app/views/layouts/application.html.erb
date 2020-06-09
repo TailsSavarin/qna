@@ -20,8 +20,8 @@
       <%= link_to 'Sign up', new_user_registration_path %>
     <% end %>
 
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <%= render 'shared/flash' %>
+
     <%= yield %>
   </body>
 </html>
