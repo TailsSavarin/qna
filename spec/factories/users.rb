@@ -1,4 +1,5 @@
 FactoryBot.define do
+  # Sequence of some uniq values for creating an email
   sequence :email do |n|
     "user#{n}@test.com"
   end
