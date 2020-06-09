@@ -6,7 +6,7 @@ feature 'User can watch the question and answers to it', %q(
   I'd like to be able to watch the question and answers to it
 ) do
   given(:user) { create(:user) }
-  given!(:question) { create(:question) }
+  given!(:question) { create(:question, author: user) }
   given!(:answers) { create_list(:answer, 5, question: question) }
 
   scenario 'Authenticated user trie to watch the question and answers to it' do
