@@ -2,11 +2,10 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question, author: user) }
+  let(:answer) { create(:answer) }
+  let(:question) { answer.question }
 
   describe 'GET #show' do
-    let(:answer) { create(:answer, question: question) }
-
     before do
       login(user)
       get :show, params: { id: answer }
@@ -38,6 +37,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     before { login(user) }
+    let!(:answer) { create(:answer) }
 
     context 'with valid attributes' do
       it 'saves a new answer in the database' do
@@ -46,9 +46,14 @@ RSpec.describe AnswersController, type: :controller do
         }.to change(question.answers, :count).by(1)
       end
 
+      it 'authenticated user is the author of the answer' do
+        post :create, params: { question_id: question, answer: attributes_for(:answer) }
+        expect(user).to be_author_of(assigns(:answer))
+      end
+
       it 'redirects to show view' do
         post :create, params: { question_id: question, answer: attributes_for(:answer) }
-        expect(response).to redirect_to assigns(:question)
+        expect(response).to redirect_to question
       end
     end
 
@@ -62,6 +67,47 @@ RSpec.describe AnswersController, type: :controller do
       it 're-renders new view' do
         post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
         expect(response).to render_template 'questions/show'
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:answer) { create(:answer) }
+
+    context 'authenticated user is an author' do
+      before { login(answer.user) }
+
+      it 'deletes answer from the database' do
+        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to question show view' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question
+      end
+    end
+
+    context 'authenticated user is not an author' do
+      before { login(user) }
+
+      it 'does not delete answer from the database' do
+        expect { delete :destroy, params: { id: answer } }.not_to change(Answer, :count)
+      end
+
+      it 'redirects to sign in view' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question
+      end
+    end
+
+    context 'unauthenticated user' do
+      it 'does not delete answer from the database' do
+        expect { delete :destroy, params: { id: answer } }.not_to change(Answer, :count)
+      end
+
+      it 'redirects to sign in view' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end

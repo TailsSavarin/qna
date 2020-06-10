@@ -6,7 +6,7 @@ feature 'User being on the question page, can write the answer to the question',
   I'd like to be able to write the answer to the question on question page
 ) do
   given(:user) { create(:user) }
-  given!(:question) { create(:question, author: user) }
+  given(:question) { create(:question) }
 
   describe 'Authenticated user' do
     background do
@@ -15,14 +15,14 @@ feature 'User being on the question page, can write the answer to the question',
     end
 
     scenario 'trie to write the answer to the question on question page' do
-      fill_in 'Body', with: 'Test Answer'
+      fill_in 'Answer', with: 'Test Answer'
       click_on 'Create Answer'
       # save_and_open_page
       expect(page).to have_content 'Your answer successfully created.'
       expect(page).to have_content 'Test Answer'
     end
 
-    scenario 'User trie to write the answer to the question on question page with errors' do
+    scenario 'trie to write the answer to the question on question page with errors' do
       click_on 'Create Answer'
       # save_and_open_page
       expect(page).to have_content "Body can't be blank"

@@ -5,34 +5,30 @@ feature 'Author can delete his question', %q(
   As an author
   I'd like to be able to delete my question
 ) do
-  given(:user1) { create(:user) }
-  given(:user2) { create(:user) }
-
-  given(:question1) { create(:question, author: user1) }
-  given(:question2) { create(:question, author: user2) }
+  given(:user) { create(:user) }
+  given(:another_question) { create(:question) }
+  given(:question) { create(:question, user: user) }
 
   describe 'Authenticated user and' do
-    background { sign_in(user1) }
+    background { sign_in(user) }
 
     scenario 'author of the question tries to delete it' do
-      visit question_path(question1)
-      click_on 'Delete'
+      visit question_path(question)
+      click_on 'Delete Question'
       # save_and_open_page
       expect(page).to have_content 'Your question successfully deleted.'
     end
 
     scenario 'non author tries to delete the question' do
-      visit question_path(question2)
-      click_on 'Delete'
+      visit question_path(another_question)
       # save_and_open_page
-      expect(page).to have_content "You don't have sufficient rights to delete this question."
+      expect(page).not_to have_link 'Delete Question'
     end
   end
 
   scenario 'Unauthenticated user tries to delete question' do
-    visit question_path(question1)
-    click_on 'Delete'
+    visit question_path(question)
     # save_and_open_page
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).not_to have_link 'Delete Question'
   end
 end
