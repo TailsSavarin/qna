@@ -1,4 +1,5 @@
 require 'rails_helper'
+
 feature 'User can create question', %q(
   In order to get answer from a community
   As an authenticated user
@@ -27,6 +28,7 @@ feature 'User can create question', %q(
       click_on 'Ask'
       # save_and_open_page
       expect(page).to have_content "Title can't be blank"
+      expect(page).to have_content "Body can't be blank"
     end
   end
 

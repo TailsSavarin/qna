@@ -12,5 +12,6 @@ feature 'User can sign out', %q(
     click_link 'Log out'
     # save_and_open_page
     expect(page).to have_content 'Signed out successfully.'
+    expect(page).to have_content 'Sign in'
   end
 end

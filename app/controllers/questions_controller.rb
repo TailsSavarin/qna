@@ -15,7 +15,8 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = current_user.authored_questions.new(question_params)
+    question_author = { user_id: current_user.id }
+    @question = Question.new(question_params.merge(question_author))
 
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'

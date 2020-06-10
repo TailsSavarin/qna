@@ -1,16 +1,7 @@
-h1= @question.title
-p= @question.body
+= render @question
 
-p= link_to 'Delete',
-           question_path(@question),
-           method: :delete,
-           data: { confirm: 'Are you sure?' }
-
-h2 Answers:
-
-div
-  ul= render @question.answers
-
-p= render 'answers/form'
+h4 Answers:
+= render @question.answers.reject(&:new_record?)
+= render 'answers/form'
 
 p= link_to 'Back', questions_path
