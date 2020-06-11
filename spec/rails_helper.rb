@@ -39,6 +39,10 @@ RSpec.configure do |config|
   config.include ControllerHelpers, type: :controller
   # Custom module for features/
   config.include FeatureHelpers, type: :feature
+
+  # Add js in tests
+  Capybara.javascript_driver = :selenium_chrome_headless
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 

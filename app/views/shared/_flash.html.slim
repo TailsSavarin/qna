@@ -1,4 +1,6 @@
-p class="notice"
-  = notice
-p class="alert"
-  = alert
+- flash.each do |key, msg|
+  - bs_class = key == 'alert' ? 'danger' : 'primary'
+
+  div class=("alert alert-#{bs_class} alert-dismissable fade show mt-3") 
+    = msg
+    button.close data-dismiss="alert" &times;
