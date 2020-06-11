@@ -1,7 +1,3 @@
 h1 Questions List
-
-div
-  ul
-    = render @questions
-
+= render @questions
 p= link_to 'Create Question', new_question_path, class: 'btn btn-primary'

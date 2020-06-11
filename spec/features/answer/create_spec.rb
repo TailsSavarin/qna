@@ -8,7 +8,7 @@ feature 'User being on the question page, can write the answer to the question',
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     background do
       sign_in(user)
       visit question_path(question)
@@ -18,8 +18,10 @@ feature 'User being on the question page, can write the answer to the question',
       fill_in 'Answer', with: 'Test Answer'
       click_on 'Create Answer'
       # save_and_open_page
-      expect(page).to have_content 'Your answer successfully created.'
-      expect(page).to have_content 'Test Answer'
+      expect(current_path).to eq question_path(question)
+      within '.answers' do
+        expect(page).to have_content 'Test Answer'
+      end
     end
 
     scenario 'trie to write the answer to the question on question page with errors' do
@@ -33,6 +35,7 @@ feature 'User being on the question page, can write the answer to the question',
     visit question_path(question)
     click_on 'Create Answer'
     # save_and_open_page
+    expect(current_path).to eq new_user_session_path
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 end
