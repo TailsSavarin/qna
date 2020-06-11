@@ -11,8 +11,8 @@ class AnswersController < ApplicationController
   end
 
   def create
-    answer_author = { user_id: current_user.id }
-    @answer = @question.answers.new(answer_params.merge(answer_author))
+    @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
 
     if @answer.save
       redirect_to @question, notice: 'Your answer successfully created.'
