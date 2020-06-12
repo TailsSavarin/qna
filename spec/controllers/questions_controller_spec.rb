@@ -8,7 +8,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     before { get :index }
 
-    it 'assigns all Questions to @questions' do
+    it 'populates an array of all questions' do
       expect(assigns(:questions)).to match_array(questions)
     end
 
@@ -24,6 +24,10 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'assigns the requested question to @question' do
       expect(assigns(:question)).to eq question
+    end
+
+    it 'assigns new answer for question' do
+      expect(assigns(:answer)).to be_a_new(Answer)
     end
 
     it 'renders show view' do
@@ -77,6 +81,39 @@ RSpec.describe QuestionsController, type: :controller do
       it 're-renders new view' do
         post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    let(:question) { create(:question, user: user) }
+
+    before { login(user) }
+
+    context 'with valid attributes' do
+      it 'changes question atrributes' do
+        patch :update, params: { id: question, question: { title: 'Edited title', body: 'Edited body' } }, format: :js
+        question.reload
+        expect(question.title).to eq 'Edited title'
+        expect(question.body).to eq 'Edited body'
+      end
+
+      it 'renders updated question' do
+        patch :update, params: { id: question, question: { title: 'Edited title', body: 'Edited body' } }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with invalid attributes' do
+      it 'does not cahnge question attributes' do
+        expect {
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+        }.to_not change(question, :title)
+      end
+
+      it 'renders update view' do
+        patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+        expect(response).to render_template :update
       end
     end
   end

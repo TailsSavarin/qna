@@ -1,6 +1,6 @@
 .question-errors
   = render 'shared/errors', resource: @question
-= form_with model: @question, class: 'hidden', html: { id: "edit-question-#{@question.id}" } do |f|
+= form_with model: @question do |f|
   p
     = f.label :title
     br
@@ -11,4 +11,3 @@
     = f.text_area :body
   p
     = f.submit class: 'btn btn-primary'
-  

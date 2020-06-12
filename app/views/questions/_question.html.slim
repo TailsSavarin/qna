@@ -1,8 +1,9 @@
-p= link_to question.title, question_path(question)
+h1= question.title
 p= question.body
+p= render 'form'
 - if current_user&.author_of?(question)
   p= link_to 'Delete Question',
-             question_path(question),
-             method: :delete,
-             data: { confirm: 'Are you sure?' }
-
+            question_path(question),
+            method: :delete,
+            data: { confirm: 'Are you sure?' }
+  p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
