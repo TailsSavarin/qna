@@ -33,9 +33,7 @@ feature 'User being on the question page, can write the answer to the question',
 
   scenario 'Unauthenticated user tries to write the answer to the question on question page' do
     visit question_path(question)
-    click_on 'Create Answer'
     # save_and_open_page
-    expect(current_path).to eq new_user_session_path
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).not_to have_link 'Create Answer'
   end
 end
