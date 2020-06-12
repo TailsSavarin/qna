@@ -15,7 +15,7 @@ RSpec.describe AnswersController, type: :controller do
       expect(assigns(:answer)).to eq answer
     end
 
-    it 'renders show view' do
+    it 'renders show view template' do
       expect(response).to render_template :show
     end
   end
@@ -30,7 +30,7 @@ RSpec.describe AnswersController, type: :controller do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
-    it 'renders new view' do
+    it 'renders new view template' do
       expect(response).to render_template :new
     end
   end
@@ -51,7 +51,7 @@ RSpec.describe AnswersController, type: :controller do
         expect(user).to be_author_of(assigns(:answer))
       end
 
-      it 'redirects to show view' do
+      it 'redirects to create' do
         post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
         expect(response).to render_template :create
       end
@@ -64,7 +64,7 @@ RSpec.describe AnswersController, type: :controller do
         }.to_not change(question.answers, :count)
       end
 
-      it 're-renders new view' do
+      it 're-renders create template' do
         post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid), format: :js }
         expect(response).to render_template :create
       end

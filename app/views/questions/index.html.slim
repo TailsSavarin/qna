@@ -1,3 +1,5 @@
 h1 Questions List
-= render @questions
+- @questions.each do |question|
+  h3= link_to question.title, question
+  p= question.body
 p= link_to 'Create Question', new_question_path, class: 'btn btn-primary'
