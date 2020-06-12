@@ -42,7 +42,17 @@ feature 'Author can edit his question', %q(
         expect(page).to have_content "Body can't be blank"
       end
     end
-    scenario 'tries to edit question'
+
+    scenario 'tries to edit question' do
+      visit question_path(other_question)
+      # save_and_open_page
+      expect(page).not_to have_link 'Edit'
+    end
   end
-  scenario 'Unauthenticated user can not edit question'
+
+  scenario 'Unauthenticated user can not edit question' do
+    visit question_path(question)
+    # save_and_open_page
+    expect(page).not_to have_link 'Edit'
+  end
 end
