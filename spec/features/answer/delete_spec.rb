@@ -10,27 +10,33 @@ feature 'Author can delete his answer', %q(
   given(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  describe 'Authenticated user and' do
+  describe 'Authenticated user and', js: true do
     scenario 'author of the answer tries to delete it' do
       sign_in(user)
       visit question_path(question)
-      click_on 'Delete answer'
-      # save_and_open_page
-      expect(page).to have_content 'Your answer successfully deleted.'
-      expect(page).not_to have_content(answer.body)
+      within '.answers' do
+        click_on 'Delete answer'
+        page.driver.browser.switch_to.alert.accept
+        # save_and_open_page
+        expect(page).not_to have_content(answer.body)
+      end
     end
 
     scenario 'non author tries to delete the answer' do
       sign_in(another_user)
       visit question_path(question)
-      # save_and_open_page
-      expect(page).not_to have_link 'Delete answer'
+      within '.answers' do
+        # save_and_open_page
+        expect(page).not_to have_link 'Delete answer'
+      end
     end
   end
 
   scenario 'Unauthenticated user tries to delete answer' do
     visit question_path(question)
-    # save_and_open_page
-    expect(page).not_to have_link 'Delete answer'
+    within '.answers' do
+      # save_and_open_page
+      expect(page).not_to have_link 'Delete answer'
+    end
   end
 end
