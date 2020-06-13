@@ -12,7 +12,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:questions)).to match_array(questions)
     end
 
-    it 'renders index view' do
+    it 'renders index view template' do
       expect(response).to render_template :index
     end
   end
@@ -30,7 +30,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
-    it 'renders show view' do
+    it 'renders show view template' do
       expect(response).to render_template :show
     end
   end
@@ -45,7 +45,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to be_a_new(Question)
     end
 
-    it 'renders new view' do
+    it 'renders new view template' do
       expect(response).to render_template :new
     end
   end
@@ -78,7 +78,7 @@ RSpec.describe QuestionsController, type: :controller do
         }.to_not change(Question, :count)
       end
 
-      it 're-renders new view' do
+      it 're-renders new view template' do
         post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template :new
       end
@@ -98,20 +98,20 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq 'Edited body'
       end
 
-      it 'renders updated question' do
+      it 'renders updated question template' do
         patch :update, params: { id: question, question: { title: 'Edited title', body: 'Edited body' } }, format: :js
         expect(response).to render_template :update
       end
     end
 
     context 'with invalid attributes' do
-      it 'does not cahnge question attributes' do
+      it 'does not change question attributes' do
         expect {
           patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
         }.to_not change(question, :title)
       end
 
-      it 'renders update view' do
+      it 'renders update view template' do
         patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
         expect(response).to render_template :update
       end
@@ -145,7 +145,7 @@ RSpec.describe QuestionsController, type: :controller do
         }.not_to change(Question, :count)
       end
 
-      it 'redirects to sign in view' do
+      it 'redirects to questions' do
         delete :destroy, params: { id: another_question }
         expect(response).to redirect_to questions_path
       end

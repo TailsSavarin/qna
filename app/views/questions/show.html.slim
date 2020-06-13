@@ -1,8 +1,11 @@
 .question
   = render @question
+
 h4 Answers:
+
 .answers
   = render @question.answers
-- if user_signed_in?
-  = render 'answers/form'
-p= link_to 'Back', questions_path
+
+= render 'answers/form'
+
+= link_to 'Back', questions_path

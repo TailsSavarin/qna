@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:answer) { create(:answer) }
-  let(:question) { answer.question }
+  let(:question) { create(:question) }
+  let(:answer) { create(:answer, question: question) }
 
   describe 'GET #show' do
     before do
@@ -70,9 +70,38 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+  describe 'PATCH #update' do
+    before { login(user) }
+
+    context 'with valid attributes' do
+      it 'changes answer attributes' do
+        patch :update, params: { id: answer, answer: { body: 'Edited body' } }, format: :js
+        answer.reload
+        expect(answer.body).to eq 'Edited body'
+      end
+
+      it 'renders update answer' do
+        patch :update, params: { id: answer, answer: { body: 'Edited body' } }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with ivalid attributes' do
+      it 'does not change answer attributes' do
+        expect {
+          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+        }.to_not change(answer, :body)
+      end
+
+      it 'renders update view' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+  end
 
   describe 'DELETE #destroy' do
-    let!(:answer) { create(:answer) }
+    let!(:answer) { create(:answer, question: question) }
 
     context 'authenticated user is an author' do
       before { login(answer.user) }
@@ -94,7 +123,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer } }.not_to change(Answer, :count)
       end
 
-      it 'redirects to sign in view' do
+      it 'redirects to question view' do
         delete :destroy, params: { id: answer }
         expect(response).to redirect_to question
       end
