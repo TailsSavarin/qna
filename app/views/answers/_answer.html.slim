@@ -1,6 +1,17 @@
-p= answer.body
-- if current_user&.author_of?(answer)
-  p= link_to 'Delete Answer',
-             answer_path(answer),
-             method: :delete,
-             data: { confirm: 'Are you sure?' }
+div id="answer-#{answer.id}"
+  = answer.body
+
+  - if current_user&.author_of?(answer)
+
+    div id="answer-#{answer.id}-errors"
+
+    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+      = f.label :body, 'Change answer'
+      br
+      = f.text_area :body
+      br
+      = f.submit 'Update answer', class: 'btn btn-primary'
+
+    = link_to 'Edit answer', '', class: 'answer-edit', data: { answer_id: answer.id }
+    br
+    = link_to 'Delete answer', answer_path(answer), method: :delete, data: { confirm: 'Are you sure?' }
