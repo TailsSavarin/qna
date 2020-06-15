@@ -15,20 +15,20 @@ feature 'User being on the question page, can write the answer to the question',
     end
 
     scenario 'trie to write the answer to the question' do
-      fill_in 'Your answer:', with: 'Test Answer'
-      click_on 'Add answer'
+      fill_in 'Your Answer:', with: 'Test Answer'
+      click_on 'Post Your Answer'
       expect(current_path).to eq question_path(question)
       expect(page).to have_content 'Test Answer'
     end
 
     scenario 'trie to write the answer to the question' do
-      click_on 'Add answer'
+      click_on 'Post Your Answer'
       expect(page).to have_content "Body can't be blank"
     end
   end
 
   scenario 'Unauthenticated user tries to write the answer to the question' do
     visit question_path(question)
-    expect(page).not_to have_link 'Add answer'
+    expect(page).not_to have_link 'Post Your Answer'
   end
 end
