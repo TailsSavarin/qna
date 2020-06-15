@@ -17,7 +17,6 @@ feature 'Author can edit his question', %q(
     scenario 'and author tries to edit his question' do
       visit question_path(question)
       click_on 'Edit question'
-      # save_and_open_page
       within '.question' do
         fill_in 'Title', with: 'Edited title'
         fill_in 'Body', with: 'Edited body'
@@ -33,7 +32,6 @@ feature 'Author can edit his question', %q(
     scenario 'and author tires to edit his question with errors' do
       visit question_path(question)
       click_on 'Edit'
-      # save_and_open_page
       within '.question' do
         fill_in 'Title', with: ''
         fill_in 'Body', with: ''
@@ -43,16 +41,14 @@ feature 'Author can edit his question', %q(
       end
     end
 
-    scenario 'tries to edit question' do
+    scenario 'tries to edit the question' do
       visit question_path(other_question)
-      # save_and_open_page
       expect(page).not_to have_link 'Edit question'
     end
   end
 
-  scenario 'Unauthenticated user can not edit question' do
+  scenario 'Unauthenticated user tries to edit the question' do
     visit question_path(question)
-    # save_and_open_page
     expect(page).not_to have_link 'Edit question'
   end
 end

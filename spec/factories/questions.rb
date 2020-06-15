@@ -5,9 +5,9 @@ FactoryBot.define do
   end
 
   factory :question do
+    body { 'QuestionBody' }
     title
     user
-    body { 'QuestionBody' }
 
     trait :invalid do
       title { nil }

@@ -36,6 +36,8 @@ gem 'slim-rails'
 
 # Authentication. Read more: https://github.com/heartcombo/devise
 gem 'devise'
+# Octicons. Examples: https://primer.style/octicons/ 
+gem 'octicons_helper'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

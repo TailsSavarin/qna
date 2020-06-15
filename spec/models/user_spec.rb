@@ -6,17 +6,15 @@ RSpec.describe User, type: :model do
     it { should have_many(:answers).dependent(:destroy) }
   end
 
-  describe 'author_of?' do
+  describe '#author_of?' do
     let(:user) { create(:user) }
     let(:another_question) { create(:question) }
     let(:user_question) { create(:question, user: user) }
 
-    # true
     it 'is the author of the resource' do
       expect(user).to be_author_of(user_question)
     end
 
-    # false
     it 'is not the author of the resource' do
       expect(user).not_to be_author_of(another_question)
     end

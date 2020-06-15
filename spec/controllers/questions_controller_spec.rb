@@ -26,7 +26,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to eq question
     end
 
-    it 'assigns new answer for question' do
+    it 'assigns new Answer for question' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
@@ -51,16 +51,18 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
+    let(:question) { create(:question, user: user) }
+
     before { login(user) }
 
     context 'with valid attributes' do
-      it 'saves a new question in the database' do
+      it 'saves a new Question in the database' do
         expect {
           post :create, params: { question: attributes_for(:question) }
         }.to change(Question, :count).by(1)
       end
 
-      it 'authenticated user is the author of the question' do
+      it 'authenticated user is author of the question' do
         post :create, params: { question: attributes_for(:question) }
         expect(user).to be_author_of(assigns(:question))
       end
@@ -72,13 +74,13 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      it 'does not save the question' do
+      it "doesn't save the question" do
         expect {
           post :create, params: { question: attributes_for(:question, :invalid) }
         }.to_not change(Question, :count)
       end
 
-      it 're-renders new view template' do
+      it 'renders new view template' do
         post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template :new
       end
@@ -91,21 +93,20 @@ RSpec.describe QuestionsController, type: :controller do
     before { login(user) }
 
     context 'with valid attributes' do
+      before { patch :update, params: { id: question, question: { title: 'Edited title', body: 'Edited body' } }, format: :js }
       it 'changes question atrributes' do
-        patch :update, params: { id: question, question: { title: 'Edited title', body: 'Edited body' } }, format: :js
         question.reload
         expect(question.title).to eq 'Edited title'
         expect(question.body).to eq 'Edited body'
       end
 
-      it 'renders updated question template' do
-        patch :update, params: { id: question, question: { title: 'Edited title', body: 'Edited body' } }, format: :js
+      it 'renders updated view template' do
         expect(response).to render_template :update
       end
     end
 
     context 'with invalid attributes' do
-      it 'does not change question attributes' do
+      it "doesn't change question attributes" do
         expect {
           patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
         }.to_not change(question, :title)
@@ -139,20 +140,20 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'authenticated user is not an author' do
       before { login(user) }
-      it 'does not delete quesiton from the database' do
+      it "does'nt delete quesiton from the database" do
         expect {
           delete :destroy, params: { id: another_question }
         }.not_to change(Question, :count)
       end
 
-      it 'redirects to questions' do
+      it 'redirects to index view' do
         delete :destroy, params: { id: another_question }
         expect(response).to redirect_to questions_path
       end
     end
 
     context 'unathenticated user' do
-      it 'does not delete quesiton from the database' do
+      it "does'nt delete quesiton from the database" do
         expect {
           delete :destroy, params: { id: question }
         }.not_to change(Question, :count)
