@@ -8,19 +8,17 @@ feature 'User can sign in', %q(
   given(:user) { create(:user) }
   background { visit new_user_session_path }
 
-  scenario 'Registered user tries to sign in' do
+  scenario 'registered user tries to sign in' do
     fill_in 'Email', with: user.email
     fill_in 'Password', with: user.password
     click_button 'Log in'
-    # save_and_open_page
     expect(page).to have_content 'Signed in successfully.'
   end
 
-  scenario 'Unregistered or with invalid data, user tries to sign in' do
+  scenario 'unregistered or with invalid data, user tries to sign in' do
     fill_in 'Email', with: 'unregistered@test.com'
     fill_in 'Password', with: '12345678'
     click_button 'Log in'
-    # save_and_open_page
     expect(page).to have_content 'Invalid Email or password.'
   end
 end

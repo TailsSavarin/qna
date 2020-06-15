@@ -6,15 +6,13 @@ feature 'Author can edit his question', %q(
   I'd like to be able to edit my question
 ) do
   given(:user) { create(:user) }
-  given(:other_question) { create(:question) }
+  given(:other_user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  describe 'Authenticated user', js: true do
-    background do
-      sign_in(user)
-    end
+  describe 'author', js: true do
+    background { sign_in(user) }
 
-    scenario 'and author tries to edit his question' do
+    scenario 'tries to edit his question' do
       visit question_path(question)
       click_on 'Edit question'
       within '.question' do
@@ -29,7 +27,7 @@ feature 'Author can edit his question', %q(
       end
     end
 
-    scenario 'and author tires to edit his question with errors' do
+    scenario 'tires to edit his question with errors' do
       visit question_path(question)
       click_on 'Edit'
       within '.question' do
@@ -40,14 +38,10 @@ feature 'Author can edit his question', %q(
         expect(page).to have_content "Body can't be blank"
       end
     end
-
-    scenario 'tries to edit the question' do
-      visit question_path(other_question)
-      expect(page).not_to have_link 'Edit question'
-    end
   end
 
-  scenario 'Unauthenticated user tries to edit the question' do
+  scenario 'non author tries to edit the question', js: true do
+    sign_in(other_user)
     visit question_path(question)
     expect(page).not_to have_link 'Edit question'
   end

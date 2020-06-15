@@ -8,7 +8,7 @@ feature 'User being on the question page, can write the answer to the question',
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
-  describe 'Authenticated user', js: true do
+  describe 'authenticated user', js: true do
     background do
       sign_in(user)
       visit question_path(question)
@@ -27,7 +27,7 @@ feature 'User being on the question page, can write the answer to the question',
     end
   end
 
-  scenario 'Unauthenticated user tries to write the answer to the question' do
+  scenario 'unauthenticated user tries to write the answer to the question' do
     visit question_path(question)
     expect(page).not_to have_link 'Post Your Answer'
   end

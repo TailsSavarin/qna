@@ -8,7 +8,7 @@ class Answer < ApplicationRecord
 
   def select_best
     Answer.transaction do
-      Answer.where(question_id: question_id).find_each { |answer| answer.update(best: false) }
+      Answer.where(question_id: question_id).update_all(best: false)
       update!(best: true)
     end
   end
