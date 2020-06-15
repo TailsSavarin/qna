@@ -7,7 +7,7 @@ feature 'User can create question', %q(
 ) do
   given(:user) { create(:user) }
 
-  describe 'Authenticated user' do
+  describe 'authenticated user' do
     background do
       sign_in(user)
       visit questions_path
@@ -30,7 +30,7 @@ feature 'User can create question', %q(
     end
   end
 
-  scenario 'Unauthenticated user tries to ask a question' do
+  scenario 'unauthenticated user tries to ask a question' do
     visit questions_path
     click_on 'Ask Question'
     expect(page).to have_content 'You need to sign in or sign up before continuing.'

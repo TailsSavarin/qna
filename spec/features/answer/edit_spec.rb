@@ -6,17 +6,14 @@ feature 'Author can edit his answer', %q(
   I'd like to be able to edit my answer
 ) do
   given(:user) { create(:user) }
+  given(:other_user) { create(:user) }
   given(:question) { create(:question) }
-  given(:other_question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
-  given!(:other_answer) { create(:answer, question: other_question) }
 
-  describe 'Authenticated user', js: true do
-    background do
-      sign_in(user)
-    end
+  describe 'author', js: true do
+    background { sign_in(user) }
 
-    scenario 'and author tries to edit his answer' do
+    scenario 'tries to edit his answer' do
       visit question_path(question)
       within '.answers' do
         click_on 'Edit answer'
@@ -28,7 +25,7 @@ feature 'Author can edit his answer', %q(
       end
     end
 
-    scenario 'and author tires to edit his answer with errors' do
+    scenario 'tires to edit his answer with errors' do
       visit question_path(question)
       click_on 'Edit answer'
       within '.answers' do
@@ -37,15 +34,13 @@ feature 'Author can edit his answer', %q(
         expect(page).to have_content "Body can't be blank"
       end
     end
-
-    scenario 'tries to edit answer' do
-      visit question_path(other_question)
-      expect(page).not_to have_link 'Edit answer'
-    end
   end
 
-  scenario 'Unauthenticated user tries to edit answer' do
+  scenario 'non author tries to edit answer', js: true do
+    sign_in(other_user)
     visit question_path(question)
-    expect(page).not_to have_link 'Edit answer'
+    within '.answers' do
+      expect(page).not_to have_link 'Edit answer'
+    end
   end
 end
