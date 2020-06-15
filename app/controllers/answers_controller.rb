@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: :show
   before_action :set_question, only: %i[new create]
-  before_action :set_answer, only: %i[show destroy update]
+  before_action :set_answer, only: %i[show destroy update choose_best]
 
   def show
   end
@@ -22,6 +22,10 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer.destroy if current_user.author_of?(@answer)
+  end
+
+  def choose_best
+    @answer.select_best if current_user.author_of?(@answer.question)
   end
 
   private

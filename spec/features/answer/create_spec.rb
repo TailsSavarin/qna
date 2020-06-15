@@ -14,24 +14,21 @@ feature 'User being on the question page, can write the answer to the question',
       visit question_path(question)
     end
 
-    scenario 'trie to write the answer to the question on question page' do
+    scenario 'trie to write the answer to the question' do
       fill_in 'Your answer:', with: 'Test Answer'
       click_on 'Add answer'
-      # save_and_open_page
       expect(current_path).to eq question_path(question)
       expect(page).to have_content 'Test Answer'
     end
 
-    scenario 'trie to write the answer to the question on question page with errors' do
+    scenario 'trie to write the answer to the question' do
       click_on 'Add answer'
-      # save_and_open_page
       expect(page).to have_content "Body can't be blank"
     end
   end
 
-  scenario 'Unauthenticated user tries to write the answer to the question on question page' do
+  scenario 'Unauthenticated user tries to write the answer to the question' do
     visit question_path(question)
-    # save_and_open_page
     expect(page).not_to have_link 'Add answer'
   end
 end
