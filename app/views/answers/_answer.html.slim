@@ -9,8 +9,7 @@ div id="answer-#{answer.id}"
 
   - if current_user&.author_of?(answer.question)
     - unless answer.best?
-      = link_to 'Select as best', choose_best_answer_path(answer), method: :post, remote: true
-  br
+      = link_to 'Select as best', choose_best_answer_path(answer), class: 'btn btn-outline-success btn-sm', method: :post, remote: true
 
   - if current_user&.author_of?(answer)
 
@@ -21,10 +20,10 @@ div id="answer-#{answer.id}"
       br
       = f.text_area :body
       br
-      = f.submit 'Update answer', class: 'btn btn-primary'
+      = f.submit 'Update answer', class: 'btn btn-primary btn-sm'
+
     p
-      = link_to 'Edit answer', '', class: 'answer-edit', data: { answer_id: answer.id }
-      = ' / '
-      = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true, data: { confirm: 'Are you sure?' }
+      = link_to 'Edit answer', '', class: 'btn btn-outline-secondary btn-sm answer-edit', data: { answer_id: answer.id }
+      = link_to 'Delete answer', answer_path(answer), class: 'btn btn-outline-secondary btn-sm', method: :delete, remote: true, data: { confirm: 'Are you sure?' }
   br
   = ' ------------------------------------- '

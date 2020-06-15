@@ -1,9 +1,7 @@
-h1 Questions List
+.row-justify-content-center
+  .col-md-12
+    p= link_to 'Ask Question', new_question_path, class: 'btn btn-primary float-md-right'
+    h1 Questions List
+    - @questions.each do |question|
+      h4= link_to question.title, question
 
-- @questions.each do |question|
-  p
-    = link_to question.title, question
-    br
-    = question.body
-
-p= link_to 'Create question', new_question_path, class: 'btn btn-primary'

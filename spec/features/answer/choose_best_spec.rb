@@ -11,9 +11,7 @@ feature 'Author can choose the best answer for his question', %q(
   given!(:answer) { create(:answer, question: question) }
 
   describe 'Author' do
-    background do
-      sign_in(user)
-    end
+    background { sign_in(user) }
 
     scenario 'tries choose best answer for his question', js: true do
       visit question_path(question)

@@ -32,6 +32,7 @@ RSpec.describe Answer, type: :model do
       expect(answer).to_not be_best
       expect(other_answer).to be_best
       answer.select_best
+      answer.reload
       other_answer.reload
       expect(answer).to be_best
       expect(other_answer).to_not be_best

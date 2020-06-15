@@ -1,4 +1,4 @@
-h1= question.title
+h2= question.title
 h4= question.body
 
 - if current_user&.author_of?(@question)
@@ -15,10 +15,10 @@ h4= question.body
       br
       = f.text_area :body
       br
-      = f.submit 'Update question', class: 'btn btn-primary'
+      = f.submit 'Update question', class: 'btn btn-primary btn-sm'
 
-  = link_to 'Edit question', '#', id: 'question-edit'
-  br
-  = link_to 'Delete question', question_path(@question), method: :delete, data: { confirm: 'Are you sure?' }
+  p
+    = link_to 'Edit question', '#', id: 'question-edit', class: 'btn btn-outline-secondary btn-sm'
+    = link_to 'Delete question', question_path(@question), class: 'btn btn-outline-secondary btn-sm', method: :delete, data: { confirm: 'Are you sure?' }
 
 
