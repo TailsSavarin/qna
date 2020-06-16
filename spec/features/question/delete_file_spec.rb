@@ -6,6 +6,7 @@ feature 'Author of the question can delete attached files', %q(
   I'd like to be able to delete attached files
 ) do
   given(:user) { create(:user) }
+  given(:other_user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
   scenario 'author tries to delete attached files from his question', js: true do
@@ -20,5 +21,13 @@ feature 'Author of the question can delete attached files', %q(
       expect(page).to_not have_content 'test.jgp'
     end
   end
-  scenario 'non author tries to delete attache files from the question'
+  scenario 'non author tries to delete attache files from the question' do
+    sign_in(other_user)
+    question.files.attach(create_file_blob(filename: 'test.jpg'))
+    visit question_path(question)
+    within '.question' do
+      expect(page).to have_content 'test.jpg'
+      expect(page).to_not have_link 'Delete file'
+    end
+  end
 end
