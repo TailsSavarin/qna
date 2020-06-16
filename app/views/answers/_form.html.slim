@@ -5,6 +5,9 @@
   br
   = f.text_area :body
   br
+  = f.label :files
+  =f.file_field :files, multiple: true
+  br
   = f.submit 'Post Your Answer', class: 'btn btn-primary'
 
 
