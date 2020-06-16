@@ -48,17 +48,20 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid attributes' do
       it 'saves a new answer in the database' do
         expect {
-          post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
+          post :create, params: { question_id: question,
+                                  answer: attributes_for(:answer) }, format: :js
         }.to change(question.answers, :count).by(1)
       end
 
       it 'user is author of the answer' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
+        post :create, params: { question_id: question,
+                                answer: attributes_for(:answer) }, format: :js
         expect(user).to be_author_of(assigns(:answer))
       end
 
       it 'renders create view template' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
+        post :create, params: { question_id: question,
+                                answer: attributes_for(:answer), format: :js }
         expect(response).to render_template :create
       end
     end
@@ -170,7 +173,7 @@ RSpec.describe AnswersController, type: :controller do
     let(:question) { create(:question, user: user) }
     let(:answer) { create(:answer, question: question) }
 
-    context 'author of the question' do
+    context 'author' do
       before do
         login(user)
         post :choose_best, params: { id: answer }, format: :js
@@ -190,7 +193,7 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'non author of the question' do
+    context 'non author' do
       before do
         login(other_user)
         post :choose_best, params: { id: answer }, format: :js
@@ -206,6 +209,7 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
   describe 'DELETE #delete_file' do
     let(:question) { create(:question) }
     let(:answer) { create(:answer, question: question, user: user) }

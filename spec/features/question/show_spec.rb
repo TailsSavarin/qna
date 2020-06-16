@@ -9,7 +9,7 @@ feature 'User can watch the question and answers to it', %q(
   given(:question) { create(:question) }
   given!(:answers) { create_list(:answer, 2, question: question) }
 
-  scenario 'authenticated user trie to watch the question and answers to it' do
+  scenario 'authenticated user tries to watch the question and answers to it' do
     sign_in(user)
     visit question_path(question)
     expect(page).to have_content question.title
@@ -17,7 +17,7 @@ feature 'User can watch the question and answers to it', %q(
     answers.each { |answer| expect(page).to have_content answer.body }
   end
 
-  scenario 'unauthenticated user trie to watch the question and answers to it' do
+  scenario 'unauthenticated user tries to watch the question and answers to it' do
     visit question_path(question)
     expect(page).to have_content question.title
     expect(page).to have_content question.body
