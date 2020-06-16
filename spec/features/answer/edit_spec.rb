@@ -11,10 +11,12 @@ feature 'Author can edit his answer', %q(
   given!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'author', js: true do
-    background { sign_in(user) }
+    background do
+      sign_in(user)
+      visit question_path(question)
+    end
 
     scenario 'tries to edit his answer' do
-      visit question_path(question)
       within '.answers' do
         click_on 'Edit answer'
         fill_in 'Change answer', with: 'Edited body'
@@ -26,12 +28,21 @@ feature 'Author can edit his answer', %q(
     end
 
     scenario 'tires to edit his answer with errors' do
-      visit question_path(question)
-      click_on 'Edit answer'
       within '.answers' do
+        click_on 'Edit answer'
         fill_in 'Change answer', with: ''
         click_on 'Update answer'
         expect(page).to have_content "Body can't be blank"
+      end
+    end
+
+    scenario 'can add attached files when edit his answer' do
+      within '.answers' do
+        click_on 'Edit answer'
+        attach_file 'File', [Rails.root / 'spec' / 'rails_helper.rb', Rails.root / 'spec' / 'spec_helper.rb']
+        click_on 'Update answer'
+        expect(page).to have_content 'rails_helper.rb'
+        expect(page).to have_content 'spec_helper.rb'
       end
     end
   end
