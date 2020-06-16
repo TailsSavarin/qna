@@ -25,6 +25,15 @@ feature 'User being on the question page, can write the answer to the question',
       click_on 'Post Your Answer'
       expect(page).to have_content "Body can't be blank"
     end
+
+    scenario 'tries to write the answer with attached files' do
+      fill_in 'Your Answer:', with: 'Test Answer'
+      attach_file 'File', [Rails.root / 'spec' / 'rails_helper.rb', Rails.root / 'spec' / 'spec_helper.rb']
+      click_on 'Post Your Answer'
+
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
+    end
   end
 
   scenario 'unauthenticated user tries to write the answer to the question' do
