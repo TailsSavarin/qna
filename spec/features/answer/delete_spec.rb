@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Author can delete his answer', %q(
-  If cinsider it necessary
+  If decide that it's necessary
   As an author
   I'd like to be able to delete my answer
 ) do
@@ -10,21 +10,31 @@ feature 'Author can delete his answer', %q(
   given(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  scenario 'author tries to delete his answer', js: true do
-    sign_in(user)
-    visit question_path(question)
-    within '.answers' do
-      click_on 'Delete answer'
-      page.driver.browser.switch_to.alert.accept
-      expect(page).not_to have_content(answer.body)
+  describe 'authenticated user' do
+    scenario 'author deletes his answer', js: true do
+      sign_in(user)
+      visit question_path(question)
+      within '.answers' do
+        click_on 'Delete answer'
+        page.driver.browser.switch_to.alert.accept
+
+        expect(page).not_to have_content(answer.body)
+      end
+    end
+
+    scenario 'non author tries to delete the answer' do
+      sign_in(another_user)
+      visit question_path(question)
+      within '.answers' do
+        expect(page).not_to have_link 'Delete answer'
+      end
     end
   end
 
-  scenario 'non author tries to delete the answer', js: true do
-    sign_in(another_user)
+  scenario "unauthenticated user can't delete the answer" do
     visit question_path(question)
     within '.answers' do
-      expect(page).not_to have_link 'Delete answer'
+      expect(page).not_to have_link 'Delte answer'
     end
   end
 end

@@ -96,10 +96,8 @@ RSpec.describe QuestionsController, type: :controller do
 
       context 'with valid attributes' do
         before do
-          patch :update, params: {
-            id: question,
-            question: { title: 'Edited title', body: 'Edited body' }
-          }, format: :js
+          patch :update, params: { id: question,
+                                   question: { title: 'Edited title', body: 'Edited body' } }, format: :js
         end
 
         it 'changes question atrributes' do
