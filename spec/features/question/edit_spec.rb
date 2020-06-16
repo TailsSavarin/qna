@@ -10,11 +10,13 @@ feature 'Author can edit his question', %q(
   given(:question) { create(:question, user: user) }
 
   describe 'author', js: true do
-    background { sign_in(user) }
-
-    scenario 'tries to edit his question' do
+    background do
+      sign_in(user)
       visit question_path(question)
       click_on 'Edit question'
+    end
+
+    scenario 'tries to edit his question' do
       within '.question' do
         fill_in 'Title', with: 'Edited title'
         fill_in 'Body', with: 'Edited body'
@@ -28,14 +30,22 @@ feature 'Author can edit his question', %q(
     end
 
     scenario 'tires to edit his question with errors' do
-      visit question_path(question)
-      click_on 'Edit'
       within '.question' do
         fill_in 'Title', with: ''
         fill_in 'Body', with: ''
         click_on 'Update question'
         expect(page).to have_content "Title can't be blank"
         expect(page).to have_content "Body can't be blank"
+      end
+    end
+    scenario 'can add attached files whe edit his question' do
+      within '.question' do
+        fill_in 'Title', with: 'Title'
+        fill_in 'Body', with: 'Body'
+        attach_file 'File', [Rails.root / 'spec' / 'rails_helper.rb', Rails.root / 'spec' / 'spec_helper.rb']
+        click_on 'Update question'
+        expect(page).to have_content 'rails_helper.rb'
+        expect(page).to have_content 'spec_helper.rb'
       end
     end
   end
