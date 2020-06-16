@@ -206,4 +206,40 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+  describe 'DELETE #delete_file' do
+    let(:question) { create(:question) }
+    let(:answer) { create(:answer, question: question, user: user) }
+
+    before { answer.files.attach(create_file_blob) }
+
+    context 'author' do
+      before { login(user) }
+
+      it 'deletes file from the database' do
+        expect {
+          delete :delete_file, params: { id: answer, file_id: answer.files.first }, format: :js
+        }.to change(answer.files, :count).by(-1)
+      end
+
+      it 'render delete_file view template' do
+        delete :delete_file, params: { id: answer, file_id: answer.files.first }, format: :js
+        expect(response).to render_template :delete_file
+      end
+    end
+
+    context 'non author' do
+      before { login(other_user) }
+
+      it "dosen't delete file from the database" do
+        expect {
+          delete :delete_file, params: { id: answer, file_id: answer.files.first }, format: :js
+        }.to_not change(answer.files, :count)
+      end
+
+      it 'render delete_file view template' do
+        delete :delete_file, params: { id: answer, file_id: answer.files.first }, format: :js
+        expect(response).to render_template :delete_file
+      end
+    end
+  end
 end
