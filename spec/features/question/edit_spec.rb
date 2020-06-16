@@ -40,8 +40,6 @@ feature 'Author can edit his question', %q(
     end
     scenario 'can add attached files whe edit his question' do
       within '.question' do
-        fill_in 'Title', with: 'Title'
-        fill_in 'Body', with: 'Body'
         attach_file 'File', [Rails.root / 'spec' / 'rails_helper.rb', Rails.root / 'spec' / 'spec_helper.rb']
         click_on 'Update question'
         expect(page).to have_content 'rails_helper.rb'
