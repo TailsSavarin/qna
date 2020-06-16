@@ -31,6 +31,9 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Rubocop, static code analyzer and code formatter. Read more: https://github.com/rubocop-hq/rubocop-rails
 gem 'rubocop-rails', require: false
 
+# AWS SDK Read more: https://github.com/aws/aws-sdk-ruby
+gem "aws-sdk-s3", require: false
+
 # Slim templates generator. Read more: https://github.com/slim-template/slim-rails
 gem 'slim-rails'
 
