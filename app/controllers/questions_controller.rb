@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_question, only: %i[show update destroy]
+  before_action :set_question, only: %i[show update destroy delete_file]
 
   def index
     @questions = Question.all
@@ -36,6 +36,13 @@ class QuestionsController < ApplicationController
     else
       redirect_to questions_path, notice: "You don't have sufficient rights to delete this question."
     end
+  end
+
+  def delete_file
+    return unless current_user.author_of?(@question)
+
+    @file = ActiveStorage::Attachment.find(params[:file_id])
+    @file.purge
   end
 
   private
