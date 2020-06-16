@@ -27,7 +27,7 @@ div id="answer-#{answer.id}"
       br
       = f.text_area :body
       br
-      =f.file_field :files, multiple: true
+      =f.file_field :files, multiple: true, direct_upload: true
       br
       = f.submit 'Update answer', class: 'btn btn-primary btn-sm'
 
