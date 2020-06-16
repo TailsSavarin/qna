@@ -39,6 +39,8 @@ RSpec.configure do |config|
   config.include ControllerHelpers, type: :controller
   # Custom module for features/
   config.include FeatureHelpers, type: :feature
+  # Active storage module
+  config.include ActiveStorageHelpers
 
   # Add js in tests
   Capybara.javascript_driver = :selenium_chrome_headless
