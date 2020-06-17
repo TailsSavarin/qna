@@ -6,7 +6,7 @@ feature 'Author can choose the best answer to his question', %q(
   I'd like to be able to choose the best answer for my question
 ) do
   given(:user) { create(:user) }
-  given(:other_user) { create(:user) }
+  given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question) }
 
@@ -23,7 +23,7 @@ feature 'Author can choose the best answer to his question', %q(
     end
 
     scenario 'non author trying to choose the best answer to the question' do
-      sign_in(other_user)
+      sign_in(another_user)
       visit question_path(question)
       within '.answers' do
         expect(page).to_not have_link 'Select as best'
