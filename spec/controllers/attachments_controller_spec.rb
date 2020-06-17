@@ -18,7 +18,7 @@ RSpec.describe AttachmentsController, type: :controller do
         it 'deletes file from the database' do
           expect {
             delete :destroy, params: { id: file }, format: :js
-          }.to change(files, :count).by(-1)
+          }.to change(ActiveStorage::Attachment, :count).by(-1)
         end
 
         it 'renders destroy view template' do
@@ -33,7 +33,7 @@ RSpec.describe AttachmentsController, type: :controller do
         it 'dose not delete file from the database' do
           expect {
             delete :destroy, params: { id: file }, format: :js
-          }.to_not change(files, :count)
+          }.to_not change(ActiveStorage::Attachment, :count)
         end
 
         it 'renders destroy view template' do
@@ -47,7 +47,7 @@ RSpec.describe AttachmentsController, type: :controller do
       it 'does not delete file from the database' do
         expect {
           delete :destroy, params: { id: file }, format: :js
-        }.to_not change(files, :count)
+        }.to_not change(ActiveStorage::Attachment, :count)
       end
 
       it 'responses with status 401' do
