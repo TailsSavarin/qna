@@ -24,7 +24,7 @@ RSpec.describe Answer, type: :model do
   describe '#choose_best' do
     let(:question) { create(:question) }
     let!(:answer) { create(:answer, question: question) }
-    let!(:other_answer) { create(:answer, question: question, best: true) }
+    let!(:another_answer) { create(:answer, question: question, best: true) }
 
     it 'choose current answer like best' do
       expect(answer).to_not be_best
@@ -34,12 +34,12 @@ RSpec.describe Answer, type: :model do
 
     it 'choose other answer like best' do
       expect(answer).to_not be_best
-      expect(other_answer).to be_best
+      expect(another_answer).to be_best
       answer.select_best
       answer.reload
-      other_answer.reload
+      another_answer.reload
       expect(answer).to be_best
-      expect(other_answer).to_not be_best
+      expect(another_answer).to_not be_best
     end
   end
 end

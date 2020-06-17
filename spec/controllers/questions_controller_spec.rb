@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
-  let(:other_user) { create(:user) }
+  let(:another_user) { create(:user) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 5) }
@@ -54,36 +54,51 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     let(:question) { create(:question, user: user) }
 
-    before { login(user) }
+    context 'authenticated user' do
+      before { login(user) }
 
-    context 'with valid attributes' do
-      it 'saves a new Question in the database' do
-        expect {
+      context 'with valid attributes' do
+        it 'saves a new Question in the database' do
+          expect {
+            post :create, params: { question: attributes_for(:question) }
+          }.to change(Question, :count).by(1)
+        end
+
+        it 'user is author of the question' do
           post :create, params: { question: attributes_for(:question) }
-        }.to change(Question, :count).by(1)
+          expect(user).to be_author_of(assigns(:question))
+        end
+
+        it 'redirects to show view' do
+          post :create, params: { question: attributes_for(:question) }
+          expect(response).to redirect_to assigns(:question)
+        end
       end
 
-      it 'user is author of the question' do
-        post :create, params: { question: attributes_for(:question) }
-        expect(user).to be_author_of(assigns(:question))
-      end
+      context 'with invalid attributes' do
+        it "doesn't save the question" do
+          expect {
+            post :create, params: { question: attributes_for(:question, :invalid) }
+          }.to_not change(Question, :count)
+        end
 
-      it 'redirects to show view' do
-        post :create, params: { question: attributes_for(:question) }
-        expect(response).to redirect_to assigns(:question)
+        it 'renders new view template' do
+          post :create, params: { question: attributes_for(:question, :invalid) }
+          expect(response).to render_template :new
+        end
       end
     end
 
-    context 'with invalid attributes' do
-      it "doesn't save the question" do
+    context 'untauthenticated user' do
+      it 'does not save the question' do
         expect {
           post :create, params: { question: attributes_for(:question, :invalid) }
         }.to_not change(Question, :count)
       end
 
-      it 'renders new view template' do
+      it 'redirects to sign in view' do
         post :create, params: { question: attributes_for(:question, :invalid) }
-        expect(response).to render_template :new
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end
@@ -91,54 +106,69 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
     let(:question) { create(:question, user: user) }
 
-    context 'author' do
-      before { login(user) }
+    context 'authenticated user' do
+      context 'author' do
+        before { login(user) }
 
-      context 'with valid attributes' do
-        before do
-          patch :update, params: { id: question,
-                                   question: { title: 'Edited title', body: 'Edited body' } }, format: :js
+        context 'with valid attributes' do
+          before do
+            patch :update, params: { id: question,
+                                     question: { title: 'Edited title', body: 'Edited body' } }, format: :js
+          end
+
+          it 'changes question atrributes' do
+            question.reload
+            expect(question.title).to eq 'Edited title'
+            expect(question.body).to eq 'Edited body'
+          end
+
+          it 'renders updated view template' do
+            expect(response).to render_template :update
+          end
         end
 
-        it 'changes question atrributes' do
-          question.reload
-          expect(question.title).to eq 'Edited title'
-          expect(question.body).to eq 'Edited body'
-        end
+        context 'with invalid attributes' do
+          it 'does not change question attributes' do
+            expect {
+              patch :update, params: { id: question,
+                                       question: attributes_for(:question, :invalid) }, format: :js
+            }.to_not change(question, :title)
+          end
 
-        it 'renders updated view template' do
-          expect(response).to render_template :update
+          it 'renders update view template' do
+            patch :update, params: { id: question,
+                                     question: attributes_for(:question, :invalid) }, format: :js
+            expect(response).to render_template :update
+          end
         end
       end
 
-      context 'with invalid attributes' do
-        it "doesn't change question attributes" do
+      context 'non author' do
+        before { login(another_user) }
+
+        it 'does not change question attributes' do
           expect {
-            patch :update, params: { id: question,
-                                     question: attributes_for(:question, :invalid) }, format: :js
+            patch :update, params: { id: question, question: { title: 'Edited title' } }, format: :js
           }.to_not change(question, :title)
         end
 
         it 'renders update view template' do
-          patch :update, params: { id: question,
-                                   question: attributes_for(:question, :invalid) }, format: :js
+          patch :update, params: { id: question, question: { title: 'Edited title' } }, format: :js
           expect(response).to render_template :update
         end
       end
     end
 
-    context 'non author' do
-      before { login(other_user) }
-
-      it "doesn't change question attributes" do
+    context 'unauthenticated user' do
+      it 'does not change question attributes' do
         expect {
           patch :update, params: { id: question, question: { title: 'Edited title' } }, format: :js
         }.to_not change(question, :title)
       end
 
-      it 'renders update view template' do
+      it 'responses with status 401' do
         patch :update, params: { id: question, question: { title: 'Edited title' } }, format: :js
-        expect(response).to render_template :update
+        expect(response.status).to eq(401)
       end
     end
   end
@@ -147,69 +177,48 @@ RSpec.describe QuestionsController, type: :controller do
     let!(:question) { create(:question, user: user) }
     let!(:another_question) { create(:question) }
 
-    context 'author' do
-      before { login(user) }
+    context 'authenticated user' do
+      context 'author' do
+        before { login(user) }
 
-      it 'deletes question from the database' do
-        expect {
+        it 'deletes question from the database' do
+          expect {
+            delete :destroy, params: { id: question }
+          }.to change(Question, :count).by(-1)
+        end
+
+        it 'redirects to index view' do
           delete :destroy, params: { id: question }
-        }.to change(Question, :count).by(-1)
+          expect(response).to redirect_to questions_path
+        end
       end
 
-      it 'redirects to index view' do
-        delete :destroy, params: { id: question }
-        expect(response).to redirect_to questions_path
+      context 'non author' do
+        before { login(another_user) }
+
+        it 'does not delete quesiton from the database' do
+          expect {
+            delete :destroy, params: { id: another_question }
+          }.not_to change(Question, :count)
+        end
+
+        it 'redirects to index view' do
+          delete :destroy, params: { id: another_question }
+          expect(response).to redirect_to questions_path
+        end
       end
     end
 
-    context 'non author' do
-      before { login(user) }
-
-      it "doesn't delete quesiton from the database" do
+    context 'unauthenticated user' do
+      it 'does not delete quesiton from the database' do
         expect {
-          delete :destroy, params: { id: another_question }
+          delete :destroy, params: { id: question }
         }.not_to change(Question, :count)
       end
 
-      it 'redirects to index view' do
-        delete :destroy, params: { id: another_question }
-        expect(response).to redirect_to questions_path
-      end
-    end
-  end
-
-  describe 'DELETE #delete_file' do
-    let(:question) { create(:question, user: user) }
-
-    before { question.files.attach(create_file_blob) }
-
-    context 'author' do
-      before { login(user) }
-
-      it 'deletes file from the database' do
-        expect {
-          delete :delete_file, params: { id: question, file_id: question.files.first }, format: :js
-        }.to change(question.files, :count).by(-1)
-      end
-
-      it 'render delete_file view template' do
-        delete :delete_file, params: { id: question, file_id: question.files.first }, format: :js
-        expect(response).to render_template :delete_file
-      end
-    end
-
-    context 'non author' do
-      before { login(other_user) }
-
-      it "dosen't delete file from the database" do
-        expect {
-          delete :delete_file, params: { id: question, file_id: question.files.first }, format: :js
-        }.to_not change(question.files, :count)
-      end
-
-      it 'render delete_file view template' do
-        delete :delete_file, params: { id: question, file_id: question.files.first }, format: :js
-        expect(response).to render_template :delete_file
+      it 'redirects to sign in view' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end

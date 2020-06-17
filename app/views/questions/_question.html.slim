@@ -3,10 +3,10 @@ h4= question.body
 
 - if @question.files.attached?
   - @question.files.each do |file|
-    div id="question-file-#{file.id}"
+    div id="attachment-#{file.id}"
       p= link_to file.filename.to_s, url_for(file)
       - if current_user&.author_of?(@question)
-        = link_to 'Delete file', delete_file_question_path(@question, file_id: file), method: :delete, remote: true, data: { confirm: 'Are you sure?' }
+        = link_to 'Delete file', attachment_path(file), method: :delete, remote: true, data: { confirm: 'Are you sure?' }
 
 - if current_user&.author_of?(@question)
 
