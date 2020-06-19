@@ -3,10 +3,17 @@
   = f.label :body, 'Your Answer:'
   br
   = f.text_area :body
-  br
-  = f.label :files
-  =f.file_field :files, multiple: true, direct_upload: true
-  br
+  h3 Files
+  #files
+    = f.label :files
+    br
+    = f.file_field :files, multiple: true, direct_upload: true
+  h3 Links
+  #links
+    = f.fields_for :links do |link|
+      = render 'links/link_fields', f: link
+    .links
+      = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
   = f.submit 'Post Your Answer', class: 'btn btn-primary'
 
 

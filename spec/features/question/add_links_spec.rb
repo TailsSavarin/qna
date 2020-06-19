@@ -27,12 +27,14 @@ feature 'User can add link to question', %q(
   scenario 'User adds links when edits his question', js: true do
     visit question_path(question)
     click_on 'Edit question'
-    click_on 'add link'
+    within '#edit-question' do
+      click_on 'add link'
 
-    fill_in 'Name', with: 'Google'
-    fill_in 'URL', with: test_url
+      fill_in 'Name', with: 'Google'
+      fill_in 'URL', with: test_url
 
-    click_on 'Update question'
+      click_on 'Update question'
+    end
 
     expect(page).to have_link 'Google', href: test_url
   end

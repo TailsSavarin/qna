@@ -5,6 +5,10 @@ div id="answer-#{answer.id}"
       = octicon 'check-circle-fill'
 
   = answer.body
+  - if answer.links.present?
+    p Links:
+    .answer-links
+      = render answer.links
   br
 
   - if answer.files.attached?
@@ -23,12 +27,21 @@ div id="answer-#{answer.id}"
     div id="answer-#{answer.id}-errors"
 
     = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-      = f.label :body, 'Change answer'
-      br
-      = f.text_area :body
-      br
-      =f.file_field :files, multiple: true, direct_upload: true
-      br
+      .field
+        = f.label :body, 'Change answer'
+        br
+        = f.text_area :body
+      h3 Files
+      #files
+        = f.label :files
+        br
+        = f.file_field :files, multiple: true, direct_upload: true
+      h3 Links
+      #links
+        = f.fields_for :links do |link|
+          = render 'links/link_fields', f: link
+        .links
+          = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
       = f.submit 'Update answer', class: 'btn btn-primary btn-sm'
 
     p
