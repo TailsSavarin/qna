@@ -1,23 +1,24 @@
-= render 'shared/errors', resource: @question
+.question-edit-errors
 
-= form_with model: @question, local: true do |f|
-  .field
+= form_with model: @question, class: 'hidden', html: { id: "edit-question" } do |f|
+  p
     = f.label :title
     br
     = f.text_field :title
-  .field
+  p
     = f.label :body
     br
     = f.text_area :body
-  h3 Files
   #files
     =f.label :files
+    br
     =f.file_field :files, multiple: true, direct_upload: true
-  h3 Links
+  br
+  p Links:
   #links
     = f.fields_for :links do |link|
       = render 'links/link_fields', f: link
     .links
       p= link_to_add_association 'add link', f, :links, partial: 'links/link_fields', class: 'text-secondary'
-  = f.submit 'Create Question', class: 'btn btn-primary'
+  = f.submit 'Update Question', class: 'btn btn-primary btn-sm'
 
