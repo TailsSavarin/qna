@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :link do
-    name { 'Google' }
+    association :linkable, factory: :question
     url { 'https://www.google.com' }
+    name { 'Google' }
   end
 end
