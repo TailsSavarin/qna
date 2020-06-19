@@ -4,8 +4,11 @@
     .question
       = render @question
 
-    h4 Answers:
+    h4 Links
+    .question-links
+      = render @question.links
 
+    h3 Answers:
     .answers
       = render @question.answers
 
