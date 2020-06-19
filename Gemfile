@@ -36,11 +36,13 @@ gem "aws-sdk-s3", require: false
 
 # Slim templates generator. Read more: https://github.com/slim-template/slim-rails
 gem 'slim-rails'
-
 # Authentication. Read more: https://github.com/heartcombo/devise
 gem 'devise'
 # Octicons. Examples: https://primer.style/octicons/ 
 gem 'octicons_helper'
+
+# For nested forms. More info: https://github.com/nathanvda/cocoon
+gem 'cocoon' 
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
