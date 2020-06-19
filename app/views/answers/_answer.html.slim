@@ -16,36 +16,35 @@ div id="answer-#{answer.id}"
           div id="attachment-#{file.id}"
             p= link_to file.filename.to_s, url_for(file)
             - if current_user&.author_of?(answer)
-              = link_to 'Delete file', attachment_path(file), method: :delete, remote: true, data: { confirm: 'Are you sure?' }
+              = link_to 'Delete file', attachment_path(file), method: :delete, class: 'text-secondary', remote: true, data: { confirm: 'Are you sure?' }
 
   - if current_user&.author_of?(answer.question)
     - unless answer.best?
-      = link_to 'Select as best', choose_best_answer_path(answer), class: 'btn btn-outline-success btn-sm', method: :post, remote: true
+      = link_to 'Select as best', choose_best_answer_path(answer), class: 'text-success', method: :post, remote: true
 
   - if current_user&.author_of?(answer)
-
+    
     div id="answer-#{answer.id}-errors"
 
     = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-      .field
-        = f.label :body, 'Change answer'
+      p
+        = f.label :body, 'Change Answer'
         br
         = f.text_area :body
-      h3 Files
+      p Files
       #files
         = f.label :files
         br
         = f.file_field :files, multiple: true, direct_upload: true
-      h3 Links
+      p Links
       #links
         = f.fields_for :links do |link|
           = render 'links/link_fields', f: link
         .links
-          = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
-      = f.submit 'Update answer', class: 'btn btn-primary btn-sm'
+          = link_to_add_association 'add link', f, :links, partial: 'links/link_fields', class: 'text-secondary'
+      = f.submit 'Update Answer', class: 'btn btn-primary btn-sm'
 
     p
-      = link_to 'Edit answer', '', class: 'btn btn-outline-secondary btn-sm answer-edit', data: { answer_id: answer.id }
-      = link_to 'Delete answer', answer_path(answer), class: 'btn btn-outline-secondary btn-sm', method: :delete, remote: true, data: { confirm: 'Are you sure?' }
-  br
-  = ' ------------------------------------- '
+      = link_to 'Edit Answer', '#', class: 'text-secondary answer-edit', data: { answer_id: answer.id }
+      br
+      = link_to 'Delete Answer', answer_path(answer), class: 'text-secondary', method: :delete, remote: true, data: { confirm: 'Are you sure?' }

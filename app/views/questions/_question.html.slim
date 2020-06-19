@@ -1,41 +1,20 @@
-h2= question.title
-h4= question.body
+h3= question.title
+p= question.body
 
 - if @question.files.attached?
   - @question.files.each do |file|
     div id="attachment-#{file.id}"
       p= link_to file.filename.to_s, url_for(file)
       - if current_user&.author_of?(@question)
-        = link_to 'Delete file', attachment_path(file), method: :delete, remote: true, data: { confirm: 'Are you sure?' }
+        = link_to 'Delete file', attachment_path(file), class: 'text-secondary', method: :delete, remote: true, data: { confirm: 'Are you sure?' }
 
 - if current_user&.author_of?(@question)
-
-  .question-edit-errors
-
-  = form_with model: @question, class: 'hidden', html: { id: "edit-question" } do |f|
-    .field
-      = f.label :title
-      br
-      = f.text_field :title
-    .field
-      = f.label :body
-      br
-      = f.text_area :body
-    h3 Files
-    #files
-      =f.label :files
-      =f.file_field :files, multiple: true, direct_upload: true
-    h3 Links
-    #links
-      = f.fields_for :links do |link|
-        = render 'links/link_fields', f: link
-      .links
-        = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
-    = f.submit 'Update question', class: 'btn btn-primary btn-sm'
-
-
+  
+  = render 'form_edit'
+  
   p
-    = link_to 'Edit question', '#', id: 'question-edit', class: 'btn btn-outline-secondary btn-sm'
-    = link_to 'Delete question', question_path(@question), class: 'btn btn-outline-secondary btn-sm', method: :delete, data: { confirm: 'Are you sure?' }
+    = link_to 'Edit Question', '#', id: 'question-edit', class: 'text-secondary'
+    br
+    = link_to 'Delete Question', question_path(@question), class: 'text-secondary', method: :delete, data: { confirm: 'Are you sure?' }
 
 
