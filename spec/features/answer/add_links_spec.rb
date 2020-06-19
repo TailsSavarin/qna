@@ -7,7 +7,8 @@ feature 'User can add link to answer', %q(
 ) do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given(:test_url) { 'https://www.google.com' }
+  given(:bad_url) { 'www.google.com' }
+  given(:good_url) { 'https://www.google.com' }
   given!(:answer) { create(:answer, question: question, user: user) }
 
   background do
@@ -15,30 +16,58 @@ feature 'User can add link to answer', %q(
     visit question_path(question)
   end
 
-  scenario 'User adds links when create answer', js: true do
-    fill_in 'Your Answer:', with: 'text text text'
+  describe 'when creates answer, user', js: true do
+    background do
+      fill_in 'Your Answer:', with: 'text text text'
+      fill_in 'Name', with: 'Google'
+    end
 
-    fill_in 'Name', with: 'Google'
-    fill_in 'URL', with: test_url
+    scenario 'adds link' do
+      fill_in 'URL', with: good_url
 
-    click_on 'Post Your Answer'
+      click_on 'Post Your Answer'
 
-    within '.answers' do
-      expect(page).to have_link 'Google', href: test_url
+      within '.answers' do
+        expect(page).to have_link 'Google', href: good_url
+      end
+    end
+
+    scenario 'adds bad link' do
+      fill_in 'URL', with: bad_url
+
+      click_on 'Post Your Answer'
+
+      expect(page).to have_content 'Links url is invalid'
     end
   end
 
-  scenario 'User adds links when edits his question', js: true do
-    click_on 'Edit answer'
-    within "#answer-#{answer.id}" do
-      click_on 'add link'
+  describe 'when edits his answer user', js: true do
+    background { click_on 'Edit answer' }
 
-      fill_in 'Name', with: 'Google'
-      fill_in 'URL', with: test_url
+    scenario 'adds link' do
+      within "#answer-#{answer.id}" do
+        click_on 'add link'
 
-      click_on 'Update answer'
+        fill_in 'Name', with: 'Google'
+        fill_in 'URL', with: good_url
 
-      expect(page).to have_link 'Google', href: test_url
+        click_on 'Update answer'
+
+        expect(page).to have_link 'Google', href: good_url
+      end
+    end
+
+    scenario 'adds bad link' do
+      within "#answer-#{answer.id}" do
+        click_on 'add link'
+
+        fill_in 'Name', with: 'Google'
+        fill_in 'URL', with: bad_url
+
+        click_on 'Update answer'
+
+        expect(page).to have_content 'Links url is invalid'
+      end
     end
   end
 end
