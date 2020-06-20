@@ -9,6 +9,8 @@ require("@rails/activestorage").start()
 require("channels")
 require("jquery")
 require("cocoon-js")
+require("gist-embed/dist/gist-embed.min")
+require("utilities/gist_embed")
 require("utilities/questions")
 require("utilities/answers")
 

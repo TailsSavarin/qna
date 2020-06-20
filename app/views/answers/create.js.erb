@@ -3,4 +3,7 @@ $('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
 <% if @answer.persisted? %>
   $('.answers').append('<%= j render @answer %>');
   $('.new-answer')[0].reset();
+  window.GistEmbed.init()
 <% end %>
+
+

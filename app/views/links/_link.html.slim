@@ -1,2 +1,5 @@
 div id="link-#{link.id}"
-  = link_to link.name, link.url
+  - if link.gist?
+    <code data-gist-id="#{link.gist_parse}"></code>
+  - else 
+    = link_to link.name, link.url

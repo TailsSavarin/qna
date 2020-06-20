@@ -13,7 +13,7 @@ feature 'Author can delete his question', %q(
     scenario 'author deletes his question' do
       sign_in(user)
       visit question_path(question)
-      click_on 'Delete question'
+      click_on 'Delete Question'
 
       expect(page).to have_content 'Your question successfully deleted.'
     end
@@ -22,13 +22,13 @@ feature 'Author can delete his question', %q(
       sign_in(another_user)
       visit question_path(question)
 
-      expect(page).not_to have_link 'Delete question'
+      expect(page).not_to have_link 'Delete Question'
     end
   end
 
   scenario "unauthenticated user can't delete the question" do
     visit question_path(question)
 
-    expect(page).not_to have_link 'Delete quesiton'
+    expect(page).not_to have_link 'Delete Quesiton'
   end
 end
