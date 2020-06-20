@@ -19,9 +19,9 @@ feature 'Author can edit his answer', %q(
 
       scenario 'edits his answer' do
         within '.answers' do
-          click_on 'Edit answer'
-          fill_in 'Change answer', with: 'Edited body'
-          click_on 'Update answer'
+          click_on 'Edit Answer'
+          fill_in 'Change Answer', with: 'Edited body'
+          click_on 'Update Answer'
 
           expect(page).to_not have_content answer.body
           expect(page).to_not have_selector 'textarea'
@@ -31,9 +31,9 @@ feature 'Author can edit his answer', %q(
 
       scenario 'edits his answer with errors' do
         within '.answers' do
-          click_on 'Edit answer'
-          fill_in 'Change answer', with: ''
-          click_on 'Update answer'
+          click_on 'Edit Answer'
+          fill_in 'Change Answer', with: ''
+          click_on 'Update Answer'
 
           expect(page).to have_content "Body can't be blank"
         end
@@ -41,12 +41,12 @@ feature 'Author can edit his answer', %q(
 
       scenario 'adds attached files while edit his answer' do
         within '.answers' do
-          click_on 'Edit answer'
+          click_on 'Edit Answer'
           attach_file 'File', [
             Rails.root / 'spec' / 'fixtures' / 'files' / 'test.jpg',
             Rails.root / 'spec' / 'fixtures' / 'files' / 'test.png'
           ]
-          click_on 'Update answer'
+          click_on 'Update Answer'
 
           expect(page).to have_content 'test.jpg'
           expect(page).to have_content 'test.png'
@@ -58,7 +58,7 @@ feature 'Author can edit his answer', %q(
       sign_in(another_user)
       visit question_path(question)
       within '.answers' do
-        expect(page).not_to have_link 'Edit answer'
+        expect(page).not_to have_link 'Edit Answer'
       end
     end
   end
@@ -66,7 +66,7 @@ feature 'Author can edit his answer', %q(
   scenario "unauthenticated user can't edit the answer" do
     visit question_path(question)
     within '.answers' do
-      expect(page).not_to have_link 'Edit answer'
+      expect(page).not_to have_link 'Edit Answer'
     end
   end
 end

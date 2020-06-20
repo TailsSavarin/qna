@@ -14,14 +14,14 @@ feature 'Author can edit his question', %q(
       background do
         sign_in(user)
         visit question_path(question)
-        click_on 'Edit question'
+        click_on 'Edit Question'
       end
 
       scenario 'edits his question' do
         within '.question' do
           fill_in 'Title', with: 'Edited title'
           fill_in 'Body', with: 'Edited body'
-          click_on 'Update question'
+          click_on 'Update Question'
 
           expect(page).to_not have_content question.title
           expect(page).to_not have_content question.body
@@ -35,7 +35,7 @@ feature 'Author can edit his question', %q(
         within '.question' do
           fill_in 'Title', with: ''
           fill_in 'Body', with: ''
-          click_on 'Update question'
+          click_on 'Update Question'
 
           expect(page).to have_content "Title can't be blank"
           expect(page).to have_content "Body can't be blank"
@@ -48,7 +48,7 @@ feature 'Author can edit his question', %q(
             Rails.root / 'spec' / 'fixtures' / 'files' / 'test.jpg',
             Rails.root / 'spec' / 'fixtures' / 'files' / 'test.png'
           ]
-          click_on 'Update question'
+          click_on 'Update Question'
 
           expect(page).to have_content 'test.jpg'
           expect(page).to have_content 'test.png'
@@ -60,13 +60,13 @@ feature 'Author can edit his question', %q(
       sign_in(another_user)
       visit question_path(question)
 
-      expect(page).not_to have_link 'Edit question'
+      expect(page).not_to have_link 'Edit Question'
     end
   end
 
   scenario "unauthenticated user can't edit the question" do
     visit question_path(question)
 
-    expect(page).not_to have_link 'Edit question'
+    expect(page).not_to have_link 'Edit Question'
   end
 end

@@ -2,4 +2,5 @@ $('#answer-<%= @answer.id %>-errors').html('<%= render 'shared/errors', resource
 
 <% unless @answer.errors.present? %>
   $('#answer-<%= @answer.id %>').html('<%= j render @answer %>');
+  window.GistEmbed.init()
 <% end %>

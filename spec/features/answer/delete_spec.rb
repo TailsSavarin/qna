@@ -15,7 +15,7 @@ feature 'Author can delete his answer', %q(
       sign_in(user)
       visit question_path(question)
       within '.answers' do
-        click_on 'Delete answer'
+        click_on 'Delete Answer'
         page.driver.browser.switch_to.alert.accept
 
         expect(page).not_to have_content(answer.body)
@@ -26,7 +26,7 @@ feature 'Author can delete his answer', %q(
       sign_in(another_user)
       visit question_path(question)
       within '.answers' do
-        expect(page).not_to have_link 'Delete answer'
+        expect(page).not_to have_link 'Delete Answer'
       end
     end
   end
@@ -34,7 +34,7 @@ feature 'Author can delete his answer', %q(
   scenario "unauthenticated user can't delete the answer" do
     visit question_path(question)
     within '.answers' do
-      expect(page).not_to have_link 'Delte answer'
+      expect(page).not_to have_link 'Delte Answer'
     end
   end
 end
