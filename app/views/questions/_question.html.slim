@@ -15,7 +15,7 @@ p
   
   p
     = link_to 'Edit Question', '#', id: 'question-edit', class: 'text-secondary'
-    br
+    = ' | '
     = link_to 'Delete Question', question_path(@question), class: 'text-secondary', method: :delete, data: { confirm: 'Are you sure?' }
 
 

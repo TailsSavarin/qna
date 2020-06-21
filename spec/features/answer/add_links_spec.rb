@@ -17,12 +17,15 @@ feature 'User can add link to answer', %q(
     visit question_path(question)
   end
 
-  describe 'when creates answer, user', js: true do
-    background { fill_in 'Your Answer:', with: 'text text text' }
+  describe 'user creates question and', js: true do
+    background do
+      fill_in 'Your Answer:', with: 'Test text'
+      click_on 'Add Link'
+    end
 
     scenario 'adds link' do
-      fill_in 'Name', with: 'Google'
-      fill_in 'URL', with: good_url
+      fill_in 'Link Name', with: 'Google'
+      fill_in 'Link URL', with: good_url
 
       click_on 'Post Your Answer'
 
@@ -32,8 +35,8 @@ feature 'User can add link to answer', %q(
     end
 
     scenario 'adds bad link' do
-      fill_in 'Name', with: 'Google'
-      fill_in 'URL', with: bad_url
+      fill_in 'Link Name', with: 'Google'
+      fill_in 'Link URL', with: bad_url
 
       click_on 'Post Your Answer'
 
@@ -41,8 +44,8 @@ feature 'User can add link to answer', %q(
     end
 
     scenario 'adds gist link' do
-      fill_in 'Name', with: 'Gist'
-      fill_in 'URL', with: gist_url
+      fill_in 'Link Name', with: 'Gist'
+      fill_in 'Link URL', with: gist_url
 
       click_on 'Post Your Answer'
 
@@ -52,17 +55,16 @@ feature 'User can add link to answer', %q(
     end
   end
 
-  describe 'when edits his answer user', js: true do
+  describe 'user edits his answer and', js: true do
     background { click_on 'Edit Answer' }
 
     scenario 'adds link' do
       within "#answer-#{answer.id}" do
-        click_on 'add link'
+        click_on 'Add Link'
+        fill_in 'Link Name', with: 'Google'
+        fill_in 'Link URL', with: good_url
 
-        fill_in 'Name', with: 'Google'
-        fill_in 'URL', with: good_url
-
-        click_on 'Update Answer'
+        click_on 'Update Your Answer'
 
         expect(page).to have_link 'Google', href: good_url
       end
@@ -70,12 +72,12 @@ feature 'User can add link to answer', %q(
 
     scenario 'adds bad link' do
       within "#answer-#{answer.id}" do
-        click_on 'add link'
+        click_on 'Add Link'
 
         fill_in 'Name', with: 'Google'
         fill_in 'URL', with: bad_url
 
-        click_on 'Update Answer'
+        click_on 'Update Your Answer'
 
         expect(page).to have_content 'Links url is invalid'
       end
@@ -83,15 +85,15 @@ feature 'User can add link to answer', %q(
 
     scenario 'adds gist link' do
       within "#answer-#{answer.id}" do
-        click_on 'add link'
+        click_on 'Add Link'
 
         fill_in 'Name', with: 'Gist'
         fill_in 'URL', with: gist_url
 
-        click_on 'Update Answer'
-
-        expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
+        click_on 'Update Your Answer'
       end
+
+      expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
     end
   end
 end

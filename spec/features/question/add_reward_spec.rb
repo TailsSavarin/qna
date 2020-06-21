@@ -20,7 +20,7 @@ feature 'User can add reward to the new question', %q(
       attach_file 'Reward Image', Rails.root / 'spec' / 'fixtures' / 'files' / 'test.jpg'
     end
 
-    click_on 'Create your question'
+    click_on 'Create Your Question'
 
     expect(page).to have_content 'Reward for best Answer active!'
   end
@@ -31,9 +31,8 @@ feature 'User can add reward to the new question', %q(
       attach_file 'Reward Image', Rails.root / 'spec' / 'fixtures' / 'files' / 'test.jpg'
     end
 
-    click_on 'Create your question'
+    click_on 'Create Your Question'
 
     expect(page).to have_content "Reward title can't be blank"
   end
 end
-

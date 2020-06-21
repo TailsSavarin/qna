@@ -18,6 +18,7 @@
     #files
       strong
         =f.label :files, 'Attached Files'
+        br
       =f.file_field :files, multiple: true, direct_upload: true 
     #reward
       p
@@ -38,4 +39,4 @@
       .links
         p
           = link_to_add_association 'Add Link', f, :links, partial: 'links/link_fields', class: 'text-body'
-    = f.submit 'Create your question', class: 'btn btn-primary'
+    = f.submit 'Create Your Question', class: 'btn btn-primary'

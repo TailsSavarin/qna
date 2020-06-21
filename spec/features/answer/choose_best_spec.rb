@@ -18,7 +18,7 @@ feature 'Author can choose the best answer to his question', %q(
       within '.answers' do
         click_on 'Select as best'
 
-        expect(page).to have_content 'Best answer'
+        expect(page).to have_content 'Best Answer'
         expect(page).to_not have_link 'Select as best'
       end
     end

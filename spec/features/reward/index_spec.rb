@@ -7,7 +7,7 @@ feature 'User can watch his rewards', %q(
 ) do
   given(:user) { create(:user) }
   given!(:reward) { create(:reward, user: user) }
-  
+
   scenario 'authenticated user view his rewards' do
     reward.image.attach(create_file_blob(filename: 'test.jpg'))
     sign_in(user)

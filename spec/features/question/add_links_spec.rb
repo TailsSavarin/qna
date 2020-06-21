@@ -27,7 +27,7 @@ feature 'User can add link to question', %q(
         fill_in 'Link URL', with: good_url
       end
 
-      click_on 'Create your question'
+      click_on 'Create Your Question'
 
       within '.question-links' do
         expect(page).to have_link 'Google', href: good_url
@@ -41,7 +41,7 @@ feature 'User can add link to question', %q(
         fill_in 'URL', with: bad_url
       end
 
-      click_on 'Create your question'
+      click_on 'Create Your Question'
 
       expect(page).to have_content 'Links url is invalid'
     end
@@ -53,7 +53,7 @@ feature 'User can add link to question', %q(
         fill_in 'URL', with: gist_url
       end
 
-      click_on 'Create your question'
+      click_on 'Create Your Question'
 
       within '.gist' do
         expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
@@ -73,7 +73,7 @@ feature 'User can add link to question', %q(
         fill_in 'Link Name', with: 'Google'
         fill_in 'Link URL', with: good_url
 
-        click_on 'Update your question'
+        click_on 'Update Your Question'
       end
 
       within '.question-links' do
@@ -87,7 +87,7 @@ feature 'User can add link to question', %q(
         fill_in 'Link Name', with: 'Google'
         fill_in 'Link URL', with: bad_url
 
-        click_on 'Update your question'
+        click_on 'Update Your Question'
       end
 
       expect(page).to have_content 'Links url is invalid'
@@ -99,7 +99,7 @@ feature 'User can add link to question', %q(
         fill_in 'Link Name', with: 'Gist'
         fill_in 'Link URL', with: gist_url
 
-        click_on 'Update your question'
+        click_on 'Update Your Question'
       end
 
       within '.gist' do
