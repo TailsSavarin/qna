@@ -41,17 +41,18 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     let(:question) { create(:question) }
-    let(:answer) { create(:answer, question: question, user: user) }
+    let!(:answer) { create(:answer, question: question, user: user) }
+    let(:answers) { question.answers }
 
     context 'authenticated user' do
       before { login(user) }
 
       context 'with valid attributes' do
-        it 'saves a new answer in the database' do
+        it 'saves a new Answer in the database' do
           expect {
             post :create, params: { question_id: question,
                                     answer: attributes_for(:answer) }, format: :js
-          }.to change(question.answers, :count).by(1)
+          }.to change(answers, :count).by(1)
         end
 
         it 'user is author of the answer' do
@@ -62,33 +63,33 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'renders create view template' do
           post :create, params: { question_id: question,
-                                  answer: attributes_for(:answer), format: :js }
+                                  answer: attributes_for(:answer) }, format: :js
           expect(response).to render_template :create
         end
       end
 
       context 'with invalid attributes' do
-        it 'does not save answer in the database' do
+        it 'does not saves answer in the database' do
           expect {
             post :create, params: { question_id: question,
                                     answer: attributes_for(:answer, :invalid) }, format: :js
-          }.to_not change(question.answers, :count)
+          }.to_not change(answers, :count)
         end
 
         it 'renders create view template' do
           post :create, params: { question_id: question,
-                                  answer: attributes_for(:answer, :invalid), format: :js }
+                                  answer: attributes_for(:answer, :invalid) }, format: :js
           expect(response).to render_template :create
         end
       end
     end
 
     context 'unauthenticated user' do
-      it 'does not save answer in the database' do
+      it 'does not saves answer in the database' do
         expect {
           post :create, params: { question_id: question,
                                   answer: attributes_for(:answer) }, format: :js
-        }.to_not change(question.answers, :count)
+        }.to_not change(answers, :count)
       end
 
       it 'responses with status 401' do
@@ -121,7 +122,7 @@ RSpec.describe AnswersController, type: :controller do
         end
 
         context 'with ivalid attributes' do
-          it 'does not change answer attributes' do
+          it 'does not changes answer attributes' do
             expect {
               patch :update, params: { id: answer,
                                        answer: attributes_for(:answer, :invalid) }, format: :js
@@ -138,7 +139,7 @@ RSpec.describe AnswersController, type: :controller do
         context 'non author' do
           before { login(another_user) }
 
-          it 'does not change answer attributes' do
+          it 'does not changes answer attributes' do
             expect {
               patch :update, params: { id: answer, answer: { body: 'Edited body' } }, format: :js
             }.to_not change(answer, :body)
@@ -189,7 +190,7 @@ RSpec.describe AnswersController, type: :controller do
       context 'non author' do
         before { login(another_user) }
 
-        it "doesn't delete answer from the database" do
+        it "doesn't deletes answer from the database" do
           expect {
             delete :destroy, params: { id: answer }, format: :js
           }.not_to change(Answer, :count)
@@ -203,7 +204,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'unauthenticated user' do
-      it 'does not delete answer from the database' do
+      it 'does not deletes answer from the database' do
         expect {
           delete :destroy, params: { id: answer }, format: :js
         }.not_to change(Answer, :count)
@@ -220,7 +221,7 @@ RSpec.describe AnswersController, type: :controller do
     let(:question) { create(:question, user: user) }
     let(:answer) { create(:answer, question: question) }
 
-    context 'auth' do
+    context 'authenticated user' do
       context 'author' do
         before do
           login(user)
@@ -231,12 +232,12 @@ RSpec.describe AnswersController, type: :controller do
           expect(assigns(:answer)).to eq answer
         end
 
-        it 'update best attribute' do
+        it 'updates best attribute' do
           answer.reload
           expect(answer.best).to eq true
         end
 
-        it 'render choose_best template' do
+        it 'renders choose_best view template' do
           expect(response).to render_template :choose_best
         end
       end
@@ -247,12 +248,12 @@ RSpec.describe AnswersController, type: :controller do
           post :choose_best, params: { id: answer }, format: :js
         end
 
-        it 'does not update best attribute' do
+        it 'does not updates best attribute' do
           answer.reload
           expect(answer.best).to_not eq true
         end
 
-        it 'render choose_best template' do
+        it 'renders choose_best view template' do
           expect(response).to render_template :choose_best
         end
       end
@@ -261,7 +262,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'unauthenticated user' do
       before { post :choose_best, params: { id: answer }, format: :js }
 
-      it 'does not update best attribute' do
+      it 'does not updates best attribute' do
         answer.reload
         expect(answer.best).to_not eq true
       end

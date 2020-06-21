@@ -14,6 +14,7 @@ feature 'Author can choose the best answer to his question', %q(
     scenario 'author chooses the best answer to his question', js: true do
       sign_in(user)
       visit question_path(question)
+
       within '.answers' do
         click_on 'Select as best'
 
@@ -22,9 +23,10 @@ feature 'Author can choose the best answer to his question', %q(
       end
     end
 
-    scenario 'non author trying to choose the best answer to the question' do
+    scenario 'non author tries to choose the best answer to the question' do
       sign_in(another_user)
       visit question_path(question)
+
       within '.answers' do
         expect(page).to_not have_link 'Select as best'
       end
@@ -33,6 +35,7 @@ feature 'Author can choose the best answer to his question', %q(
 
   scenario "unauthenticated user can't choose the best answer to the question" do
     visit question_path(question)
+
     within '.answers' do
       expect(page).to_not have_link 'Select as best'
     end

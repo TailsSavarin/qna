@@ -42,10 +42,12 @@ feature 'Author can edit his answer', %q(
       scenario 'adds attached files while edit his answer' do
         within '.answers' do
           click_on 'Edit Answer'
+
           attach_file 'File', [
             Rails.root / 'spec' / 'fixtures' / 'files' / 'test.jpg',
             Rails.root / 'spec' / 'fixtures' / 'files' / 'test.png'
           ]
+
           click_on 'Update Answer'
 
           expect(page).to have_content 'test.jpg'
@@ -57,6 +59,7 @@ feature 'Author can edit his answer', %q(
     scenario 'non author tries to edit the answer' do
       sign_in(another_user)
       visit question_path(question)
+
       within '.answers' do
         expect(page).not_to have_link 'Edit Answer'
       end
@@ -65,6 +68,7 @@ feature 'Author can edit his answer', %q(
 
   scenario "unauthenticated user can't edit the answer" do
     visit question_path(question)
+
     within '.answers' do
       expect(page).not_to have_link 'Edit Answer'
     end

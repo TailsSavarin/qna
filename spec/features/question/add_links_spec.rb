@@ -16,13 +16,21 @@ feature 'User can add link to question', %q(
   describe 'when creates question, user', js: true do
     background do
       visit new_question_path
-      fill_in 'Title', with: 'Test question'
-      fill_in 'Body', with: 'text text text'
     end
 
     scenario 'adds link' do
-      fill_in 'Name', with: 'Google'
-      fill_in 'URL', with: good_url
+      within '.title' do
+        fill_in 'Title', with: 'Test question'
+      end
+
+      within '.body' do
+        fill_in 'Body', with: 'text text text'
+      end
+
+      within '#links' do
+        fill_in 'Name', with: 'Google'
+        fill_in 'URL', with: good_url
+      end
 
       click_on 'Create Question'
 
@@ -30,8 +38,10 @@ feature 'User can add link to question', %q(
     end
 
     scenario 'adds bad link' do
-      fill_in 'Name', with: 'Google'
-      fill_in 'URL', with: bad_url
+      within '#links' do
+        fill_in 'Name', with: 'Google'
+        fill_in 'URL', with: bad_url
+      end
 
       click_on 'Create Question'
 
@@ -39,13 +49,22 @@ feature 'User can add link to question', %q(
     end
 
     scenario 'adds gist link' do
-      fill_in 'Name', with: 'Gist'
-      fill_in 'URL', with: gist_url
+      within '.title' do
+        fill_in 'Title', with: 'Test question'
+      end
+
+      within '.body' do
+        fill_in 'Body', with: 'text text text'
+      end
+
+      within '#links' do
+        fill_in 'Name', with: 'Gist'
+        fill_in 'URL', with: gist_url
+      end
 
       click_on 'Create Question'
-      within '.question-links' do
-        expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
-      end
+
+      expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
     end
   end
 

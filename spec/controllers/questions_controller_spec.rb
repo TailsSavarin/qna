@@ -54,6 +54,10 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question).links.first).to be_a_new(Link)
     end
 
+    it 'assigns a new Reward for @question' do
+      expect(assigns(:question).reward).to be_a_new(Reward)
+    end
+
     it 'renders new view template' do
       expect(response).to render_template :new
     end
@@ -84,7 +88,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       context 'with invalid attributes' do
-        it "doesn't save the question" do
+        it 'does not saves the question' do
           expect {
             post :create, params: { question: attributes_for(:question, :invalid) }
           }.to_not change(Question, :count)
@@ -98,7 +102,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'untauthenticated user' do
-      it 'does not save the question' do
+      it 'does not saves question in the database' do
         expect {
           post :create, params: { question: attributes_for(:question, :invalid) }
         }.to_not change(Question, :count)
@@ -136,7 +140,7 @@ RSpec.describe QuestionsController, type: :controller do
         end
 
         context 'with invalid attributes' do
-          it 'does not change question attributes' do
+          it 'does not changes question attributes' do
             expect {
               patch :update, params: { id: question,
                                        question: attributes_for(:question, :invalid) }, format: :js
@@ -154,7 +158,7 @@ RSpec.describe QuestionsController, type: :controller do
       context 'non author' do
         before { login(another_user) }
 
-        it 'does not change question attributes' do
+        it 'does not changes question attributes' do
           expect {
             patch :update, params: { id: question, question: { title: 'Edited title' } }, format: :js
           }.to_not change(question, :title)
@@ -168,7 +172,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'unauthenticated user' do
-      it 'does not change question attributes' do
+      it 'does not changes question attributes' do
         expect {
           patch :update, params: { id: question, question: { title: 'Edited title' } }, format: :js
         }.to_not change(question, :title)
@@ -204,7 +208,7 @@ RSpec.describe QuestionsController, type: :controller do
       context 'non author' do
         before { login(another_user) }
 
-        it 'does not delete quesiton from the database' do
+        it 'does not deletes quesiton from the database' do
           expect {
             delete :destroy, params: { id: another_question }
           }.not_to change(Question, :count)
@@ -218,7 +222,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'unauthenticated user' do
-      it 'does not delete quesiton from the database' do
+      it 'does not deletes quesiton from the database' do
         expect {
           delete :destroy, params: { id: question }
         }.not_to change(Question, :count)

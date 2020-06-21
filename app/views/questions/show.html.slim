@@ -8,6 +8,14 @@
     p Links:
     .question-links
       = render @question.links
+    
+    - if user_signed_in?
+      = link_to 'My rewards', rewards_path
+
+    - if @question.reward.present?
+      p Rewards:
+      .question-rewards
+        = render @question.reward
 
     h4 Answers:
     .answers

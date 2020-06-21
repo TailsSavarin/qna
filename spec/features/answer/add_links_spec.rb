@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can add link to answer', %q(
   In order to provide additional info to my answer
-  As an question's author
+  As an answer's author
   I'd like to be able to add links
 ) do
   given(:user) { create(:user) }
@@ -18,9 +18,7 @@ feature 'User can add link to answer', %q(
   end
 
   describe 'when creates answer, user', js: true do
-    background do
-      fill_in 'Your Answer:', with: 'text text text'
-    end
+    background { fill_in 'Your Answer:', with: 'text text text' }
 
     scenario 'adds link' do
       fill_in 'Name', with: 'Google'
@@ -47,6 +45,7 @@ feature 'User can add link to answer', %q(
       fill_in 'URL', with: gist_url
 
       click_on 'Post Your Answer'
+
       within '.answers' do
         expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
       end

@@ -30,7 +30,7 @@ RSpec.describe AttachmentsController, type: :controller do
       context 'non author' do
         before { login(another_user) }
 
-        it 'dose not delete file from the database' do
+        it 'dose not deletes file from the database' do
           expect {
             delete :destroy, params: { id: file }, format: :js
           }.to_not change(ActiveStorage::Attachment, :count)
@@ -44,7 +44,7 @@ RSpec.describe AttachmentsController, type: :controller do
     end
 
     context 'unauthenticated user' do
-      it 'does not delete file from the database' do
+      it 'does not deletes file from the database' do
         expect {
           delete :destroy, params: { id: file }, format: :js
         }.to_not change(ActiveStorage::Attachment, :count)
