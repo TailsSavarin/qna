@@ -15,8 +15,14 @@ feature 'User can create the question', %q(
     end
 
     scenario 'creates a question' do
-      fill_in 'Title', with: 'Test question'
-      fill_in 'Body', with: 'text text text'
+      within '.title' do
+        fill_in 'Title', with: 'Test question'
+      end
+
+      within '.body' do
+        fill_in 'Body', with: 'text text text'
+      end
+
       click_on 'Create Question'
 
       expect(page).to have_content 'Your question successfully created.'
@@ -32,12 +38,19 @@ feature 'User can create the question', %q(
     end
 
     scenario 'creates a question with attached files' do
-      fill_in 'Title', with: 'Test question'
-      fill_in 'Body', with: 'text text text'
+      within '.title' do
+        fill_in 'Title', with: 'Test question'
+      end
+
+      within '.body' do
+        fill_in 'Body', with: 'text text text'
+      end
+
       attach_file 'File', [
         Rails.root / 'spec' / 'fixtures' / 'files' / 'test.jpg',
         Rails.root / 'spec' / 'fixtures' / 'files' / 'test.png'
       ]
+
       click_on 'Create Question'
 
       expect(page).to have_link 'test.jpg'
@@ -47,6 +60,7 @@ feature 'User can create the question', %q(
 
   scenario 'unauthenticated user tries to ask a question' do
     visit questions_path
+
     click_on 'Ask Question'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'

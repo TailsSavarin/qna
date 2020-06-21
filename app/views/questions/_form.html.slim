@@ -1,11 +1,11 @@
 = render 'shared/errors', resource: @question
 
 = form_with model: @question, local: true do |f|
-  .field
+  .title
     = f.label :title
     br
     = f.text_field :title
-  .field
+  .body
     = f.label :body
     br
     = f.text_area :body
@@ -13,6 +13,12 @@
   #files
     =f.label :files
     =f.file_field :files, multiple: true, direct_upload: true
+  h3 Reward
+  #reward
+    = f.fields_for :reward do |reward|
+      = render 'rewards/reward_fields', f: reward
+    .reward
+      p= link_to_add_association 'add reward', f, :rewards, partial: 'rewards/reward_fields', class: 'text-secondary'
   h3 Links
   #links
     = f.fields_for :links do |link|
