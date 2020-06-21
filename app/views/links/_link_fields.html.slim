@@ -1,10 +1,17 @@
 .nested-fields
-  .field
-    = f.label :name
-    br
-    = f.text_field :name
-  .field
-    = f.label :url, 'URL'
-    br
-    = f.text_field :url
-  = link_to_remove_association 'remove link', f, class: 'text-secondary'
+  p
+    strong
+      = f.label :name, 'Link Name'
+      br
+    small
+      'Name of the link that will contain url
+    = f.text_field :name, class: 'form-control'
+  p
+    strong
+      = f.label :url, 'Link URL'
+      br
+      small
+        'Links to the Gist will be automatically converted
+    = f.text_field :url, class: 'form-control', placeholder: 'https://example.com'
+  p
+    = link_to_remove_association 'Remove Link', f, class: 'text-body'

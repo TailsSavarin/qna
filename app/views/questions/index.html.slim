@@ -1,8 +1,9 @@
-.row.justify-content-center.mt-3
-  .col-md-12
+.row.mt-3
+  .col.col-md
     p= link_to 'Ask Question', new_question_path, class: 'btn btn-primary float-md-right'
-    h1 Questions List
+    h1.display-4.text-center.mt-3 Questions List
 
     - @questions.each do |question|
-      h4= link_to question.title, question
+      li
+        = link_to question.title, question
 
