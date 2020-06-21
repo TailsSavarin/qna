@@ -1,12 +1,10 @@
 .nav.navbar.navbar-dark.bg-dark
-  h1.QnA
+  h1.qna
     = link_to 'QnA', root_path
   span.navbar-text
     - if user_signed_in?
-      = link_to 'My Rewards', rewards_path
-      = " | "
-      = link_to 'Log out', destroy_user_session_path, method: :delete
+      = link_to 'My Rewards', rewards_path, class: 'btn btn-outline-info'
+      = link_to 'Log out', destroy_user_session_path, method: :delete, class: 'btn btn-outline-danger'
     - else
-      = link_to 'Sign in', new_user_session_path
-      = " | "
-      = link_to 'Sign up', new_user_registration_path
+      = link_to 'Sign in', new_user_session_path, class: 'btn btn-outline-primary'
+      = link_to 'Sign up', new_user_registration_path, class: 'btn btn-outline-success'
