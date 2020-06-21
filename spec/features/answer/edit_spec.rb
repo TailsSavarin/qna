@@ -21,7 +21,7 @@ feature 'Author can edit his answer', %q(
         within '.answers' do
           click_on 'Edit Answer'
           fill_in 'Change Answer', with: 'Edited body'
-          click_on 'Update Answer'
+          click_on 'Update Your Answer'
 
           expect(page).to_not have_content answer.body
           expect(page).to_not have_selector 'textarea'
@@ -33,7 +33,7 @@ feature 'Author can edit his answer', %q(
         within '.answers' do
           click_on 'Edit Answer'
           fill_in 'Change Answer', with: ''
-          click_on 'Update Answer'
+          click_on 'Update Your Answer'
 
           expect(page).to have_content "Body can't be blank"
         end
@@ -48,7 +48,7 @@ feature 'Author can edit his answer', %q(
             Rails.root / 'spec' / 'fixtures' / 'files' / 'test.png'
           ]
 
-          click_on 'Update Answer'
+          click_on 'Update Your Answer'
 
           expect(page).to have_content 'test.jpg'
           expect(page).to have_content 'test.png'

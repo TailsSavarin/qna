@@ -16,11 +16,12 @@ feature 'User can delete link from the question', %q(
     visit new_question_path
 
     click_on 'Add Link'
-    
+
     expect(page).to have_content 'Link Name'
     expect(page).to have_content 'Link URL'
 
     click_on 'Remove Link'
+    page.driver.browser.switch_to.alert.accept
 
     expect(page).to_not have_content 'Link Name'
     expect(page).to_not have_content 'Link URL'
@@ -36,8 +37,9 @@ feature 'User can delete link from the question', %q(
 
     within '#edit-question' do
       click_on 'Remove Link'
+      page.driver.browser.switch_to.alert.accept
 
-      click_on 'Update your question'
+      click_on 'Update Your Question'
     end
 
     expect(page).to_not have_link link.name, href: link.url

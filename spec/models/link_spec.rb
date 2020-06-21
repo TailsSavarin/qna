@@ -13,7 +13,10 @@ RSpec.describe Link, type: :model do
 
   describe '#gist?' do
     let(:question) { create(:question) }
-    let(:gist_link) { create(:link, :for_question, linkable: question, name: 'Gist', url: 'https://gist.github.com/TailsSavarin/2d313a9ece10a0c17cb3decee000e294') }
+    let(:gist_link) do
+      create(:link, :for_question, linkable: question, name: 'Gist',
+                                   url: 'https://gist.github.com/TailsSavarin/2d313a9ece10a0c17cb3decee000e294')
+    end
     let(:ordinary_link) { create(:link, :for_question, linkable: question) }
 
     it 'is the gist' do
@@ -27,7 +30,10 @@ RSpec.describe Link, type: :model do
 
   describe '#gist_parse' do
     let(:question) { create(:question) }
-    let(:gist_link) { create(:link, :for_question, linkable: question, name: 'Gist', url: 'https://gist.github.com/TailsSavarin/2d313a9ece10a0c17cb3decee000e294') }
+    let(:gist_link) do
+      create(:link, :for_question, linkable: question, name: 'Gist',
+                                   url: 'https://gist.github.com/TailsSavarin/2d313a9ece10a0c17cb3decee000e294')
+    end
 
     it 'return last part of the gist url' do
       expect(gist_link.gist_parse).to eq('2d313a9ece10a0c17cb3decee000e294')

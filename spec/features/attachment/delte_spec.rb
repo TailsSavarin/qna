@@ -25,10 +25,11 @@ feature 'Author can delete files from question/answer', %q(
       scenario 'deletes attached files from his question' do
         within '.question' do
           expect(page).to have_content 'test.jpg'
-          click_on 'Delete file'
+
+          click_on 'Delete File'
           page.driver.browser.switch_to.alert.accept
 
-          expect(page).to_not have_link 'Delete file'
+          expect(page).to_not have_link 'Delete File'
           expect(page).to_not have_content 'test.jgp'
         end
       end
@@ -36,10 +37,11 @@ feature 'Author can delete files from question/answer', %q(
       scenario 'deletes attached files from his answer' do
         within '.answers' do
           expect(page).to have_content 'test.png'
-          click_on 'Delete file'
+
+          click_on 'Delete File'
           page.driver.browser.switch_to.alert.accept
 
-          expect(page).to_not have_link 'Delete file'
+          expect(page).to_not have_link 'Delete File'
           expect(page).to_not have_content 'test.png'
         end
       end
@@ -54,14 +56,14 @@ feature 'Author can delete files from question/answer', %q(
       scenario 'tries to delete attache files from the question' do
         within '.question' do
           expect(page).to have_content 'test.jpg'
-          expect(page).to_not have_link 'Delete file'
+          expect(page).to_not have_link 'Delete File'
         end
       end
 
       scenario 'tries to delete attache files from the answer' do
         within '.answers' do
           expect(page).to have_content 'test.png'
-          expect(page).to_not have_link 'Delete file'
+          expect(page).to_not have_link 'Delete File'
         end
       end
     end
@@ -73,14 +75,14 @@ feature 'Author can delete files from question/answer', %q(
     scenario 'can not delete attache files from the question' do
       within '.question' do
         expect(page).to have_content 'test.jpg'
-        expect(page).to_not have_link 'Delete file'
+        expect(page).to_not have_link 'Delete File'
       end
     end
 
     scenario 'can not delete attache files from the answer' do
       within '.answers' do
         expect(page).to have_content 'test.png'
-        expect(page).to_not have_link 'Delete file'
+        expect(page).to_not have_link 'Delete File'
       end
     end
   end

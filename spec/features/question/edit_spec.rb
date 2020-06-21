@@ -21,7 +21,7 @@ feature 'Author can edit his question', %q(
         within '.question' do
           fill_in 'Title', with: 'Edited title'
           fill_in 'Body', with: 'Edited body'
-          click_on 'Update Question'
+          click_on 'Update Your Question'
 
           expect(page).to_not have_content question.title
           expect(page).to_not have_content question.body
@@ -35,7 +35,7 @@ feature 'Author can edit his question', %q(
         within '.question' do
           fill_in 'Title', with: ''
           fill_in 'Body', with: ''
-          click_on 'Update Question'
+          click_on 'Update Your Question'
 
           expect(page).to have_content "Title can't be blank"
           expect(page).to have_content "Body can't be blank"
@@ -49,7 +49,7 @@ feature 'Author can edit his question', %q(
             Rails.root / 'spec' / 'fixtures' / 'files' / 'test.png'
           ]
 
-          click_on 'Update Question'
+          click_on 'Update Your Question'
 
           expect(page).to have_content 'test.jpg'
           expect(page).to have_content 'test.png'

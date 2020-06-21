@@ -15,15 +15,10 @@ feature 'User can create the question', %q(
     end
 
     scenario 'creates a question' do
-      within '.title' do
-        fill_in 'Title', with: 'Test question'
-      end
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'text text text'
 
-      within '.body' do
-        fill_in 'Body', with: 'text text text'
-      end
-
-      click_on 'Create Question'
+      click_on 'Create Your Question'
 
       expect(page).to have_content 'Your question successfully created.'
       expect(page).to have_content 'Test question'
@@ -31,27 +26,22 @@ feature 'User can create the question', %q(
     end
 
     scenario 'creates question with errors' do
-      click_on 'Create Question'
+      click_on 'Create Your Question'
 
       expect(page).to have_content "Title can't be blank"
       expect(page).to have_content "Body can't be blank"
     end
 
     scenario 'creates a question with attached files' do
-      within '.title' do
-        fill_in 'Title', with: 'Test question'
-      end
-
-      within '.body' do
-        fill_in 'Body', with: 'text text text'
-      end
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'text text text'
 
       attach_file 'File', [
         Rails.root / 'spec' / 'fixtures' / 'files' / 'test.jpg',
         Rails.root / 'spec' / 'fixtures' / 'files' / 'test.png'
       ]
 
-      click_on 'Create Question'
+      click_on 'Create Your Question'
 
       expect(page).to have_link 'test.jpg'
       expect(page).to have_link 'test.png'
