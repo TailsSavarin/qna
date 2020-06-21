@@ -1,29 +1,41 @@
-= render 'shared/errors', resource: @question
-
 = form_with model: @question, local: true do |f|
-  .title
-    = f.label :title
-    br
-    = f.text_field :title
-  .body
-    = f.label :body
-    br
-    = f.text_area :body
-  h3 Files
-  #files
-    =f.label :files
-    =f.file_field :files, multiple: true, direct_upload: true
-  h3 Reward
-  #reward
-    = f.fields_for :reward do |reward|
-      = render 'rewards/reward_fields', f: reward
-    .reward
-      p= link_to_add_association 'add reward', f, :rewards, partial: 'rewards/reward_fields', class: 'text-secondary'
-  h3 Links
-  #links
-    = f.fields_for :links do |link|
-      = render 'links/link_fields', f: link
-    .links
-      p= link_to_add_association 'add link', f, :links, partial: 'links/link_fields', class: 'text-secondary'
-  = f.submit 'Create Question', class: 'btn btn-primary'
-
+  .form-group.col-md-12
+    = render 'shared/errors', resource: @question
+    p
+      strong
+        = f.label :title
+        br
+      small 
+        'Be specific and imagine you’re asking a question to another person
+      = f.text_field :title, class: 'form-control'
+    p
+      strong
+        = f.label :body
+        br
+      small
+        'Include all the information someone would need to answer your question
+      = f.text_area :body, class: 'form-control'
+    #files
+      strong
+        =f.label :files, 'Attached Files'
+      =f.file_field :files, multiple: true, direct_upload: true 
+    #reward
+      p
+        = f.fields_for :reward do |r|
+          p
+            strong
+              = r.label :title, 'Reward Title'
+              br
+            small
+              'You can add a reward for the best answer to your question, this is an optional attribute
+            = r.text_field :title, class: 'form-control', placeholder: 'For the smartest answer*'
+          p
+            strong
+              = r.label :image, 'Reward Image'
+            = r.file_field :image
+    #links
+      = f.fields_for :links do |link|
+      .links
+        p
+          = link_to_add_association 'Add Link', f, :links, partial: 'links/link_fields', class: 'text-body'
+    = f.submit 'Create your question', class: 'btn btn-primary'

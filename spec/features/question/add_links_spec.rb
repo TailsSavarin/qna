@@ -13,62 +13,55 @@ feature 'User can add link to question', %q(
 
   background { sign_in(user) }
 
-  describe 'when creates question, user', js: true do
+  describe 'user creates question and', js: true do
     background do
       visit new_question_path
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'Test text'
     end
 
     scenario 'adds link' do
-      within '.title' do
-        fill_in 'Title', with: 'Test question'
-      end
-
-      within '.body' do
-        fill_in 'Body', with: 'text text text'
-      end
-
       within '#links' do
-        fill_in 'Name', with: 'Google'
-        fill_in 'URL', with: good_url
+        click_on 'Add Link'
+        fill_in 'Link Name', with: 'Google'
+        fill_in 'Link URL', with: good_url
       end
 
-      click_on 'Create Question'
+      click_on 'Create your question'
 
-      expect(page).to have_link 'Google', href: good_url
+      within '.question-links' do
+        expect(page).to have_link 'Google', href: good_url
+      end
     end
 
     scenario 'adds bad link' do
       within '#links' do
+        click_on 'Add Link'
         fill_in 'Name', with: 'Google'
         fill_in 'URL', with: bad_url
       end
 
-      click_on 'Create Question'
+      click_on 'Create your question'
 
       expect(page).to have_content 'Links url is invalid'
     end
 
     scenario 'adds gist link' do
-      within '.title' do
-        fill_in 'Title', with: 'Test question'
-      end
-
-      within '.body' do
-        fill_in 'Body', with: 'text text text'
-      end
-
       within '#links' do
+        click_on 'Add Link'
         fill_in 'Name', with: 'Gist'
         fill_in 'URL', with: gist_url
       end
 
-      click_on 'Create Question'
+      click_on 'Create your question'
 
-      expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
+      within '.gist' do
+        expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
+      end
     end
   end
 
-  describe 'when edits his question, user', js: true do
+  describe 'author edits question and', js: true do
     background do
       visit question_path(question)
       click_on 'Edit Question'
@@ -76,25 +69,25 @@ feature 'User can add link to question', %q(
 
     scenario 'adds link' do
       within '#edit-question' do
-        click_on 'add link'
+        click_on 'Add Link'
+        fill_in 'Link Name', with: 'Google'
+        fill_in 'Link URL', with: good_url
 
-        fill_in 'Name', with: 'Google'
-        fill_in 'URL', with: good_url
-
-        click_on 'Update Question'
+        click_on 'Update your question'
       end
 
-      expect(page).to have_link 'Google', href: good_url
+      within '.question-links' do
+        expect(page).to have_link 'Google', href: good_url
+      end
     end
 
     scenario 'adds bad link' do
       within '#edit-question' do
-        click_on 'add link'
+        click_on 'Add Link'
+        fill_in 'Link Name', with: 'Google'
+        fill_in 'Link URL', with: bad_url
 
-        fill_in 'Name', with: 'Google'
-        fill_in 'URL', with: bad_url
-
-        click_on 'Update Question'
+        click_on 'Update your question'
       end
 
       expect(page).to have_content 'Links url is invalid'
@@ -102,15 +95,16 @@ feature 'User can add link to question', %q(
 
     scenario 'adds gist link' do
       within '#edit-question' do
-        click_on 'add link'
+        click_on 'Add Link'
+        fill_in 'Link Name', with: 'Gist'
+        fill_in 'Link URL', with: gist_url
 
-        fill_in 'Name', with: 'Gist'
-        fill_in 'URL', with: gist_url
-
-        click_on 'Update Question'
+        click_on 'Update your question'
       end
 
-      expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
+      within '.gist' do
+        expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
+      end
     end
   end
 end
