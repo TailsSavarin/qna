@@ -34,7 +34,7 @@
             strong
               = r.label :image, 'Reward Image'
               br
-            = r.file_field :image
+            = r.file_field :image, direct_uplad: true
     #links
       = f.fields_for :links do |link|
       .links

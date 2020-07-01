@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :questions do
+    member do
+      post :vote_up
+      post :vote_down
+    end
     resources :answers, shallow: true, except: :index do
       member do
         post :choose_best

@@ -18,4 +18,13 @@ p
     = ' | '
     = link_to 'Delete Question', question_path(@question), class: 'text-secondary', method: :delete, data: { confirm: 'Are you sure?' }
 
+= 'Question rating: '
+= @question.votes_counter
 
+- if signed_in? && !current_user&.voted_for?(@question)
+  p
+    = link_to 'Up', vote_up_question_path(question), method: :post
+    br
+    = @question.votes_counter
+    br
+    = link_to 'Down', vote_down_question_path(question), method: :post
