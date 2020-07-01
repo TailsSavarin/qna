@@ -20,4 +20,19 @@ RSpec.describe User, type: :model do
       expect(user).not_to be_author_of(another_question)
     end
   end
+
+  describe '#voted_for?' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question) }
+    let(:another_question) { create(:question) }
+    let!(:vote) { create(:vote, user: user, votable: question) }
+
+    it 'is voted for the resource' do
+      expect(user).to be_voted_for(question)
+    end
+
+    it 'is not voted for the resource' do
+      expect(user).to_not be_voted_for(another_question)
+    end
+  end
 end

@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_question, only: %i[show update destroy]
+  before_action :set_question, only: %i[show update destroy vote_up vote_down]
 
   def index
     @questions = Question.all
@@ -15,6 +15,7 @@ class QuestionsController < ApplicationController
     @question = Question.new
     @question.links.new
     @question.build_reward
+    @question.votes.new
   end
 
   def create
@@ -39,6 +40,18 @@ class QuestionsController < ApplicationController
     else
       redirect_to questions_path, notice: "You don't have sufficient rights to delete this question."
     end
+  end
+
+  def vote_up
+    @question.votes.find_or_create_by(user_id: current_user.id) { |c| c.vote_count = 1 }
+
+    redirect_to @question
+  end
+
+  def vote_down
+    @question.votes.find_or_create_by(user_id: current_user.id) { |c| c.vote_count = -1 }
+
+    redirect_to @question
   end
 
   private

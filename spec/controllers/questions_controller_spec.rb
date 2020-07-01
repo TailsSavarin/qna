@@ -234,4 +234,58 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'POST #vote_up' do
+    let!(:question) { create(:question) }
+
+    context 'authenticated user' do
+      before { login(user) }
+
+      it 'create vote up' do
+        expect {
+          post :vote_up, params: { id: question }
+        }.to change(Vote, :count).by(1)
+      end
+
+      it 'redirects to @question' do
+        post :vote_up, params: { id: question }
+        expect(response).to redirect_to question
+      end
+    end
+
+    context 'unauthenticated user' do
+      it 'does not create vote up' do
+        expect {
+          post :vote_up, params: { id: question }
+        }.to_not change(Vote, :count)
+      end
+    end
+  end
+
+  describe 'POST #vote_down' do
+    let!(:question) { create(:question) }
+
+    context 'authenticated user' do
+      before { login(user) }
+
+      it 'create voted down' do
+        expect {
+          post :vote_down, params: { id: question }
+        }.to change(Vote, :count).by(1)
+      end
+
+      it 'redirects to @question' do
+        post :vote_down, params: { id: question }
+        expect(response).to redirect_to question
+      end
+    end
+
+    context 'unauthenticated user' do
+      it 'does not create vote down' do
+        expect {
+          post :vote_down, params: { id: question }
+        }.to_not change(Vote, :count)
+      end
+    end
+  end
 end

@@ -3,7 +3,10 @@
     p= link_to 'Ask Question', new_question_path, class: 'btn btn-primary float-md-right'
     h1.display-4.text-center.mt-3 Questions List
 
-    - @questions.each do |question|
-      li
-        = link_to question.title, question
-
+    .questions_list
+      - @questions.each do |question|
+        li
+          = link_to question.title, question
+          p
+            = "Rating: "
+            = question.votes_counter
