@@ -11,6 +11,16 @@ $(document).on('turbolinks:load', function(){
     
     $(`#answer-${answer.id} .vote-up`).hide();
     $(`#answer-${answer.id} .vote-down`).hide();
+    $(`#answer-${answer.id} .revote`).show();
+    $(`#answer-${answer.id} .rating`).html(answer.votes_counter);
+  })
+
+  $('.answers').on('ajax:success', '.revote', function(e) {
+    var answer = e.detail[0];
+    
+    $(`#answer-${answer.id} .vote-up`).show();
+    $(`#answer-${answer.id} .vote-down`).show();
+    $(`#answer-${answer.id} .revote`).hide();
     $(`#answer-${answer.id} .rating`).html(answer.votes_counter);
   })
 });

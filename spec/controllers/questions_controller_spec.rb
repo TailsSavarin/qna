@@ -313,5 +313,13 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response.body).to eq renders
       end
     end
+
+    context 'unauthenticated user' do
+      it 'dose not make revote' do
+        expect {
+          post :revote, params: { id: question }, format: :json
+        }.to_not change(Vote, :count)
+      end
+    end
   end
 end

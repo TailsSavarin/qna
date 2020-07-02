@@ -331,4 +331,34 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'POST #revote' do
+    let!(:answer) { create(:answer) }
+    let!(:vote) { create(:vote, user: user, vote_count: 1, votable: answer) }
+
+    context 'authenticated user' do
+      before { login(user) }
+
+      it 'revote votes' do
+        expect {
+          post :revote, params: { id: answer }, format: :json
+        }.to change(Vote, :count).by(-1)
+      end
+
+      it 'renders json with answer id and votes counter' do
+        renders = { id: answer.id, votes_counter: answer.votes_counter }.to_json
+
+        post :vote_down, params: { id: answer }, format: :json
+        expect(response.body).to eq renders
+      end
+    end
+
+    context 'unauthenticated user' do
+      it 'dose not make revote' do
+        expect {
+          post :revote, params: { id: answer }, format: :json
+        }.to_not change(Vote, :count)
+      end
+    end
+  end
 end

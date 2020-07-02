@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: :show
   before_action :set_question, only: %i[new create]
-  before_action :set_answer, only: %i[show destroy update choose_best vote_up vote_down]
+  before_action :set_answer, only: %i[show destroy update choose_best vote_up vote_down revote]
 
   def show
   end
@@ -36,6 +36,12 @@ class AnswersController < ApplicationController
 
   def vote_down
     @answer.votes.find_or_create_by(user_id: current_user.id) { |c| c.vote_count = -1 }
+
+    render json: { id: @answer.id, votes_counter: @answer.votes_counter }
+  end
+
+  def revote
+    @answer.votes.find_by(user_id: current_user.id)&.destroy
 
     render json: { id: @answer.id, votes_counter: @answer.votes_counter }
   end
