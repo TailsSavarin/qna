@@ -1,6 +1,8 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_question, only: %i[show update destroy vote_up vote_down revote]
+  before_action :set_question, only: %i[show update destroy]
+
+  include Voted
 
   def index
     @questions = Question.all
@@ -40,21 +42,6 @@ class QuestionsController < ApplicationController
     else
       redirect_to questions_path, notice: "You don't have sufficient rights to delete this question."
     end
-  end
-
-  def vote_up
-    @question.create_vote_up(current_user.id)
-    render json: { id: @question.id, rating: @question.rating }
-  end
-
-  def vote_down
-    @question.create_vote_down(current_user.id)
-    render json: { id: @question.id, rating: @question.rating }
-  end
-
-  def revote
-    @question.make_revote(current_user.id)
-    render json: { id: @question.id, rating: @question.rating }
   end
 
   private

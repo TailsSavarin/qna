@@ -4,22 +4,22 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  resources :questions do
+  concern :votable do
     member do
       post :vote_up
       post :vote_down
       post :revote
     end
-    resources :answers, shallow: true, except: :index do
+  end
+
+  resources :questions, concerns: :votable do
+    resources :answers, shallow: true, concerns: :votable do
       member do
         post :choose_best
-        post :vote_up
-        post :vote_down
-        post :revote
       end
     end
   end
-  
+
   resources :attachments, only: :destroy
   resources :rewards, only: :index
 end

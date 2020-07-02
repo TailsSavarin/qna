@@ -1,7 +1,9 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: :show
   before_action :set_question, only: %i[new create]
-  before_action :set_answer, only: %i[show destroy update choose_best vote_up vote_down revote]
+  before_action :set_answer, only: %i[show destroy update choose_best]
+
+  include Voted
 
   def show
   end
@@ -26,21 +28,6 @@ class AnswersController < ApplicationController
 
   def choose_best
     @answer.select_best if current_user.author_of?(@answer.question)
-  end
-
-  def vote_up
-    @answer.create_vote_up(current_user.id)
-    render json: { id: @answer.id, rating: @answer.rating }
-  end
-
-  def vote_down
-    @answer.create_vote_down(current_user.id)
-    render json: { id: @answer.id, rating: @answer.rating }
-  end
-
-  def revote
-    @answer.make_revote(current_user.id)
-    render json: { id: @answer.id, rating: @answer.rating }
   end
 
   private
