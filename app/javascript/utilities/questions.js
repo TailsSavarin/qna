@@ -11,7 +11,7 @@ $(document).on('turbolinks:load', function(){
     $('.question .vote-up').hide();
     $('.question .vote-down').hide();
     $('.question .revote').show();
-    $('.question .rating').html(question.votes_counter);
+    $('.question .rating').html(question.rating);
   })
 
   $('.question').on('ajax:success', '.revote', function(e) {
@@ -20,6 +20,6 @@ $(document).on('turbolinks:load', function(){
     $('.question .vote-up').show();
     $('.question .vote-down').show();
     $('.question .revote').hide();
-    $('.question .rating').html(question.votes_counter);
+    $('.question .rating').html(question.rating);
   })
 });

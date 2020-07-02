@@ -11,7 +11,7 @@ div id="answer-#{answer.id}"
 
       p
         = 'Answer rating: '
-        .rating= answer.votes_counter
+        .rating= answer.rating
 
       - if signed_in?
         = link_to 'Up', vote_up_answer_path(answer), method: :post, remote: true, class: 'vote-up'
