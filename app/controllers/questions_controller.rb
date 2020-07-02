@@ -43,21 +43,18 @@ class QuestionsController < ApplicationController
   end
 
   def vote_up
-    @question.votes.find_or_create_by(user_id: current_user.id) { |c| c.vote_count = 1 }
-
-    render json: { id: @question.id, votes_counter: @question.votes_counter }
+    @question.create_vote_up(current_user.id)
+    render json: { id: @question.id, rating: @question.rating }
   end
 
   def vote_down
-    @question.votes.find_or_create_by(user_id: current_user.id) { |c| c.vote_count = -1 }
-
-    render json: { id: @question.id, votes_counter: @question.votes_counter }
+    @question.create_vote_down(current_user.id)
+    render json: { id: @question.id, rating: @question.rating }
   end
 
   def revote
-    @question.votes.find_by(user_id: current_user.id)&.destroy
-
-    render json: { id: @question.id, votes_counter: @question.votes_counter }
+    @question.make_revote(current_user.id)
+    render json: { id: @question.id, rating: @question.rating }
   end
 
   private

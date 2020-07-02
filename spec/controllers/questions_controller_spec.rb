@@ -248,7 +248,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'renders json with question id and votes counter' do
-        renders = { id: question.id, votes_counter: question.votes_counter + 1 }.to_json
+        renders = { id: question.id, rating: question.rating + 1 }.to_json
 
         post :vote_up, params: { id: question }, format: :json
         expect(response.body).to eq renders
@@ -277,7 +277,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'renders json with question id and votes counter' do
-        renders = { id: question.id, votes_counter: question.votes_counter - 1 }.to_json
+        renders = { id: question.id, rating: question.rating - 1 }.to_json
 
         post :vote_down, params: { id: question }, format: :json
         expect(response.body).to eq renders
@@ -307,7 +307,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'renders json with question id and votes counter' do
-        renders = { id: question.id, votes_counter: question.votes_counter }.to_json
+        renders = { id: question.id, rating: question.rating }.to_json
 
         post :vote_down, params: { id: question }, format: :json
         expect(response.body).to eq renders

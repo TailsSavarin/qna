@@ -12,7 +12,7 @@ $(document).on('turbolinks:load', function(){
     $(`#answer-${answer.id} .vote-up`).hide();
     $(`#answer-${answer.id} .vote-down`).hide();
     $(`#answer-${answer.id} .revote`).show();
-    $(`#answer-${answer.id} .rating`).html(answer.votes_counter);
+    $(`#answer-${answer.id} .rating`).html(answer.rating);
   })
 
   $('.answers').on('ajax:success', '.revote', function(e) {
@@ -21,6 +21,6 @@ $(document).on('turbolinks:load', function(){
     $(`#answer-${answer.id} .vote-up`).show();
     $(`#answer-${answer.id} .vote-down`).show();
     $(`#answer-${answer.id} .revote`).hide();
-    $(`#answer-${answer.id} .rating`).html(answer.votes_counter);
+    $(`#answer-${answer.id} .rating`).html(answer.rating);
   })
 });

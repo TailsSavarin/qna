@@ -20,7 +20,7 @@
       = link_to 'Delete Question', question_path(@question), class: 'text-secondary', method: :delete, data: { confirm: 'Are you sure?' }
 
   = 'Question rating: '
-  .rating= @question.votes_counter
+  .rating= @question.rating
 
   - if signed_in?
     = link_to 'Up', vote_up_question_path(@question), method: :post, remote: true, class: 'vote-up'
