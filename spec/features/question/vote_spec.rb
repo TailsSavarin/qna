@@ -6,37 +6,50 @@ feature 'Authenticated user can vote for the question that he liked', %q(
   I'd like to be able to vote
 ) do
   given(:user) { create(:user) }
-  given!(:question) { create(:question) }
+  given!(:question) { create(:question, user: user) }
+  given!(:another_question) { create(:question) }
 
   describe 'authenticated user', js: true do
-    background do
-      sign_in(user)
-      visit question_path(question)
+    background { sign_in(user) }
+
+    context 'author of the question' do
+      background { visit question_path(question) }
+
+      scenario 'cannot vote for his question' do
+        expect(page).to_not have_link 'Up'
+        expect(page).to_not have_link 'Down'
+      end
     end
 
-    scenario 'votes up for the question he like' do
-      expect(page).to have_link 'Up'
-      click_on 'Up'
+    context 'not the author of the question' do
+      background { visit question_path(another_question) }
 
-      expect(page).to have_content '1'
-      expect(page).to_not have_link 'Up'
-    end
+      scenario 'votes up for the question he like' do
+        expect(page).to have_link 'Up'
+        click_on 'Up'
 
-    scenario 'votes down against the question' do
-      expect(page).to have_link 'Down'
-      click_on 'Down'
+        expect(page).to have_content '1'
+        expect(page).to_not have_link 'Up'
+      end
 
-      expect(page).to have_content '-1'
-      expect(page).to_not have_link 'Down'
-    end
+      scenario 'votes down against the question' do
+        expect(page).to have_link 'Down'
+        click_on 'Down'
 
-    scenario 'revote the question' do
-      expect(page).to have_link 'Revote'
-      click_on 'Revote'
+        expect(page).to have_content '-1'
+        expect(page).to_not have_link 'Down'
+      end
 
-      expect(page).to have_link 'Up'
-      expect(page).to have_link 'Down'
-      expect(page).to_not have_link 'Revote'
+      scenario 'revote the question' do
+        expect(page).to_not have_link 'Revote'
+        click_on 'Up'
+        expect(page).to have_link 'Revote'
+        click_on 'Revote'
+
+        expect(page).to have_link 'Up'
+        expect(page).to have_link 'Down'
+        expect(page).to_not have_link 'Revote'
+      end
     end
   end
 
