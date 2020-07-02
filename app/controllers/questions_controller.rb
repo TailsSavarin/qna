@@ -45,13 +45,13 @@ class QuestionsController < ApplicationController
   def vote_up
     @question.votes.find_or_create_by(user_id: current_user.id) { |c| c.vote_count = 1 }
 
-    redirect_to @question
+    render json: { id: @question.id, votes_counter: @question.votes_counter }
   end
 
   def vote_down
     @question.votes.find_or_create_by(user_id: current_user.id) { |c| c.vote_count = -1 }
 
-    redirect_to @question
+    render json: { id: @question.id, votes_counter: @question.votes_counter }
   end
 
   private
