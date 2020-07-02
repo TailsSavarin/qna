@@ -29,6 +29,15 @@ feature 'Authenticated user can vote for the question that he liked', %q(
       expect(page).to have_content '-1'
       expect(page).to_not have_link 'Down'
     end
+
+    scenario 'revote the question' do
+      expect(page).to have_link 'Revote'
+      click_on 'Revote'
+
+      expect(page).to have_link 'Up'
+      expect(page).to have_link 'Down'
+      expect(page).to_not have_link 'Revote'
+    end
   end
 
   scenario 'unauthenticated user can not votes for the question' do

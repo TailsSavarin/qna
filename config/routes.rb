@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     member do
       post :vote_up
       post :vote_down
+      post :revote
     end
     resources :answers, shallow: true, except: :index do
       member do
