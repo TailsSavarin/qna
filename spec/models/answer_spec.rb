@@ -13,6 +13,7 @@ RSpec.describe Answer, type: :model do
     it { should belong_to(:user) }
     it { should belong_to(:question) }
     it { should have_many(:links).dependent(:destroy) }
+    it { should have_many(:votes).dependent(:destroy) }
   end
 
   it 'have many attached files' do
@@ -56,6 +57,17 @@ RSpec.describe Answer, type: :model do
       answer.reload
       expect(reward.user).to eq user
       expect(another_user.rewards.first).to_not eq reward
+    end
+  end
+
+  describe 'votes_counter' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question) }
+    let!(:answer) { create(:answer, question: question) }
+    let!(:votes) { create_list(:vote, 5, vote_count: 1, user: user, votable: answer) }
+
+    it 'counts votes' do
+      expect(answer.votes_counter).to eq 5
     end
   end
 end

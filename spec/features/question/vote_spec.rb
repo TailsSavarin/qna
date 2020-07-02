@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Authenticated user can vote for the question that he liked', %q(
-  In order to highlight the answer
+  In order to highlight the question
   As an authenticated user
   I'd like to be able to vote
 ) do
@@ -32,7 +32,7 @@ feature 'Authenticated user can vote for the question that he liked', %q(
   end
 
   scenario 'unauthenticated user can not votes for the question' do
-    visit questions_path
+    visit question_path(question)
 
     expect(page).to_not have_link 'Up'
     expect(page).to_not have_link 'Down'

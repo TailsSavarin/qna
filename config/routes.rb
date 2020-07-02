@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     resources :answers, shallow: true, except: :index do
       member do
         post :choose_best
+        post :vote_up
+        post :vote_down
       end
     end
   end

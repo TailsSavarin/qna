@@ -272,4 +272,63 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'POST #vote_up' do
+    let(:question) { create(:question) }
+    let!(:answer) { create(:answer, question: question) }
+
+    context 'authenticated user' do
+      before { login(user) }
+
+      it 'create vote up' do
+        expect {
+          post :vote_up, params: { id: answer }, format: :json
+        }.to change(Vote, :count).by(1)
+      end
+
+      it 'renders json with answer id and votes counter' do
+        renders = { id: answer.id, votes_counter: answer.votes_counter + 1 }.to_json
+
+        post :vote_up, params: { id: answer }, format: :json
+        expect(response.body).to eq renders
+      end
+    end
+
+    context 'unauthenticated user' do
+      it 'does not create vote up' do
+        expect {
+          post :vote_up, params: { id: answer }, format: :json
+        }.to_not change(Vote, :count)
+      end
+    end
+  end
+
+  describe 'POST #vote_down' do
+    let!(:answer) { create(:answer) }
+
+    context 'authenticated user' do
+      before { login(user) }
+
+      it 'create vote down' do
+        expect {
+          post :vote_down, params: { id: answer }, format: :json
+        }.to change(Vote, :count).by(1)
+      end
+
+      it 'renders json with answer id and votes counter' do
+        renders = { id: answer.id, votes_counter: answer.votes_counter - 1 }.to_json
+
+        post :vote_down, params: { id: answer }, format: :json
+        expect(response.body).to eq renders
+      end
+    end
+
+    context 'unauthenticated user' do
+      it 'does not create vote down' do
+        expect {
+          post :vote_down, params: { id: answer }, format: :json
+        }.to_not change(Vote, :count)
+      end
+    end
+  end
 end
