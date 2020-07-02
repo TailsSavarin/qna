@@ -15,6 +15,7 @@ Rails.application.routes.draw do
         post :choose_best
         post :vote_up
         post :vote_down
+        post :revote
       end
     end
   end
