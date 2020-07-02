@@ -9,6 +9,15 @@ div id="answer-#{answer.id}"
 
       = answer.body
 
+      p
+        = 'Answer rating: '
+        .rating= answer.votes_counter
+
+      - if signed_in? && !current_user.voted_for?(answer)
+        = link_to 'Up', vote_up_answer_path(answer), method: :post, remote: true, class: 'vote-up'
+        br
+        = link_to 'Down', vote_down_answer_path(answer), method: :post, remote: true, class: 'vote-down'
+
       - if answer.links.present?
         .answer-links
           p
