@@ -22,8 +22,10 @@
   = 'Question rating: '
   .rating= @question.votes_counter
 
-  - if signed_in? && !current_user.voted_for?(@question)
+  - if signed_in?
     = link_to 'Up', vote_up_question_path(@question), method: :post, remote: true, class: 'vote-up'
     br
     = link_to 'Down', vote_down_question_path(@question), method: :post, remote: true, class: 'vote-down'
+    br
+    = link_to 'Revote', revote_question_path(@question), method: :post, remote: true, class: 'revote'
 

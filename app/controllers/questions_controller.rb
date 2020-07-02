@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_question, only: %i[show update destroy vote_up vote_down]
+  before_action :set_question, only: %i[show update destroy vote_up vote_down revote]
 
   def index
     @questions = Question.all
@@ -50,6 +50,12 @@ class QuestionsController < ApplicationController
 
   def vote_down
     @question.votes.find_or_create_by(user_id: current_user.id) { |c| c.vote_count = -1 }
+
+    render json: { id: @question.id, votes_counter: @question.votes_counter }
+  end
+
+  def revote
+    @question.votes.find_by(user_id: current_user.id)&.destroy
 
     render json: { id: @question.id, votes_counter: @question.votes_counter }
   end
