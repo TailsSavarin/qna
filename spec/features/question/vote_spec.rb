@@ -8,7 +8,7 @@ feature 'Authenticated user can vote for the question that he liked', %q(
   given(:user) { create(:user) }
   given!(:question) { create(:question) }
 
-  describe 'authenticated user' do
+  describe 'authenticated user', js: true do
     background do
       sign_in(user)
       visit question_path(question)
@@ -18,7 +18,7 @@ feature 'Authenticated user can vote for the question that he liked', %q(
       expect(page).to have_link 'Up'
       click_on 'Up'
 
-      expect(page).to have_content 'Question rating: 1'
+      expect(page).to have_content '1'
       expect(page).to_not have_link 'Up'
     end
 
@@ -26,7 +26,7 @@ feature 'Authenticated user can vote for the question that he liked', %q(
       expect(page).to have_link 'Down'
       click_on 'Down'
 
-      expect(page).to have_content 'Question rating: -1'
+      expect(page).to have_content '-1'
       expect(page).to_not have_link 'Down'
     end
   end

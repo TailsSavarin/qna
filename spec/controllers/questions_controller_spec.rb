@@ -243,20 +243,22 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'create vote up' do
         expect {
-          post :vote_up, params: { id: question }
+          post :vote_up, params: { id: question }, format: :json
         }.to change(Vote, :count).by(1)
       end
 
-      it 'redirects to @question' do
-        post :vote_up, params: { id: question }
-        expect(response).to redirect_to question
+      it 'renders json with question id and votes counter' do
+        renders = { id: question.id, votes_counter: question.votes_counter + 1 }.to_json
+
+        post :vote_up, params: { id: question }, format: :json
+        expect(response.body).to eq renders
       end
     end
 
     context 'unauthenticated user' do
       it 'does not create vote up' do
         expect {
-          post :vote_up, params: { id: question }
+          post :vote_up, params: { id: question }, format: :json
         }.to_not change(Vote, :count)
       end
     end
@@ -270,20 +272,22 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'create voted down' do
         expect {
-          post :vote_down, params: { id: question }
+          post :vote_down, params: { id: question }, format: :json
         }.to change(Vote, :count).by(1)
       end
 
-      it 'redirects to @question' do
-        post :vote_down, params: { id: question }
-        expect(response).to redirect_to question
+      it 'renders json with question id and votes counter' do
+        renders = { id: question.id, votes_counter: question.votes_counter - 1 }.to_json
+
+        post :vote_down, params: { id: question }, format: :json
+        expect(response.body).to eq renders
       end
     end
 
     context 'unauthenticated user' do
       it 'does not create vote down' do
         expect {
-          post :vote_down, params: { id: question }
+          post :vote_down, params: { id: question }, format: :json
         }.to_not change(Vote, :count)
       end
     end
