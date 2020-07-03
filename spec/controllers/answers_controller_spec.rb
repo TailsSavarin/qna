@@ -274,22 +274,34 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #vote_up' do
-    let!(:answer) { create(:answer) }
+    let!(:answer) { create(:answer, user: another_user) }
 
     context 'authenticated user' do
-      before { login(user) }
+      context 'not author of the answer' do
+        before { login(user) }
 
-      it 'create vote up' do
-        expect {
+        it 'create vote up' do
+          expect {
+            post :vote_up, params: { id: answer }, format: :json
+          }.to change(Vote, :count).by(1)
+        end
+
+        it 'renders json with answer id and votes counter' do
+          renders = { id: answer.id, rating: answer.rating + 1 }.to_json
+
           post :vote_up, params: { id: answer }, format: :json
-        }.to change(Vote, :count).by(1)
+          expect(response.body).to eq renders
+        end
       end
 
-      it 'renders json with answer id and votes counter' do
-        renders = { id: answer.id, rating: answer.rating + 1 }.to_json
+      context 'author fo the answer' do
+        before { login(another_user) }
 
-        post :vote_up, params: { id: answer }, format: :json
-        expect(response.body).to eq renders
+        it 'does not create vote up' do
+          expect {
+            post :vote_up, params: { id: answer }, format: :json
+          }.to_not change(Vote, :count)
+        end
       end
     end
 
@@ -303,22 +315,34 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #vote_down' do
-    let!(:answer) { create(:answer) }
+    let!(:answer) { create(:answer, user: another_user) }
 
     context 'authenticated user' do
-      before { login(user) }
+      context 'not author of the answer' do
+        before { login(user) }
 
-      it 'create vote down' do
-        expect {
+        it 'create vote down' do
+          expect {
+            post :vote_down, params: { id: answer }, format: :json
+          }.to change(Vote, :count).by(1)
+        end
+
+        it 'renders json with answer id and votes counter' do
+          renders = { id: answer.id, rating: answer.rating - 1 }.to_json
+
           post :vote_down, params: { id: answer }, format: :json
-        }.to change(Vote, :count).by(1)
+          expect(response.body).to eq renders
+        end
       end
 
-      it 'renders json with answer id and votes counter' do
-        renders = { id: answer.id, rating: answer.rating - 1 }.to_json
+      context 'author of the answer' do
+        before { login(another_user) }
 
-        post :vote_down, params: { id: answer }, format: :json
-        expect(response.body).to eq renders
+        it 'does not create vote down' do
+          expect {
+            post :vote_down, params: { id: answer }, format: :json
+          }.to_not change(Vote, :count)
+        end
       end
     end
 
