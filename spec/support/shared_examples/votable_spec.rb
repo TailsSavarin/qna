@@ -6,14 +6,14 @@ shared_examples_for 'votable' do
   let(:revote) { votable_class.make_revote(user.id) }
   let(:vote_up) { votable_class.create_vote_up(user.id) }
   let(:vote_down) { votable_class.create_vote_down(user.id) }
-  let!(:votable_class) { create(model.to_s.underscore.to_sym) }
+  let(:votable_class) { create(model.to_s.underscore.to_sym) }
 
   describe 'associations' do
     it { should have_many(:votes).dependent(:destroy) }
   end
 
   describe '#rating' do
-    it 'return rating vote count' do
+    it 'return total rating of votes' do
       expect(votable_class.rating).to eq(0)
       vote_up
       expect(votable_class.rating).to eq(1)
