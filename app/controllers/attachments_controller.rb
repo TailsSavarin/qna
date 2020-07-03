@@ -3,7 +3,7 @@ class AttachmentsController < ApplicationController
   before_action :set_attachment, only: :destroy
 
   def destroy
-    @attachment.purge if current_user.author_of?(@attachment.record)
+    @attachment.purge if current_user&.author_of?(@attachment.record)
   end
 
   private

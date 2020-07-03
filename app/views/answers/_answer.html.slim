@@ -9,20 +9,18 @@ div id="answer-#{answer.id}"
       p
         = answer.body
 
+      = 'Answer rating: '
+      .rating= answer.rating
+
       - if !current_user&.author_of?(answer) && signed_in?
-        = 'Answer rating: '
-        br
-        = link_to 'Up', vote_up_answer_path(answer),
-                        method: :post,
-                        remote: true,
-                        class: "vote-up #{hide_button_for(answer)}"
-
-        .rating= answer.rating
-
-        = link_to 'Down', vote_down_answer_path(answer),
+        div class="voting-buttons #{hide_button_for(answer)}"
+          = link_to 'Up', vote_up_answer_path(answer),
                           method: :post,
-                          remote: true,
-                          class: "vote-down #{hide_button_for(answer)}"
+                          remote: true
+          br
+          = link_to 'Down', vote_down_answer_path(answer),
+                            method: :post,
+                            remote: true
 
         = link_to 'Revote', revote_answer_path(answer),
                             method: :post,

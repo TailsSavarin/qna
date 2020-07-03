@@ -23,20 +23,17 @@
                                                              method: :delete,
                                                              data: { confirm: 'Are you sure?' }
 
+  = 'Question rating: '
+  .rating= @question.rating
   - if !current_user&.author_of?(@question) && signed_in?
-    = 'Question rating: '
-    br
-    = link_to 'Up', vote_up_question_path(@question),
-                    method: :post,
-                    remote: true,
-                    class: "vote-up #{hide_button_for(@question)}"
-
-    .rating= @question.rating
-
-    = link_to 'Down', vote_down_question_path(@question),
+    div class="voting-buttons #{hide_button_for(@question)}"
+      = link_to 'Up', vote_up_question_path(@question),
                       method: :post,
-                      remote: true,
-                      class: "vote-down #{hide_button_for(@question)}"
+                      remote: true
+      br
+      = link_to 'Down', vote_down_question_path(@question),
+                        method: :post,
+                        remote: true
 
     = link_to 'Revote', revote_question_path(@question),
                         method: :post,

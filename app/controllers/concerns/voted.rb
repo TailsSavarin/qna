@@ -6,12 +6,12 @@ module Voted
   end
 
   def vote_up
-    @votable.create_vote_up(current_user.id)
+    @votable.create_vote_up(current_user.id) unless current_user&.author_of?(@votable)
     render_json
   end
 
   def vote_down
-    @votable.create_vote_down(current_user.id)
+    @votable.create_vote_down(current_user.id) unless current_user&.author_of?(@votable)
     render_json
   end
 
