@@ -274,7 +274,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #vote_up' do
-    let!(:answer) { create(:answer, user: another_user) }
+    let(:answer) { create(:answer, user: another_user) }
 
     context 'authenticated user' do
       context 'not author of the answer' do
@@ -286,11 +286,11 @@ RSpec.describe AnswersController, type: :controller do
           }.to change(Vote, :count).by(1)
         end
 
-        it 'renders json with answer id and votes counter' do
-          renders = { id: answer.id, rating: answer.rating + 1 }.to_json
+        it 'renders json with answer id and rating' do
+          rendered_body = { id: answer.id, rating: answer.rating + 1 }.to_json
 
           post :vote_up, params: { id: answer }, format: :json
-          expect(response.body).to eq renders
+          expect(response.body).to eq rendered_body
         end
       end
 
@@ -315,7 +315,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #vote_down' do
-    let!(:answer) { create(:answer, user: another_user) }
+    let(:answer) { create(:answer, user: another_user) }
 
     context 'authenticated user' do
       context 'not author of the answer' do
@@ -327,11 +327,11 @@ RSpec.describe AnswersController, type: :controller do
           }.to change(Vote, :count).by(1)
         end
 
-        it 'renders json with answer id and votes counter' do
-          renders = { id: answer.id, rating: answer.rating - 1 }.to_json
+        it 'renders json with answer id and rating' do
+          rendered_body = { id: answer.id, rating: answer.rating - 1 }.to_json
 
           post :vote_down, params: { id: answer }, format: :json
-          expect(response.body).to eq renders
+          expect(response.body).to eq rendered_body
         end
       end
 
@@ -356,28 +356,28 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #revote' do
-    let!(:answer) { create(:answer) }
+    let(:answer) { create(:answer) }
     let!(:vote) { create(:vote, user: user, vote_count: 1, votable: answer) }
 
     context 'authenticated user' do
       before { login(user) }
 
-      it 'revote votes' do
+      it 're-vote votes' do
         expect {
           post :revote, params: { id: answer }, format: :json
         }.to change(Vote, :count).by(-1)
       end
 
-      it 'renders json with answer id and votes counter' do
-        renders = { id: answer.id, rating: answer.rating }.to_json
+      it 'renders json with answer id and rating' do
+        rendered_body = { id: answer.id, rating: answer.rating }.to_json
 
         post :vote_down, params: { id: answer }, format: :json
-        expect(response.body).to eq renders
+        expect(response.body).to eq rendered_body
       end
     end
 
     context 'unauthenticated user' do
-      it 'dose not make revote' do
+      it 'dose not make re-vote' do
         expect {
           post :revote, params: { id: answer }, format: :json
         }.to_not change(Vote, :count)

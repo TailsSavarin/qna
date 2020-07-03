@@ -26,9 +26,8 @@ feature 'Authenticated user can vote for the answer that he liked', %q(
     end
 
     context 'not the author of the answer' do
-      scenario 'votes up for the answer he like' do
+      scenario 'vote up for the answer' do
         within "#answer-#{another_answer.id}" do
-          expect(page).to have_link 'Up'
           click_on 'Up'
 
           expect(page).to have_content '1'
@@ -36,9 +35,8 @@ feature 'Authenticated user can vote for the answer that he liked', %q(
         end
       end
 
-      scenario 'votes down against the answer' do
+      scenario 'vote down for the answer' do
         within "#answer-#{another_answer.id}" do
-          expect(page).to have_link 'Down'
           click_on 'Down'
 
           expect(page).to have_content '-1'
@@ -46,11 +44,10 @@ feature 'Authenticated user can vote for the answer that he liked', %q(
         end
       end
 
-      scenario 'revote the answer' do
+      scenario 're-vote for the answer' do
         within "#answer-#{another_answer.id}" do
           expect(page).to_not have_link 'Revote'
           click_on 'Up'
-          expect(page).to have_link 'Revote'
           click_on 'Revote'
 
           expect(page).to have_link 'Up'
@@ -61,7 +58,7 @@ feature 'Authenticated user can vote for the answer that he liked', %q(
     end
   end
 
-  scenario 'unauthenticated user can not votes for the answer' do
+  scenario 'unauthenticated user can not vote for the answer' do
     visit question_path(question)
 
     within '.answers' do

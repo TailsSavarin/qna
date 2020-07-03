@@ -24,26 +24,23 @@ feature 'Authenticated user can vote for the question that he liked', %q(
     context 'not the author of the question' do
       background { visit question_path(another_question) }
 
-      scenario 'votes up for the question he like' do
-        expect(page).to have_link 'Up'
+      scenario 'votes up for the question' do
         click_on 'Up'
 
         expect(page).to have_content '1'
         expect(page).to_not have_link 'Up'
       end
 
-      scenario 'votes down against the question' do
-        expect(page).to have_link 'Down'
+      scenario 'vote down for the question' do
         click_on 'Down'
 
         expect(page).to have_content '-1'
         expect(page).to_not have_link 'Down'
       end
 
-      scenario 'revote the question' do
+      scenario 're-vote for the question' do
         expect(page).to_not have_link 'Revote'
         click_on 'Up'
-        expect(page).to have_link 'Revote'
         click_on 'Revote'
 
         expect(page).to have_link 'Up'
@@ -53,7 +50,7 @@ feature 'Authenticated user can vote for the question that he liked', %q(
     end
   end
 
-  scenario 'unauthenticated user can not votes for the question' do
+  scenario 'unauthenticated user can not vote for the question' do
     visit question_path(question)
 
     expect(page).to_not have_link 'Up'
