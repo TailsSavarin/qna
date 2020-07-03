@@ -5,11 +5,10 @@ $(document).on('turbolinks:load', function(){
     $('form#edit-question').show();
   })
 
-  $('.question').on('ajax:success', '.vote-up, .vote-down', function(e) {
+  $('.question').on('ajax:success', '.voting-buttons', function(e) {
     var question = e.detail[0];
     
-    $('.question .vote-up').hide();
-    $('.question .vote-down').hide();
+    $('.question .voting-buttons').hide();
     $('.question .revote').show();
     $('.question .rating').html(question.rating);
   })
@@ -17,8 +16,7 @@ $(document).on('turbolinks:load', function(){
   $('.question').on('ajax:success', '.revote', function(e) {
     var question = e.detail[0];
 
-    $('.question .vote-up').show();
-    $('.question .vote-down').show();
+    $('.question .voting-buttons').show();
     $('.question .revote').hide();
     $('.question .rating').html(question.rating);
   })
