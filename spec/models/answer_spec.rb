@@ -4,6 +4,7 @@ RSpec.describe Answer, type: :model do
   it_behaves_like 'votable'
   it_behaves_like 'linkable'
   it_behaves_like 'attachable'
+  it_behaves_like 'authorable'
 
   describe 'default scopes' do
     let(:answers) { create(:answer, 5) }
@@ -14,7 +15,6 @@ RSpec.describe Answer, type: :model do
   end
 
   describe 'associations' do
-    it { should belong_to(:user) }
     it { should belong_to(:question) }
   end
 

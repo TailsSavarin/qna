@@ -322,19 +322,30 @@ RSpec.describe QuestionsController, type: :controller do
     let!(:vote) { create(:vote, user: user, vote_count: 1, votable: question) }
 
     context 'authenticated user' do
-      before { login(user) }
+      context 'not author of the question' do
+        before { login(user) }
 
-      it 're-vote votes' do
-        expect {
+        it 're-vote votes' do
+          expect {
+            post :revote, params: { id: question }, format: :json
+          }.to change(Vote, :count).by(-1)
+        end
+
+        it 'renders json with question id and rating' do
           post :revote, params: { id: question }, format: :json
-        }.to change(Vote, :count).by(-1)
+          rendered_body = { id: question.id, rating: question.rating }.to_json
+          expect(response.body).to eq rendered_body
+        end
       end
 
-      it 'renders json with question id and rating' do
-        rendered_body = { id: question.id, rating: question.rating }.to_json
+      context 'author of the question' do
+        before { login(another_user) }
 
-        post :vote_down, params: { id: question }, format: :json
-        expect(response.body).to eq rendered_body
+        it 'dose not make re-vote' do
+          expect {
+            post :revote, params: { id: question }, format: :json
+          }.to_not change(Vote, :count)
+        end
       end
     end
 

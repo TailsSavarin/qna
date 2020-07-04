@@ -3,9 +3,9 @@ require 'rails_helper'
 shared_examples_for 'votable' do
   let(:user) { create(:user) }
   let(:model) { described_class }
-  let(:revote) { votable_class.make_revote(user.id) }
-  let(:vote_up) { votable_class.create_vote_up(user.id) }
-  let(:vote_down) { votable_class.create_vote_down(user.id) }
+  let(:revote) { votable_class.make_revote(user) }
+  let(:vote_up) { votable_class.create_vote_up(user) }
+  let(:vote_down) { votable_class.create_vote_down(user) }
   let(:votable_class) { create(model.to_s.underscore.to_sym) }
 
   describe 'associations' do
