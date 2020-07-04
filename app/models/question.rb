@@ -2,8 +2,8 @@ class Question < ApplicationRecord
   include Votable
   include Linkable
   include Attachable
+  include Authorable
 
-  belongs_to :user
   has_many :answers, dependent: :destroy
   has_one :reward, dependent: :destroy
 

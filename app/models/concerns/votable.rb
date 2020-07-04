@@ -9,15 +9,15 @@ module Votable
     votes.sum(:vote_count)
   end
 
-  def create_vote_up(current_user_id)
-    votes.find_or_create_by(user_id: current_user_id) { |c| c.vote_count = 1 }
+  def create_vote_up(user)
+    votes.find_or_create_by(user: user, vote_count: 1)
   end
 
-  def create_vote_down(current_user_id)
-    votes.find_or_create_by(user_id: current_user_id) { |c| c.vote_count = -1 }
+  def create_vote_down(user)
+    votes.find_or_create_by(user: user, vote_count: -1)
   end
 
-  def make_revote(current_user_id)
-    votes.find_by(user_id: current_user_id)&.destroy
+  def make_revote(user)
+    votes.find_by(user: user)&.destroy
   end
 end

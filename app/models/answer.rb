@@ -2,10 +2,10 @@ class Answer < ApplicationRecord
   include Votable
   include Linkable
   include Attachable
+  include Authorable
 
   default_scope { order('best desc, created_at') }
 
-  belongs_to :user
   belongs_to :question
 
   validates :body, presence: true
