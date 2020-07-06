@@ -40,6 +40,8 @@ gem 'slim-rails'
 gem 'devise'
 # Octicons. Examples: https://primer.style/octicons/ 
 gem 'octicons_helper'
+# Sending data to js files. Read more: https://github.com/gazay/gon
+gem 'gon'
 
 # For nested forms. More info: https://github.com/nathanvda/cocoon
 gem 'cocoon' 
