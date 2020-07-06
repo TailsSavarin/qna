@@ -3,10 +3,6 @@
     p= link_to 'Ask Question', new_question_path, class: 'btn btn-primary float-md-right'
     h1.display-4.text-center.mt-3 Questions List
 
-    .questions_list
+    #questions-list
       - @questions.each do |question|
-        li
-          = link_to question.title, question
-          p
-            = "Rating: "
-            = question.rating
+        p= link_to question.title, question

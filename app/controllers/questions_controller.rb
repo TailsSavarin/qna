@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_question, only: %i[show update destroy]
+  after_action :publish_question, only: %i[create]
 
   include Voted
 
@@ -56,5 +57,9 @@ class QuestionsController < ApplicationController
                                      files: [],
                                      links_attributes: %i[id name url _destroy],
                                      reward_attributes: %i[id title image _destroy])
+  end
+
+  def publish_question
+    ActionCable.server.broadcast 'questions', @question unless @question.errors.any?
   end
 end
