@@ -21,7 +21,7 @@ feature 'Authenticated user can vote for the question that he liked', %q(
       end
     end
 
-    context 'not the author of the question' do
+    context 'not author of the question' do
       background { visit question_path(another_question) }
 
       scenario 'votes up for the question' do
