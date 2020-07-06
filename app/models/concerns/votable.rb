@@ -10,11 +10,11 @@ module Votable
   end
 
   def create_vote_up(user)
-    votes.find_or_create_by(user: user, vote_count: 1)
+    votes.create(user: user, vote_count: 1)
   end
 
   def create_vote_down(user)
-    votes.find_or_create_by(user: user, vote_count: -1)
+    votes.create(user: user, vote_count: -1)
   end
 
   def make_revote(user)

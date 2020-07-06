@@ -25,7 +25,7 @@ feature 'Authenticated user can vote for the answer that he liked', %q(
       end
     end
 
-    context 'not the author of the answer' do
+    context 'not author of the answer' do
       scenario 'vote up for the answer' do
         within "#answer-#{another_answer.id}" do
           click_on 'Up'
