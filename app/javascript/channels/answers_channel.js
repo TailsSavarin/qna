@@ -1,9 +1,9 @@
 import consumer from "./consumer"
 
-consumer.subscriptions.create("QuestionsChannel", {
+consumer.subscriptions.create("AnswersChannel", {
   connected() {
     // Called when the subscription is ready for use on the server
-    console.log('Connected to the questions')
+    console.log('Connected to the answers')
   },
 
   disconnected() {
@@ -11,6 +11,6 @@ consumer.subscriptions.create("QuestionsChannel", {
   },
 
   received(data) {
-    $('#questions-list').append(`<p><a href="/questions/${data.id}">${data.title}</a></p>`)
+    // Called when the subscription has been terminated by the server
   }
 });
