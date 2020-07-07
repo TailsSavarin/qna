@@ -245,7 +245,7 @@ RSpec.describe QuestionsController, type: :controller do
         it 'create vote up' do
           expect {
             post :vote_up, params: { id: question }, format: :json
-          }.to change(Vote, :count).by(1)
+          }.to change(question, :rating).by(1)
         end
 
         it 'renders json with question id and rating' do
@@ -262,7 +262,7 @@ RSpec.describe QuestionsController, type: :controller do
         it 'does not create vote up' do
           expect {
             post :vote_up, params: { id: question }, format: :json
-          }.to_not change(Vote, :count)
+          }.to_not change(question, :rating)
         end
       end
     end
@@ -271,7 +271,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'does not create vote up' do
         expect {
           post :vote_up, params: { id: question }, format: :json
-        }.to_not change(Vote, :count)
+        }.to_not change(question, :rating)
       end
     end
   end
@@ -286,7 +286,7 @@ RSpec.describe QuestionsController, type: :controller do
         it 'create voted down' do
           expect {
             post :vote_down, params: { id: question }, format: :json
-          }.to change(Vote, :count).by(1)
+          }.to change(question, :rating).by(-1)
         end
 
         it 'renders json with question id and rating' do
@@ -303,7 +303,7 @@ RSpec.describe QuestionsController, type: :controller do
         it 'does not create vote down' do
           expect {
             post :vote_down, params: { id: question }, format: :json
-          }.to_not change(Vote, :count)
+          }.to_not change(question, :rating)
         end
       end
     end
@@ -312,7 +312,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'does not create vote down' do
         expect {
           post :vote_down, params: { id: question }, format: :json
-        }.to_not change(Vote, :count)
+        }.to_not change(question, :rating)
       end
     end
   end
@@ -328,7 +328,7 @@ RSpec.describe QuestionsController, type: :controller do
         it 're-vote votes' do
           expect {
             post :revote, params: { id: question }, format: :json
-          }.to change(Vote, :count).by(-1)
+          }.to change(question, :rating).by(-1)
         end
 
         it 'renders json with question id and rating' do
@@ -344,7 +344,7 @@ RSpec.describe QuestionsController, type: :controller do
         it 'dose not make re-vote' do
           expect {
             post :revote, params: { id: question }, format: :json
-          }.to_not change(Vote, :count)
+          }.to_not change(question, :rating)
         end
       end
     end
@@ -353,7 +353,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'dose not make re-vote' do
         expect {
           post :revote, params: { id: question }, format: :json
-        }.to_not change(Vote, :count)
+        }.to_not change(question, :rating)
       end
     end
   end
