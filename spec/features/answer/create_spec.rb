@@ -49,4 +49,31 @@ feature 'User can write the answer to the question, on the question page', %q(
 
     expect(page).not_to have_link 'Post Your Answer'
   end
+
+  context 'multiple sessions' do
+    scenario 'answer appears on another user page', js: true do
+      Capybara.using_session('authenticated_user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('unauthenticated_user') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('authenticated_user') do
+        fill_in 'Your Answer:', with: 'Test Answer'
+
+        click_on 'Post Your Answer'
+
+        within '.answers' do
+          expect(page).to have_content 'Test answer'
+        end
+      end
+
+      Capybara.using_session('unauthenticated_user') do
+        expect(page).to have_content 'Test answer'
+      end
+    end
+  end
 end
