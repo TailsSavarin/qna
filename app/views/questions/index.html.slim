@@ -1,8 +1,17 @@
 .row.mt-3
   .col.col-md
-    p= link_to 'Ask Question', new_question_path, class: 'btn btn-primary float-md-right'
-    h1.display-4.text-center.mt-3 Questions List
+    p= link_to 'Ask Question', new_question_path, class: 'btn btn-primary btn-lg float-md-right'
+    h1.mt-3 All Questions
 
     #questions-list
-      - @questions.each do |question|
-        p= link_to question.title, question
+      - if @questions.present?
+        h4
+          = @questions.count
+          = number_of(@questions)
+        - @questions.each do |question|
+          .card.mb-2
+            .card-body
+              h4= link_to question.title, question
+              = question.body
+      - else
+        h4 No questions
