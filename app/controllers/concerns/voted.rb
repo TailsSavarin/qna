@@ -10,7 +10,7 @@ module Voted
       @votable.vote_up(current_user)
       render_json
     else
-      render json: {}, status: 422
+      render json: {}, status: :unprocessable_entity
     end
   end
 
@@ -19,7 +19,7 @@ module Voted
       @votable.vote_down(current_user)
       render_json
     else
-      render json: {}, status: 422
+      render json: {}, status: :unprocessable_entity
     end
   end
 
@@ -28,7 +28,7 @@ module Voted
       @votable.revote(current_user)
       render_json
     else
-      render json: {}, status: 422
+      render json: {}, status: :unprocessable_entity
     end
   end
 

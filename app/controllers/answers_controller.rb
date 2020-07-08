@@ -47,9 +47,9 @@ class AnswersController < ApplicationController
                                    links_attributes: %i[id name url _destroy])
   end
 
-  # def publish_anwer
-  #  return if @answer.errors.any?
+  def publish_anwer
+    return if @answer.errors.any?
 
-  #  ActionCable.server.broadcast "question_#{@answer.question_id}", @answer
-  # end
+    ActionCable.server.broadcast "question_#{@answer.question_id}", @answer
+  end
 end
