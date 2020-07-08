@@ -42,6 +42,8 @@ gem 'devise'
 gem 'octicons_helper'
 # Sending data to js files. Read more: https://github.com/gazay/gon
 gem 'gon'
+# https://github.com/redis/redis-rb/
+gem 'redis'
 
 # For nested forms. More info: https://github.com/nathanvda/cocoon
 gem 'cocoon' 
