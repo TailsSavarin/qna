@@ -1,10 +1,18 @@
-.nav.navbar.navbar-dark.bg-dark
-  h1.qna
-    = link_to 'QnA', root_path
-  span.navbar-text
-    - if user_signed_in?
-      = link_to 'My Rewards', rewards_path, class: 'btn btn-outline-info'
-      = link_to 'Log out', destroy_user_session_path, method: :delete, class: 'btn btn-outline-danger'
-    - else
-      = link_to 'Sign in', new_user_session_path, class: 'btn btn-outline-primary'
-      = link_to 'Sign up', new_user_registration_path, class: 'btn btn-outline-success'
+nav.navbar.navbar-expand-lg.navbar-light.bg-light.justify-content-end
+  = link_to 'Qna', root_path, class: 'navbar-brand'
+  button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button" 
+    span.navbar-toggler-icon
+  #navbarSupportedContent.collapse.navbar-collapse
+    ul.navbar-nav.ml-auto
+      - if user_signed_in?
+        span.navbar-text.ml-auto
+          = "Welcome #{current_user.email}!"
+        li.nav-item.active
+          = link_to 'My Rewards', rewards_path, class: 'nav-link'
+        li.nav-item
+          = link_to 'Log out', destroy_user_session_path, method: :delete, class: 'nav-link'
+      - else
+        li.nav-item
+          = link_to 'Sign in', new_user_session_path, class: 'nav-link'
+        li.nav-item
+          = link_to 'Sign up', new_user_registration_path, class: 'nav-link'
