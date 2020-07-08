@@ -274,7 +274,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #vote_up' do
-    let(:answer) { create(:answer, user: another_user) }
+    let!(:answer) { create(:answer, user: another_user) }
 
     context 'authenticated user' do
       context 'not author of the answer' do
@@ -294,13 +294,18 @@ RSpec.describe AnswersController, type: :controller do
         end
       end
 
-      context 'author fo the answer' do
+      context 'author of the answer' do
         before { login(another_user) }
 
         it 'does not create vote up' do
           expect {
             post :vote_up, params: { id: answer }, format: :json
           }.to_not change(answer, :rating)
+        end
+
+        it 'renders json with 422 status' do
+          post :vote_up, params: { id: answer }, format: :json
+          expect(response.status).to eq(422)
         end
       end
     end
@@ -315,7 +320,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #vote_down' do
-    let(:answer) { create(:answer, user: another_user) }
+    let!(:answer) { create(:answer, user: another_user) }
 
     context 'authenticated user' do
       context 'not author of the answer' do
@@ -343,6 +348,11 @@ RSpec.describe AnswersController, type: :controller do
             post :vote_down, params: { id: answer }, format: :json
           }.to_not change(answer, :rating)
         end
+
+        it 'renders json with 422 status' do
+          post :vote_down, params: { id: answer }, format: :json
+          expect(response.status).to eq(422)
+        end
       end
     end
 
@@ -356,8 +366,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #revote' do
-    let(:answer) { create(:answer) }
-    let!(:vote) { create(:vote, user: user, vote_count: 1, votable: answer) }
+    let!(:answer) { create(:answer, user: another_user) }
+    let!(:vote) { create(:vote, user: user, value: 1, votable: answer) }
 
     context 'authenticated user' do
       context 'not author of the answer' do
@@ -383,6 +393,11 @@ RSpec.describe AnswersController, type: :controller do
           expect {
             post :revote, params: { id: answer }, format: :json
           }.to_not change(answer, :rating)
+        end
+
+        it 'renders json with 422 status' do
+          post :revote, params: { id: answer }, format: :json
+          expect(response.status).to eq(422)
         end
       end
     end

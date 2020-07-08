@@ -6,15 +6,15 @@ module Votable
   end
 
   def rating
-    votes.sum(:vote_count)
+    votes.sum(:value)
   end
 
   def vote_up(user)
-    votes.find_or_create_by(user: user, vote_count: 1)
+    votes.find_or_create_by(user: user, value: 1)
   end
 
   def vote_down(user)
-    votes.find_or_create_by(user: user, vote_count: -1)
+    votes.find_or_create_by(user: user, value: -1)
   end
 
   def revote(user)
