@@ -6,18 +6,30 @@ module Voted
   end
 
   def vote_up
-    @votable.vote_up(current_user) unless current_user&.author_of?(@votable)
-    render_json
+    if !current_user&.author_of?(@votable)
+      @votable.vote_up(current_user)
+      render_json
+    else
+      render json: {}, status: 422
+    end
   end
 
   def vote_down
-    @votable.vote_down(current_user) unless current_user&.author_of?(@votable)
-    render_json
+    if !current_user&.author_of?(@votable)
+      @votable.vote_down(current_user)
+      render_json
+    else
+      render json: {}, status: 422
+    end
   end
 
   def revote
-    @votable.revote(current_user) unless current_user&.author_of?(@votable)
-    render_json
+    if !current_user&.author_of?(@votable)
+      @votable.revote(current_user)
+      render_json
+    else
+      render json: {}, status: 422
+    end
   end
 
   private
