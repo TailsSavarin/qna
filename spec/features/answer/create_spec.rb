@@ -6,7 +6,7 @@ feature 'User can write the answer to the question, on the question page', %q(
   I'd like to be able to write the answer to the question
 ) do
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given!(:question) { create(:question) }
 
   describe 'authenticated user', js: true do
     background do
@@ -67,12 +67,12 @@ feature 'User can write the answer to the question, on the question page', %q(
         click_on 'Post Your Answer'
 
         within '.answers' do
-          expect(page).to have_content 'Test answer'
+          expect(page).to have_content 'Test Answer'
         end
       end
 
       Capybara.using_session('unauthenticated_user') do
-        expect(page).to have_content 'Test answer'
+        expect(page).to have_content 'Test Answer'
       end
     end
   end
