@@ -23,7 +23,7 @@ feature 'Author can delete files from question/answer', %q(
       end
 
       scenario 'deletes attached files from his question' do
-        within '.question' do
+        within '#question' do
           expect(page).to have_content 'test.jpg'
 
           click_on 'Delete File'
@@ -54,7 +54,7 @@ feature 'Author can delete files from question/answer', %q(
       end
 
       scenario 'tries to delete attache files from the question' do
-        within '.question' do
+        within '#question' do
           expect(page).to have_content 'test.jpg'
           expect(page).to_not have_link 'Delete File'
         end
@@ -73,7 +73,7 @@ feature 'Author can delete files from question/answer', %q(
     background { visit question_path(question) }
 
     scenario 'can not delete attache files from the question' do
-      within '.question' do
+      within '#question' do
         expect(page).to have_content 'test.jpg'
         expect(page).to_not have_link 'Delete File'
       end

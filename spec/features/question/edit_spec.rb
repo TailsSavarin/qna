@@ -18,7 +18,7 @@ feature 'Author can edit his question', %q(
       end
 
       scenario 'edits his question' do
-        within '.question' do
+        within '#question' do
           fill_in 'Title', with: 'Edited title'
           fill_in 'Body', with: 'Edited body'
           click_on 'Update Your Question'
@@ -32,7 +32,7 @@ feature 'Author can edit his question', %q(
       end
 
       scenario 'edits his question with errors' do
-        within '.question' do
+        within '#question' do
           fill_in 'Title', with: ''
           fill_in 'Body', with: ''
           click_on 'Update Your Question'
@@ -43,7 +43,7 @@ feature 'Author can edit his question', %q(
       end
 
       scenario 'adds attached files while edit his question' do
-        within '.question' do
+        within '#question' do
           attach_file 'File', [
             Rails.root / 'spec' / 'fixtures' / 'files' / 'test.jpg',
             Rails.root / 'spec' / 'fixtures' / 'files' / 'test.png'
