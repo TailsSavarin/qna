@@ -17,12 +17,13 @@
 
     - if user_signed_in?
       .comments-btn
-        = link_to 'Add a comment', '#', class: 'add-comment'
+        = link_to 'Add a comment', '#', class: 'add-comment text-secondary'
 
       = render 'comments/form'
 
 
     .answers
+      | Answers:
       = render @question.answers
 
     - if user_signed_in?
