@@ -12,6 +12,7 @@ require("cocoon-js")
 require("gist-embed/dist/gist-embed.min")
 require("utilities/gist_embed")
 require("utilities/questions")
+require("utilities/comments")
 require("utilities/answers")
 
 

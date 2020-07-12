@@ -3,6 +3,7 @@ class Question < ApplicationRecord
   include Linkable
   include Attachable
   include Authorable
+  include Commentable
 
   has_many :answers, dependent: :destroy
   has_one :reward, dependent: :destroy
