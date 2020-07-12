@@ -1,6 +1,5 @@
 div id="comment-#{@comment.id}-errors"
 
 = form_with model: [@question, @comment], class: 'new-comment hidden' do |f|
-  = f.text_area :body
-  br
-  = f.submit 'Post Your Comment', class: 'btn btn-primary'
+  = f.text_area :body, class: 'form-control', placeholder: 'Enter your comment here...'
+  = f.submit 'Post Your Comment', class: 'btn btn-outline-secondary btn-sm btn-block mb-2 mt-2'

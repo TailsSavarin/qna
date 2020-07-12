@@ -1,2 +1,10 @@
 div id="comment-#{comment.id}"
-  = comment.body
+  .card.border-light
+    .card-body
+      = comment.body
+      br
+      small.text-primary
+        = comment.user.email
+      small.text-secondary
+        |  
+        = comment.created_at.to_s(:short)
