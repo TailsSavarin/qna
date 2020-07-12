@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'comments/create'
   get 'rewards/index'
   root 'questions#index'
 
@@ -12,12 +13,13 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :questions, concerns: :votable do
-    resources :answers, shallow: true, concerns: :votable do
+  resources :questions, concerns: %i[votable] do
+    resources :answers, concerns: %i[votable], shallow: true do
       member do
         post :choose_best
       end
     end
+    resources :comments, shallow: true
   end
 
   resources :attachments, only: :destroy

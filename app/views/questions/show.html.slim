@@ -11,8 +11,19 @@
       .text-success
         'Reward for best Answer active!
 
+    .comments
+      |Comments:
+      = render @question.comments.order(:created_at)
+
+    - if user_signed_in?
+      .comments-btn
+        = link_to 'Add a comment', '#', class: 'add-comment'
+
+      = render 'comments/form'
+
+
     .answers
       = render @question.answers
 
-    - if signed_in?
+    - if user_signed_in?
       = render 'answers/form'
