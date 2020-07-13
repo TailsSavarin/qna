@@ -3,6 +3,7 @@ class Answer < ApplicationRecord
   include Linkable
   include Attachable
   include Authorable
+  include Commentable
 
   default_scope { order('best desc, created_at') }
 

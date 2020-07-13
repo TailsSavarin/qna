@@ -4,21 +4,6 @@ RSpec.describe CommentsController, type: :controller do
   let(:question) { create(:question) }
   let(:user) { create(:user) }
 
-  describe 'GET #new' do
-    before do
-      login(user)
-      get :new, params: { question_id: question }
-    end
-
-    it 'assigns a new Comment to @comment' do
-      expect(assigns(:comment)).to be_a_new(Comment)
-    end
-
-    it 'render new view tempalte' do
-      expect(response).to render_template :new
-    end
-  end
-
   describe 'POST #create' do
     let(:comments) { question.comments }
 
