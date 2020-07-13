@@ -25,5 +25,8 @@ module Qna
                        routing_specs: false,
                        controller_specs: true
     end
+
+    # Timezone
+    config.time_zone = 'Moscow'
   end
 end
