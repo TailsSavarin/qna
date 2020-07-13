@@ -2,7 +2,7 @@ import consumer from "./consumer"
 
 $(document).on('turbolinks:load', function() {
   var questionId = $('#question').attr('data-question-id')
-  consumer.subscriptions.create({ channel: "AnswersChannel",
+  consumer.subscriptions.create({ channel: "CommentsChannel",
     question_id: questionId }, {
     connected() {
       console.log('Connected to the question ' + questionId)
@@ -12,8 +12,12 @@ $(document).on('turbolinks:load', function() {
     },
 
     received(data) {
+      console.log(data)
+      var commentableType = data.commentable_type.toLowerCase();
+      var commentableId = data.commetable_id
+
       if (gon.user_id != data.user_id) {
-        $('.answers').append(`<div class="card border-secondary rounded mb-3 mt-4"><div class="card-body"><p>${data.body}</p></div></div>`)
+        $(`#${commentableType}-${data.commentable_id}-comments`).append(`<div class="card border-light"><div class="card-body">${data.body}</div></div>`)
       }
     }
   });
