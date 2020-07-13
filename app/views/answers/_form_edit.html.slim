@@ -1,8 +1,8 @@
-.answer-errors
-= form_with model: [@question, @answer], class: 'new-answer' do |f|
+div id="answer-#{answer.id}-errors"
+= form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
   p
     strong
-      h4= f.label :body, 'Your Answer:'
+      = f.label :body, 'Change Answer'
     = f.text_area :body, class: 'form-control'
   #files
     strong
@@ -11,7 +11,8 @@
     = f.file_field :files, multiple: true, direct_upload: true
   #links
     = f.fields_for :links do |link|
+      = render 'links/link_fields', f: link
     .links
       p
         = link_to_add_association 'Add Link', f, :links, partial: 'links/link_fields', class: 'text-body'
-  = f.submit 'Post Your Answer', class: 'btn btn-primary'
+  = f.submit 'Update Your Answer', class: 'btn btn-primary btn-sm'

@@ -14,8 +14,8 @@ div id="answer-#{answer.id}"
         = render answer.comments
 
       - if user_signed_in?
-        = link_to 'Add a comment', '#', class: 'add-comment text-secondary', data: { commentable_class: answer.class.name.downcase, commentable_id: answer.id }
         = render 'comments/form', commentable: answer, local: Comment.new
+        = link_to 'Add a comment', '#', class: 'add-comment text-secondary', data: { commentable_class: answer.class.name.downcase, commentable_id: answer.id }
 
       = 'Answer rating: '
       .rating= answer.rating
@@ -37,47 +37,17 @@ div id="answer-#{answer.id}"
 
       - if answer.links.present?
         .answer-links
-          p
-            = render answer.links
+          p= render answer.links
 
       - if answer.files.attached?
-
-        - answer.files.each do |file|
-          div id="attachment-#{file.id}"
-            = link_to file.filename.to_s, url_for(file)
-            = ' | '
-
-            - if current_user&.author_of?(answer)
-              = link_to 'Delete File', attachment_path(file), method: :delete, class: 'text-secondary', remote: true, data: { confirm: 'Are you sure?' }
+        = render partial: 'attachments/attachment', collection: answer.files
 
       - if current_user&.author_of?(answer.question)
         - unless answer.best?
-          p
-            = link_to 'Select as best', choose_best_answer_path(answer), class: 'text-success', method: :post, remote: true
+          p= link_to 'Select as best', choose_best_answer_path(answer), method: :post, remote: true
 
-  - if current_user&.author_of?(answer)
-
-    div id="answer-#{answer.id}-errors"
-
-    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-      p
-        strong
-          = f.label :body, 'Change Answer'
-        = f.text_area :body, class: 'form-control'
-      #files
-        strong
-          = f.label :files, 'Attached Files'
-          br
-        = f.file_field :files, multiple: true, direct_upload: true
-      #links
-        = f.fields_for :links do |link|
-          = render 'links/link_fields', f: link
-        .links
-          p
-            = link_to_add_association 'Add Link', f, :links, partial: 'links/link_fields', class: 'text-body'
-      = f.submit 'Update Your Answer', class: 'btn btn-primary btn-sm'
-
-    p
-      = link_to 'Edit Answer', '#', class: 'text-secondary answer-edit', data: { answer_id: answer.id }
-      = ' |  '
-      = link_to 'Delete Answer', answer_path(answer), class: 'text-secondary', method: :delete, remote: true, data: { confirm: 'Are you sure?' }
+      - if current_user&.author_of?(answer)
+        = render 'answers/form_edit', answer: answer
+        = link_to 'Edit Answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+        = ' |  '
+        = link_to 'Delete Answer', answer_path(answer), method: :delete, remote: true, data: { confirm: 'Are you sure?' }

@@ -1,9 +1,9 @@
 $(document).on('turbolinks:load', function(){
-  $('.answers').on('click', '.answer-edit', function(e) {
+  $('.answers').on('click', '.edit-answer-link', function(e) {
     e.preventDefault();
     $(this).hide();
     var answerId = $(this).data('answerId');
-    $(`form#edit-answer-${answerId}`).show();
+    $(`#edit-answer-${answerId}`).show();
   })
 
   $('.answers').on('ajax:success', '.voting-buttons', function(e) {
