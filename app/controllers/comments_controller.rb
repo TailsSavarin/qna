@@ -1,21 +1,21 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, only: %i[new create]
-
-  def new
-    @comment = @question.comments.new
-  end
+  before_action :find_commentable, only: %i[create]
 
   def create
-    @comment = @question.comments.new(comment_params)
+    @comment = @commentable.comments.new(comment_params)
     @comment.user = current_user
     @comment.save
   end
 
   private
 
-  def set_question
-    @question = Question.find(params[:question_id])
+  def find_commentable
+    if params[:question_id]
+      @commentable = Question.find(params[:question_id])
+    elsif params[:answer_id]
+      @commentable = Answer.find(params[:answer_id])
+    end
   end
 
   def comment_params

@@ -18,8 +18,9 @@ Rails.application.routes.draw do
       member do
         post :choose_best
       end
+      resources :comments
     end
-    resources :comments, shallow: true
+    resources :comments
   end
 
   resources :attachments, only: :destroy

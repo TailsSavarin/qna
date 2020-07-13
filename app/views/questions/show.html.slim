@@ -4,27 +4,5 @@
 
     = render @question
 
-    .question-links
-      = render @question.links
-
-    - if @question.reward.present?
-      .text-success
-        'Reward for best Answer active!
-
-    .comments
-      |Comments:
-      = render @question.comments.order(:created_at)
-
-    - if user_signed_in?
-      .comments-btn
-        = link_to 'Add a comment', '#', class: 'add-comment text-secondary'
-
-      = render 'comments/form'
-
-
-    .answers
-      | Answers:
-      = render @question.answers
-
     - if user_signed_in?
       = render 'answers/form'

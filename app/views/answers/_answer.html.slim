@@ -9,6 +9,14 @@ div id="answer-#{answer.id}"
       p
         = answer.body
 
+      div id="answer-#{answer.id}-comments"
+        |Comments:
+        = render answer.comments
+
+      - if user_signed_in?
+        = link_to 'Add a comment', '#', class: 'add-comment text-secondary', data: { commentable_class: answer.class.name.downcase, commentable_id: answer.id }
+        = render 'comments/form', commentable: answer, local: Comment.new
+
       = 'Answer rating: '
       .rating= answer.rating
 

@@ -1,8 +1,12 @@
 $(document).on('turbolinks:load', function(){
-  $('.comments-btn').on('click', '.add-comment', function(e) {
+  $('#question').on('click', '.add-comment', function(e) {
     e.preventDefault();
+
+    var commentableId = $(this).data('commentableId');
+    var commentableClass = $(this).data('commentableClass');
+
     $(this).hide();
-    $('form.new-comment').show();
+    $(`form#new-comment-${commentableClass}-${commentableId}`).show();
   })
 })
 

@@ -23,7 +23,7 @@ feature 'Author can delete files from question/answer', %q(
       end
 
       scenario 'deletes attached files from his question' do
-        within '#question' do
+        within "#attachment-#{question.files.first.id}" do
           expect(page).to have_content 'test.jpg'
 
           click_on 'Delete File'

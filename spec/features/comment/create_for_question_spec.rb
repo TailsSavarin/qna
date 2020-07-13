@@ -32,7 +32,7 @@ feature 'User can add comments to question', %q(
     end
   end
 
-  scenario 'anauthenticated user can not comments on the question' do
+  scenario 'unauthenticated user can not comments on the question' do
     visit question_path(question)
     expect(page).to_not have_link 'Add a comment'
   end
