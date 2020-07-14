@@ -4,7 +4,6 @@
       h2= question.title
       - if @question.reward.present?
         .reward-text.text-right Reward for best Answer active!
-
     .card-body
       .question-votes-rating.float-right
         .question-rating= "Rating: #{@question.rating}"
@@ -24,17 +23,13 @@
                               method: :post,
                               remote: true,
                               class: "question-revote-link text-secondary #{show_button_for(@question)}"
-
       p= question.body
-
       - if @question.links.present?
         | Links:
         .question-links= render @question.links
-
       - if @question.files.attached?
         | Files:
         = render partial: 'attachments/attachment', collection: @question.files
-
       div id="question-#{@question.id}-comments"
         |Comments:
         = render @question.comments.order(:created_at)
@@ -43,18 +38,16 @@
         = render 'comments/form', commentable: @question, local: Comment.new
         .question-add-comment-link
           p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
-                                           data: { commentable_type: @question.class.name.downcase, commentable_id: @question.id }
-
+                                           data: { commentable_type: @question.class.name.downcase,
+                                                   commentable_id: @question.id }
       - if current_user&.author_of?(@question)
         = render 'form_edit'
-
         .question-action-buttons
           = link_to 'Edit Question', '#', id: 'question-edit-link', class: 'text-secondary'
           |  
           = link_to 'Delete Question', question_path(@question), class: 'text-secondary',
                                                                  method: :delete,
                                                                  data: { confirm: 'Are you sure?' }
-      strong
-        | Answers:
+      strong Answers:
       .answers
         = render @question.answers

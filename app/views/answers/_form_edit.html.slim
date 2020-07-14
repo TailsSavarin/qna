@@ -10,8 +10,7 @@ div id="answer-#{answer.id}-errors"
                                             class: 'badge badge-secondary'
   = f.text_area :body, class: 'form-control'
   #files
-    strong
-      = f.label :files, 'Attached Files'
-      br
+    strong= f.label :files, 'Attached Files'
+    br
     = f.file_field :files, multiple: true, direct_upload: true
   = f.submit 'Update Your Answer', class: 'btn btn-outline-primary mt-2'

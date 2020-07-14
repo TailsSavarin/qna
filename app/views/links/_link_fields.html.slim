@@ -1,12 +1,10 @@
 .nested-fields
   .form-row
     .col-auto
-      small
-        = f.label :name, 'Link Name'
+      small= f.label :name, 'Link Name'
       = f.text_field :name, class: 'form-control', placeholder: 'Enter Name'
     .col-auto
-      small
-        = f.label :url, 'Link URL'
+      small= f.label :url, 'Link URL'
       = f.text_field :url, class: 'form-control', placeholder: 'https://example.com'
     .col-auto.mt-auto
       = link_to_remove_association 'Remove Link', f, class: 'btn btn-outline-danger',

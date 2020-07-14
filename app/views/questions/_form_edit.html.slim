@@ -1,23 +1,16 @@
 .question-edit-errors
 = form_with model: @question, class: 'hidden', html: { id: "edit-question" } do |f|
-  p
-    strong
-      = f.label :title
-    = f.text_field :title, class: 'form-control'
-  p
-    strong
-      = f.label :body
-    = f.text_area :body, class: 'form-control'
-
-  #files
-    strong
-      =f.label :files, 'Attached Files'
-      br
-    =f.file_field :files, multiple: true, direct_upload: true
+  strong= f.label :title
+  = f.text_field :title, class: 'form-control'
+  strong= f.label :body
+  = f.text_area :body, class: 'form-control'
   #links
     = f.fields_for :links do |link|
       = render 'links/link_fields', f: link
     .links
-      p
-        = link_to_add_association 'Add Link', f, :links, partial: 'links/link_fields', class: 'text-body'
-  = f.submit 'Update Your Question', class: 'btn btn-primary btn-sm'
+     = link_to_add_association 'Add Link', f, :links, partial: 'links/link_fields', class: 'btn btn-sm btn-outline-secondary mt-2'
+  #files
+    strong=f.label :files, 'Attached Files'
+    br
+    =f.file_field :files, multiple: true, direct_upload: true
+  = f.submit 'Update Your Question', class: 'btn btn-outline-primary mt-2'

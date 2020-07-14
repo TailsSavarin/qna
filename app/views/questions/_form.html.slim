@@ -1,43 +1,37 @@
 = form_with model: @question, local: true do |f|
   .form-group.col-md-12
     = render 'shared/errors', resource: @question
-    p
-      strong
-        = f.label :title
-        br
-      small 
-        'Be specific and imagine you’re asking a question to another person
-      = f.text_field :title, class: 'form-control', autofocus: true
-    p
-      strong
-        = f.label :body
-        br
-      small
-        'Include all the information someone would need to answer your question
-      = f.text_area :body, class: 'form-control'
+    strong= f.label :title
+    br
+    small
+      | Be specific and imagine you’re asking a question to another person
+    = f.text_field :title, class: 'form-control', autofocus: true, placeholder: 'Enter Title'
+    strong= f.label :body
+    br
+    small
+      | Include all the information someone would need to answer your question
+    = f.text_area :body, class: 'form-control', placeholder: 'Enter Body'
     #files
-      strong
-        =f.label :files, 'Attached Files'
-        br
+      strong=f.label :files, 'Attached Files'
+      br
       =f.file_field :files, multiple: true, direct_upload: true 
-    #reward
-      p
-        = f.fields_for :reward do |r|
-          p
-            strong
-              = r.label :title, 'Reward Title'
-              br
-            small
-              'You can add a reward for the best answer to your question, this is an optional attribute
-            = r.text_field :title, class: 'form-control', placeholder: 'For the smartest answer*'
-          p
-            strong
-              = r.label :image, 'Reward Image'
-              br
-            = r.file_field :image, direct_uplad: true
     #links
       = f.fields_for :links do |link|
       .links
-        p
-          = link_to_add_association 'Add Link', f, :links, partial: 'links/link_fields', class: 'text-secondary'
-    = f.submit 'Create Your Question', class: 'btn btn-primary'
+        = link_to_add_association 'Add Link', f, :links,
+                                              partial: 'links/link_fields',
+                                              class: 'btn btn-sm btn-outline-secondary mt-2'
+    .card.border-success.mt-2
+      .card-header.text-center.text-success Reward
+      .card-body
+        #reward
+          = f.fields_for :reward do |r|
+            strong= r.label :title, 'Reward Title'
+            br
+            small
+              | You can add a reward for the best answer to your question, this is an optional attribute
+            = r.text_field :title, class: 'form-control', placeholder: 'For the smartest answer*'
+            strong= r.label :image, 'Reward Image'
+            br
+            = r.file_field :image, direct_uplad: true
+    = f.submit 'Create Your Question', class: 'btn btn-lg btn-block btn-primary mt-2'

@@ -7,4 +7,4 @@ div id="comment-#{comment.id}"
         = comment.user.email
       small.text-secondary
         |  
-        = comment.created_at.to_s(:short)
+        = creation_time(comment)

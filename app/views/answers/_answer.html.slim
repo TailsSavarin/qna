@@ -4,12 +4,10 @@ div id="answer-#{answer.id}"
       - if current_user&.author_of?(answer.question)
         - unless answer.best?
           = link_to 'Select as best', choose_best_answer_path(answer), class: 'text-success', method: :post, remote: true
-
       - if answer.best?
         .best-answer
           | Best Answer 
           = octicon 'check-circle-fill'
-
     .card-body
       .answer-votes-rating.float-right
         .answer-rating= "Rating: #{answer.rating}"
@@ -29,27 +27,22 @@ div id="answer-#{answer.id}"
                               method: :post,
                               remote: true,
                               class: "answer-revote-link text-secondary #{show_button_for(answer)}"
-
       p= answer.body
-
       - if answer.links.present?
         | Links:
         = render answer.links
-
       - if answer.files.attached?
         | Files: 
         = render partial: 'attachments/attachment', collection: answer.files
-
       div id="answer-#{answer.id}-comments"
         | Comments:
         = render answer.comments.order(:created_at)
-
       - if user_signed_in?
         = render 'comments/form', commentable: answer, local: Comment.new
         .answer-add-comment-link
           p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
-                                         data: { commentable_type: answer.class.name.downcase, commentable_id: answer.id }
-
+                                           data: { commentable_type: answer.class.name.downcase,
+                                           commentable_id: answer.id }
       - if current_user&.author_of?(answer)
         = render 'answers/form_edit', answer: answer
         .answer-action-buttons.float-right
