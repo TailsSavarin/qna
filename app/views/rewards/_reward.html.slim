@@ -4,6 +4,6 @@
     .media-body
       h5.mt-0.mb-1 
         = reward.title
-      p
+        br
         = 'Your answer was chosen the best in the question: '
-        = link_to reward.question.title, reward.question, class: 'text-info' 
+        = link_to reward.question.title, reward.question, class: 'btn btn-outline-info'
