@@ -6,9 +6,7 @@
 
     .questions-list
       - if @questions.present?
-        h4
-          = @questions.count
-          = number_of(@questions)
+        h4= count_of(@questions)
         - @questions.each do |question|
           .card.mb-2
             .card-body

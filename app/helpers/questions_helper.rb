@@ -1,5 +1,5 @@
 module QuestionsHelper
-  def number_of(questions)
-    questions.count == 1 ? ' question' : ' questions'
+  def count_of(questions)
+    pluralize(questions.count, 'question')
   end
 end
