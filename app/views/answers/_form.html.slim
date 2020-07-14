@@ -3,15 +3,14 @@
   p
     strong
       h4= f.label :body, 'Your Answer:'
+    #links
+      = f.fields_for :links do |link|
+      .links
+        = link_to_add_association 'Add Link', f, :links, partial: 'links/link_fields', class: 'btn btn-sm btn-outline-secondary mt-1 mb-1'
     = f.text_area :body, class: 'form-control'
   #files
     strong
       = f.label :files, 'Attached Files'
       br
     = f.file_field :files, multiple: true, direct_upload: true
-  #links
-    = f.fields_for :links do |link|
-    .links
-      p
-        = link_to_add_association 'Add Link', f, :links, partial: 'links/link_fields', class: 'text-body'
-  = f.submit 'Post Your Answer', class: 'btn btn-primary'
+  = f.submit 'Post Your Answer', class: 'btn btn-primary mt-2'
