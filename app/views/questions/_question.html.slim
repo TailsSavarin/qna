@@ -1,63 +1,58 @@
 #question data-question-id=@question.id
-  h2= question.title
-  p
-    = question.body
+  .card.border-light.mb-2.mt-2
+    .card-header
+      h2= question.title
+      - if @question.reward.present?
+        .reward-text.text-right Reward for best Answer active!
 
-  - if @question.files.attached?
-      - @question.files.each do |file|
-        div id="attachment-#{file.id}"
-          p= link_to file.filename.to_s, url_for(file)
-          - if current_user&.author_of?(@question)
-            = link_to 'Delete File', attachment_path(file), class: 'text-secondary',
-                                                            method: :delete,
-                                                            remote: true,
-                                                            data: { confirm: 'Are you sure?' }
+    .card-body
+      .question-votes-rating.float-right
+        .question-rating= "Rating: #{@question.rating}"
+        - if !current_user&.author_of?(@question) && user_signed_in?
+          div class="question-voting-buttons-links #{hide_button_for(@question)}"
+            = link_to 'Up', vote_up_question_path(@question),
+                            method: :post,
+                            remote: true,
+                            class: 'text-secondary'
+            |  
+            = link_to 'Down', vote_down_question_path(@question),
+                              method: :post,
+                              remote: true,
+                              class: 'text-secondary'
 
-  - if current_user&.author_of?(@question)
-    = render 'form_edit'
-    
-    p
-      = link_to 'Edit Question', '#', id: 'question-edit', class: 'text-secondary'
-      = ' | '
-      = link_to 'Delete Question', question_path(@question), class: 'text-secondary',
-                                                             method: :delete,
-                                                             data: { confirm: 'Are you sure?' }
+          = link_to 'Revote', revote_question_path(@question),
+                              method: :post,
+                              remote: true,
+                              class: "question-revote-link text-secondary #{show_button_for(@question)}"
 
-  = 'Question rating: '
-  .rating= @question.rating
-  - if !current_user&.author_of?(@question) && signed_in?
-    div class="voting-buttons #{hide_button_for(@question)}"
-      = link_to 'Up', vote_up_question_path(@question),
-                      method: :post,
-                      remote: true
-      br
-      = link_to 'Down', vote_down_question_path(@question),
-                        method: :post,
-                        remote: true
+      p= question.body
 
-    = link_to 'Revote', revote_question_path(@question),
-                        method: :post,
-                        remote: true,
-                        class: "revote #{show_button_for(@question)}"
+      - if @question.links.present?
+        | Links:
+        .question-links= render @question.links
 
-  - if user_signed_in?
-    = link_to 'Add a comment', '#', class: 'add-comment text-secondary', data: { commentable_class: @question.class.name.downcase, commentable_id: @question.id }
+      - if @question.files.attached?
+        | Files:
+        = render partial: 'attachments/attachment', collection: @question.files
 
-  .question-links
-    = render @question.links
+      div id="question-#{@question.id}-comments"
+        |Comments:
+        = render @question.comments.order(:created_at)
 
-  - if @question.reward.present?
-    .text-success
-      'Reward for best Answer active!
+      - if user_signed_in?
+        = render 'comments/form', commentable: @question, local: Comment.new
+        .question-add-comment-link
+          p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
+                                           data: { commentable_type: @question.class.name.downcase, commentable_id: @question.id }
 
-  div id="question-#{@question.id}-comments"
-    |Comments:
-    = render @question.comments
-
-  - if user_signed_in?
-    = render 'comments/form', commentable: @question, local: Comment.new
-
-  .answers
-    | Answers:
-    = render @question.answers
-
+      - if current_user&.author_of?(@question)
+        = render 'form_edit'
+        .question-action-buttons.float-right
+          = link_to 'Edit Question', '#', id: 'question-edit-link', class: 'text-secondary'
+          |  
+          = link_to 'Delete Question', question_path(@question), class: 'text-secondary',
+                                                                 method: :delete,
+                                                                 data: { confirm: 'Are you sure?' }
+      .answers
+        | Answers:
+        = render @question.answers

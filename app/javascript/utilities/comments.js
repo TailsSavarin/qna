@@ -1,12 +1,10 @@
 $(document).on('turbolinks:load', function(){
-  $('#question').on('click', '.add-comment', function(e) {
+  $('#question').on('click', '.add-comment-link', function(e) {
     e.preventDefault();
-
-    var commentableId = $(this).data('commentableId');
-    var commentableClass = $(this).data('commentableClass');
-
     $(this).hide();
-    $(`form#new-comment-${commentableClass}-${commentableId}`).show();
+    var commentableId = $(this).data('commentableId');
+    var commentableType = $(this).data('commentableType');
+    $(`#new-comment-${commentableType}-${commentableId}`).show();
   })
 })
 

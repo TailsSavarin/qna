@@ -15,7 +15,6 @@ $(document).on('turbolinks:load', function() {
       console.log(data)
       var commentableType = data.commentable_type.toLowerCase();
       var commentableId = data.commetable_id
-
       if (gon.user_id != data.user_id) {
         $(`#${commentableType}-${data.commentable_id}-comments`).append(`<div class="card border-light"><div class="card-body">${data.body}</div></div>`)
       }

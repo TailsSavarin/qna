@@ -7,7 +7,7 @@
         br
       small 
         'Be specific and imagine you’re asking a question to another person
-      = f.text_field :title, class: 'form-control'
+      = f.text_field :title, class: 'form-control', autofocus: true
     p
       strong
         = f.label :body
@@ -39,5 +39,5 @@
       = f.fields_for :links do |link|
       .links
         p
-          = link_to_add_association 'Add Link', f, :links, partial: 'links/link_fields', class: 'text-body'
+          = link_to_add_association 'Add Link', f, :links, partial: 'links/link_fields', class: 'text-secondary'
     = f.submit 'Create Your Question', class: 'btn btn-primary'

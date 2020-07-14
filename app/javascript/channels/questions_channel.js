@@ -10,7 +10,7 @@ $(document).on('turbolinks:load', function() {
     },
 
     received(data) {
-      $('#questions-list').append(`<div class="card mb-2"><div class="card-body"><h4><a href="/questions/${data.id}">${data.title}</a></h1>${data.body}</div></div>`)
+      $('.questions-list').append(`<div class="card mb-2"><div class="card-body"><h4><a href="/questions/${data.id}">${data.title}</a></h1>${data.body}</div></div>`)
     }
   })
 });

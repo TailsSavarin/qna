@@ -11,7 +11,7 @@ div id="answer-#{answer.id}"
           = octicon 'check-circle-fill'
 
     .card-body
-      .answer-rating-position.float-right
+      .answer-votes-rating.float-right
         .answer-rating= "Rating: #{answer.rating}"
         - if !current_user&.author_of?(answer) && user_signed_in?
           div class="answer-voting-buttons-links #{hide_button_for(answer)}"
@@ -46,7 +46,9 @@ div id="answer-#{answer.id}"
 
       - if user_signed_in?
         = render 'comments/form', commentable: answer, local: Comment.new
-        p= link_to 'Add a comment', '#', class: 'add-comment text-secondary', data: { commentable_class: answer.class.name.downcase, commentable_id: answer.id }
+        .answer-add-comment-link
+          p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
+                                         data: { commentable_type: answer.class.name.downcase, commentable_id: answer.id }
 
       - if current_user&.author_of?(answer)
         = render 'answers/form_edit', answer: answer

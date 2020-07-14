@@ -1,21 +1,21 @@
 $(document).on('turbolinks:load', function(){
-  $('#question').on('click', '#question-edit', function(e) {
+  $('#question').on('click', '#question-edit-link', function(e) {
     e.preventDefault();
     $(this).hide();
-    $(`form#edit-question`).show();
+    $(`#edit-question`).show();
   })
 
-  $('#question').on('ajax:success', '.voting-buttons', function(e) {
+  $('#question').on('ajax:success', '.question-voting-buttons-links', function(e) {
     var question = e.detail[0];
-    $(`#question .voting-buttons`).hide();
-    $(`#question .revote`).show();
-    $(`#question .rating`).html(question.rating);
+    $(`#question .question-voting-buttons-links`).hide();
+    $(`#question .question-revote-link`).show();
+    $(`#question .question-rating`).html('Rating: ' + question.rating);
   })
 
-  $('#question').on('ajax:success', '.revote', function(e) {
+  $('#question').on('ajax:success', '.question-revote-link', function(e) {
     var question = e.detail[0];
-    $(`#question .voting-buttons`).show();
-    $(`#question .revote`).hide();
-    $(`#question .rating`).html(question.rating);
+    $(`#question .question-voting-buttons-links`).show();
+    $(`#question .question-revote-link`).hide();
+    $(`#question .question-rating`).html('Rating: ' + question.rating);
   })
 });
