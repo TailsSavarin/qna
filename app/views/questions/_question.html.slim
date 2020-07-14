@@ -47,12 +47,14 @@
 
       - if current_user&.author_of?(@question)
         = render 'form_edit'
-        .question-action-buttons.float-right
+
+        .question-action-buttons
           = link_to 'Edit Question', '#', id: 'question-edit-link', class: 'text-secondary'
           |  
           = link_to 'Delete Question', question_path(@question), class: 'text-secondary',
                                                                  method: :delete,
                                                                  data: { confirm: 'Are you sure?' }
-      .answers
+      strong
         | Answers:
+      .answers
         = render @question.answers
