@@ -1,13 +1,13 @@
 .answer-errors
 = form_with model: [@question, @answer], class: 'new-answer' do |f|
-  p
-    strong
-      h4= f.label :body, 'Your Answer:'
-    #links
-      = f.fields_for :links do |link|
-      .links
-        = link_to_add_association 'Add Link', f, :links, partial: 'links/link_fields', class: 'btn btn-sm btn-outline-secondary mt-1 mb-1'
-    = f.text_area :body, class: 'form-control'
+  h4= f.label :body, 'Your Answer:'
+  #links
+    = f.fields_for :links do |link|
+    .links
+      = link_to_add_association 'Add Link', f, :links,
+                                            partial: 'links/link_fields',
+                                            class: 'badge badge-secondary'
+  = f.text_area :body, class: 'form-control'
   #files
     strong
       = f.label :files, 'Attached Files'
