@@ -1,16 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
+  let(:user) { create(:user) }
+  let(:question) { create(:question) }
+  let(:another_user) { create(:user) }
+
   it_behaves_like 'votable'
   it_behaves_like 'linkable'
   it_behaves_like 'attachable'
   it_behaves_like 'authorable'
 
   describe 'default scopes' do
-    let(:answers) { create(:answer, 5) }
+    let!(:answers) { create_list(:answer, 2, question: question) }
+    let!(:best_answer) { create(:answer, question: question, best: true) }
 
-    it 'sorts the list in descending by best attribute and creation time' do
-      expect(Answer.all.to_sql).to eq Answer.order('best desc, created_at').to_sql
+    it 'sorts the list, first answer have best attr eq ture' do
+      expect(question.answers.first).to eq best_answer
     end
   end
 
@@ -23,36 +28,20 @@ RSpec.describe Answer, type: :model do
   end
 
   describe '#select_best' do
-    let(:user) { create(:user) }
-    let(:question) { create(:question) }
-    let(:another_user) { create(:user) }
-    let!(:answer) { create(:answer, question: question, user: user) }
-    let!(:reward) { create(:reward, question: question, user: another_user) }
-    let!(:another_answer) { create(:answer, user: another_user, question: question, best: true) }
+    let!(:answer) { create(:answer, user: user, question: question) }
+    let!(:best_answer) { create(:answer, user: another_user, question: question, best: true) }
+    let!(:reward) { create(:reward, user: another_user, question: question) }
 
-    it 'select answer like the best' do
-      expect(answer).to_not be_best
+    it 'select answer as best' do
       answer.select_best
-      expect(answer).to be_best
+      expect(best_answer.reload.best).to eq false
+      expect(answer.reload.best).to eq true
     end
 
-    it 'select another answer like the best' do
-      expect(answer).to_not be_best
-      expect(another_answer).to be_best
+    it 'gives user reward for best answer' do
       answer.select_best
-      answer.reload
-      another_answer.reload
-      expect(answer).to be_best
-      expect(another_answer).to_not be_best
-    end
-
-    it 'assign reward to the answers author' do
-      expect(another_user.rewards.first).to eq reward
-      expect(reward.user).to_not eq user
-      answer.select_best
-      answer.reload
-      expect(reward.user).to eq user
-      expect(another_user.rewards.first).to_not eq reward
+      expect(user.rewards.first).to eq reward
+      expect(another_user.rewards.count).to eq 0
     end
   end
 end
