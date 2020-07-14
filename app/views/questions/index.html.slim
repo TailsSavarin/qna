@@ -1,10 +1,10 @@
 .row.mt-3
+  .col.col-md-12.text-right
+    = link_to 'Ask Question', new_question_path, class: 'btn btn-lg btn-primary'
   .col.col-md
-    p
-      = link_to 'Ask Question', new_question_path, class: 'btn btn-primary btn-lg float-md-right'
     h1.mt-3 All Questions
 
-    #questions-list
+    .questions-list
       - if @questions.present?
         h4
           = @questions.count
