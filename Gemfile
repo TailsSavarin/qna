@@ -45,6 +45,10 @@ gem 'gon'
 # https://github.com/redis/redis-rb/
 gem 'redis'
 
+# Oauth. Read more: https://github.com/omniauth/omniauth
+gem 'omniauth'
+gem 'omniauth-github'
+
 # For nested forms. More info: https://github.com/nathanvda/cocoon
 gem 'cocoon' 
 

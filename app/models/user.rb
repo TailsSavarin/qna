@@ -4,12 +4,14 @@ class User < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :rewards, dependent: :destroy
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  # :confirmable, :lockable, :timeoutable, :trackable
   devise :database_authenticatable,
          :registerable,
          :rememberable,
          :recoverable,
-         :validatable
+         :validatable,
+         :omniauthable,
+         omniauth_providers: [:github]
 
   def author_of?(resource)
     resource.user_id == id
