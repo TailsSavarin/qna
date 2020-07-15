@@ -21,4 +21,15 @@ feature 'User can sign in', %q(
     click_button 'Log in'
     expect(page).to have_content 'Invalid Email or password.'
   end
+
+  scenario 'user tries to sign in with Github account' do
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Successfully authenticated from Github account.'
+  end
+
+  scenario 'user handle authentication error' do
+    OmniAuth.config.mock_auth[:github] = :invalid_credentials
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content %Q(Could not authenticate you from GitHub because "Invalid credentials")
+  end
 end
