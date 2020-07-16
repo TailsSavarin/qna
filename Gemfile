@@ -48,7 +48,7 @@ gem 'redis'
 # Oauth. Read more: https://github.com/omniauth/omniauth
 gem 'omniauth'
 gem 'omniauth-github'
-
+gem 'omniauth-twitter'
 
 # For nested forms. More info: https://github.com/nathanvda/cocoon
 gem 'cocoon'
