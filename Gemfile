@@ -50,6 +50,12 @@ gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
 
+# Social buttons. Read more: https://github.com/gavinkflam/bootstrap-social-rails
+gem 'bootstrap-social-rails'
+
+# Web fonts and stylesheets
+gem 'font-awesome-rails'
+
 # For nested forms. More info: https://github.com/nathanvda/cocoon
 gem 'cocoon'
 
