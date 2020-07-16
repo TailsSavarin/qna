@@ -30,6 +30,6 @@ feature 'User can sign in', %q(
   scenario 'user handle authentication error' do
     OmniAuth.config.mock_auth[:github] = :invalid_credentials
     click_on 'Sign in with GitHub'
-    expect(page).to have_content %Q(Could not authenticate you from GitHub because "Invalid credentials")
+    expect(page).to have_content %(Could not authenticate you from GitHub because "Invalid credentials")
   end
 end

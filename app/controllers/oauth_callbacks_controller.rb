@@ -1,7 +1,6 @@
 class OauthCallbacksController < Devise::OmniauthCallbacksController
-
   def github
-    @user = User.find_for_oauth(request.env['omniauth.auth'])
+    @user = User.find_for_oauth(auth_hash)
 
     if @user&.persisted?
       sign_in_and_redirect @user, event: :authentication
@@ -11,4 +10,9 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
+  protected
+
+  def auth_hash
+    request.env['omniauth.auth']
+  end
 end
