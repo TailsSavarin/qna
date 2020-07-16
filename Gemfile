@@ -49,8 +49,9 @@ gem 'redis'
 gem 'omniauth'
 gem 'omniauth-github'
 
+
 # For nested forms. More info: https://github.com/nathanvda/cocoon
-gem 'cocoon' 
+gem 'cocoon'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -75,6 +76,8 @@ end
 group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
+  # ActionMailer and Mail messages testing
+  gem 'capybara-email'
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
