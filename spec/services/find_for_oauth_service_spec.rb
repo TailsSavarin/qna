@@ -17,12 +17,14 @@ RSpec.describe FindForOauthService do
       let(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456', info: { email: user.email }) }
 
       it 'does not create new user' do
-        expect { subject.call
+        expect {
+          subject.call
         }.to_not change(User, :count)
       end
 
       it 'creates authorization for user' do
-        expect { subject.call
+        expect {
+          subject.call
         }.to change(user.authorizations, :count).by(1)
       end
 
@@ -43,7 +45,8 @@ RSpec.describe FindForOauthService do
       let(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456', info: { email: 'user@test.com' }) }
 
       it 'creates new user' do
-        expect { subject.call
+        expect {
+          subject.call
         }.to change(User, :count).by(1)
       end
 

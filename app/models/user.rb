@@ -5,7 +5,7 @@ class User < ApplicationRecord
   has_many :questions, dependent: :destroy
   has_many :authorizations, dependent: :destroy
 
-  devise :validatable, 
+  devise :validatable,
          :recoverable,
          :registerable,
          :rememberable,
@@ -29,4 +29,3 @@ class User < ApplicationRecord
     authorizations.create(provider: auth.provider, uid: auth.uid.to_s)
   end
 end
-

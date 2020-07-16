@@ -13,7 +13,6 @@ RSpec.describe User, type: :model do
   end
 
   describe '.find_for_oauth' do
-    let!(:user) {create(:user) }
     let(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456') }
     let(:service) { double('FindForOauthSerivce') }
 
