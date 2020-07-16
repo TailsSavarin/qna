@@ -42,4 +42,15 @@ feature 'User can sign in', %q(
     click_on 'Sign in with GitHub'
     expect(page).to have_content %(Could not authenticate you from GitHub because "Invalid credentials")
   end
+
+  scenario 'user tries to sign in with Twitter account' do
+    click_on 'Sign in with Twitter'
+    expect(page).to have_content 'Successfully authenticated from Twitter account.'
+  end
+
+  scenario 'user handle authentication error' do
+    OmniAuth.config.mock_auth[:twitter] = :invalid_credentials
+    click_on 'Sign in with Twitter'
+    expect(page).to have_content %(Could not authenticate you from Twitter because "Invalid credentials")
+  end
 end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-shared_examples_for 'linkable' do
+shared_examples_for 'commentable' do
   describe 'associations' do
     it { should have_many(:comments).dependent(:destroy) }
   end

@@ -12,7 +12,7 @@ class User < ApplicationRecord
          :rememberable,
          :omniauthable,
          :database_authenticatable,
-         omniauth_providers: %i[github]
+         omniauth_providers: %i[github twitter]
 
   def self.find_for_oauth(auth)
     FindForOauthService.new(auth).call
