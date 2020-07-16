@@ -89,6 +89,9 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
+    capybara-email (3.0.2)
+      capybara (>= 2.4, < 4.0)
+      mail
     childprocess (3.0.0)
     cocoon (1.2.14)
     concurrent-ruby (1.1.6)
@@ -334,6 +337,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   capybara (>= 2.15)
+  capybara-email
   cocoon
   devise
   factory_bot_rails
