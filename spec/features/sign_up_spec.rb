@@ -30,30 +30,4 @@ feature 'User can register in the system', %q(
     expect(page).to have_content "Email can't be blank"
     expect(page).to have_content "Password can't be blank"
   end
-
-  describe 'sign in with GitHub' do
-    scenario 'user tries to sign in' do
-      click_on 'Sign in with GitHub'
-      expect(page).to have_content 'Successfully authenticated from Github account.'
-    end
-
-    scenario 'user handle authentication error' do
-      OmniAuth.config.mock_auth[:github] = :invalid_credentials
-      click_on 'Sign in with GitHub'
-      expect(page).to have_content %(Could not authenticate you from GitHub because "Invalid credentials")
-    end
-  end
-
-  describe 'sign in with Twitter' do
-    scenario 'user tries to sign in' do
-      click_on 'Sign in with Twitter'
-      expect(page).to have_content 'Successfully authenticated from Twitter account.'
-    end
-
-    scenario 'user handle authentication error' do
-      OmniAuth.config.mock_auth[:twitter] = :invalid_credentials
-      click_on 'Sign in with Twitter'
-      expect(page).to have_content %(Could not authenticate you from Twitter because "Invalid credentials")
-    end
-  end
 end
