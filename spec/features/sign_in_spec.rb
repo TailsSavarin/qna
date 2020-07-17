@@ -13,7 +13,8 @@ feature 'User can sign in', %q(
     scenario 'with confirmed email' do
       fill_in 'Email', with: confirmed_user.email
       fill_in 'Password', with: confirmed_user.password
-      click_button 'Log in'
+      click_on 'Log in'
+
       expect(page).to have_content 'Signed in successfully.'
     end
 
@@ -21,6 +22,7 @@ feature 'User can sign in', %q(
       fill_in 'Email', with: unconfirmed_user.email
       fill_in 'Password', with: unconfirmed_user.password
       click_on 'Log in'
+
       expect(page).to have_content 'You have to confirm your email address before continuing.'
     end
   end
@@ -28,19 +30,22 @@ feature 'User can sign in', %q(
   scenario 'unregistered or with invalid data, user tries to sign in' do
     fill_in 'Email', with: 'unregistered@test.com'
     fill_in 'Password', with: '12345678'
-    click_button 'Log in'
+    click_on 'Log in'
+
     expect(page).to have_content 'Invalid Email or password.'
   end
 
   describe 'sign in with GitHub' do
     scenario 'user tries to sign in' do
       click_on 'Sign in with GitHub'
+
       expect(page).to have_content 'Successfully authenticated from Github account.'
     end
 
     scenario 'user handle authentication error' do
       OmniAuth.config.mock_auth[:github] = :invalid_credentials
       click_on 'Sign in with GitHub'
+
       expect(page).to have_content %(Could not authenticate you from GitHub because "Invalid credentials")
     end
   end
@@ -48,12 +53,14 @@ feature 'User can sign in', %q(
   describe 'sign in with Twitter' do
     scenario 'user tries to sign in' do
       click_on 'Sign in with Twitter'
+
       expect(page).to have_content 'Successfully authenticated from Twitter account.'
     end
 
     scenario 'user handle authentication error' do
       OmniAuth.config.mock_auth[:twitter] = :invalid_credentials
       click_on 'Sign in with Twitter'
+
       expect(page).to have_content %(Could not authenticate you from Twitter because "Invalid credentials")
     end
   end

@@ -1,19 +1,41 @@
 require: rubocop-rails
 
 AllCops:
-  DisplayCopNames: true
-  NewCops: enable
+  Include:
+    - 'app/**/*.rb'
+    - 'lib/**/*.rb'
+    - 'lib/**/*.rake'
+    - 'config/**/*.rb'
   Exclude:
     - 'db/**/*'
-    - 'config/**/*'
-    - 'script/**/*'
-    - 'bin/*'
+    - 'bin/**/*'
+    - 'lib/**/*.rake'
+    - 'config/**/*.rb'
     - 'node_modules/**/*'
-    - 'Gemfile'
-    - 'spec/rails_helper.rb'
-    - 'spec/spec_helper.rb'
-    - !ruby/regexp /old_and_unused\.rb$/
-      
+
+  NewCops: enable
+  DisplayCopNames: true
+  StyleGuideCopsOnly: false
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/AbcSize:
+  Max: 20
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 15
+  Enabled: false
+  Exclude:
+    - 'spec/**/*.rb'
+
+Style/IdenticalConditionalBranches:
+  Exclude:
+    - 'app/services/*.rb'
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 
@@ -35,8 +57,6 @@ Style/BlockDelimiters:
 Style/RedundantPercentQ:
   Enabled: false
 
-Layout/LineLength:
-  Max: 140
-
-Metrics/BlockLength:
-  Enabled: false
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'app/models/answer.rb'

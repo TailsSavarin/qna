@@ -11,11 +11,13 @@ feature 'User can watch all the questions', %q(
   scenario 'authenticated user tries to watch all the questions' do
     sign_in(user)
     visit questions_path
+
     questions.each { |question| expect(page).to have_content question.title }
   end
 
   scenario 'unauthenticated user tries to watch all the questions' do
     visit questions_path
+
     questions.each { |question| expect(page).to have_content question.title }
   end
 end
