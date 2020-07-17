@@ -1,7 +1,6 @@
 shared_examples_for 'votable' do
   let(:user) { create(:user) }
-  let(:model) { described_class }
-  let(:votable) { create(model.to_s.underscore.to_sym) }
+  let(:votable) { create(described_class.to_s.underscore.to_sym) }
 
   describe 'associations' do
     it { should have_many(:votes).dependent(:destroy) }
@@ -14,6 +13,7 @@ shared_examples_for 'votable' do
 
     it 'equals to sum of votes' do
       create_list(:vote, 2, user: user, votable: votable, value: 1)
+
       expect(votable.rating).to eq(2)
     end
   end
@@ -37,6 +37,7 @@ shared_examples_for 'votable' do
   describe '#revote' do
     it 'removes vote' do
       create(:vote, user: user, votable: votable)
+
       expect {
         votable.revote(user)
       }.to change(Vote, :count).by(-1)
