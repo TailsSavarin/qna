@@ -49,6 +49,7 @@ gem 'redis'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
+gem 'omniauth-facebook'
 
 # Social buttons. Read more: https://github.com/gavinkflam/bootstrap-social-rails
 gem 'bootstrap-social-rails'

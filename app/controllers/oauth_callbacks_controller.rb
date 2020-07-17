@@ -7,6 +7,10 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
     authentication_with_oauth
   end
 
+  def facebook
+    authentication_with_oauth
+  end
+
   private
 
   def authentication_with_oauth
