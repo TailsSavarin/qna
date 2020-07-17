@@ -12,6 +12,7 @@ feature 'User can watch the question and answers to it', %q(
   scenario 'authenticated user tries to watch the question and answers to it' do
     sign_in(user)
     visit question_path(question)
+
     expect(page).to have_content question.title
     expect(page).to have_content question.body
     answers.each { |answer| expect(page).to have_content answer.body }
@@ -19,6 +20,7 @@ feature 'User can watch the question and answers to it', %q(
 
   scenario 'unauthenticated user tries to watch the question and answers to it' do
     visit question_path(question)
+
     expect(page).to have_content question.title
     expect(page).to have_content question.body
     answers.each { |answer| expect(page).to have_content answer.body }

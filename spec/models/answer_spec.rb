@@ -34,12 +34,14 @@ RSpec.describe Answer, type: :model do
 
     it 'select answer as best' do
       answer.select_best
+
       expect(best_answer.reload.best).to eq false
       expect(answer.reload.best).to eq true
     end
 
     it 'gives user reward for best answer' do
       answer.select_best
+
       expect(user.rewards.first).to eq reward
       expect(another_user.rewards.count).to eq 0
     end

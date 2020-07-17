@@ -11,7 +11,7 @@ feature 'User can register in the system', %q(
     fill_in 'Email', with: 'unregistered_user@test.com'
     fill_in 'Password', with: '12345678'
     fill_in 'Password confirmation', with: '12345678'
-    click_button 'Sign up'
+    click_on 'Sign up'
 
     expect(page).to have_content 'A message with a confirmation link has been sent to your email address.'
 
@@ -25,7 +25,7 @@ feature 'User can register in the system', %q(
   end
 
   scenario 'user tries to sign up with errors' do
-    click_button 'Sign up'
+    click_on 'Sign up'
 
     expect(page).to have_content "Email can't be blank"
     expect(page).to have_content "Password can't be blank"
