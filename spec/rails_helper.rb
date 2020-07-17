@@ -32,16 +32,12 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
-  # FactoryBot module for RSpec
-  config.include FactoryBot::Syntax::Methods
-  # Devise module for Rspec
-  config.include Devise::Test::ControllerHelpers, type: :controller
-  # Custiom module for controllers/
-  config.include ControllerHelpers, type: :controller
-  # Custom module for features/
-  config.include FeatureHelpers, type: :feature
-  # Active storage module
   config.include ActiveStorageHelpers
+  config.include FactoryBot::Syntax::Methods
+  config.include FeatureHelpers, type: :feature
+  config.include OmniauthHelpers, type: :feature
+  config.include ControllerHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
 
   # Add js in tests
   Capybara.javascript_driver = :selenium_chrome_headless
@@ -89,3 +85,5 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+OmniAuth.config.test_mode = true
