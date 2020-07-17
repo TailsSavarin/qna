@@ -48,4 +48,7 @@ div id="answer-#{answer.id}"
         .answer-action-buttons.float-right
           = link_to 'Edit Answer', '#', class: 'text-secondary edit-answer-link', data: { answer_id: answer.id }
           |  
-          = link_to 'Delete Answer', answer_path(answer), class: 'text-secondary', method: :delete, remote: true, data: { confirm: 'Are you sure?' }
+          = link_to 'Delete Answer', answer_path(answer), class: 'text-secondary',
+                                                          method: :delete,
+                                                          remote: true,
+                                                          data: { confirm: 'Are you sure?' }

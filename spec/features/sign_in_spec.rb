@@ -11,26 +11,32 @@ feature 'User can sign in', %q(
 
   describe 'registered user tries to sign in' do
     scenario 'with confirmed email' do
-      fill_in 'Email', with: confirmed_user.email
-      fill_in 'Password', with: confirmed_user.password
-      click_on 'Log in'
+      within '.card-body' do
+        fill_in 'Email', with: confirmed_user.email
+        fill_in 'Password', with: confirmed_user.password
+        click_on 'Log in'
+      end
 
       expect(page).to have_content 'Signed in successfully.'
     end
 
     scenario 'with unconfirmed email' do
-      fill_in 'Email', with: unconfirmed_user.email
-      fill_in 'Password', with: unconfirmed_user.password
-      click_on 'Log in'
+      within '.card-body' do
+        fill_in 'Email', with: unconfirmed_user.email
+        fill_in 'Password', with: unconfirmed_user.password
+        click_on 'Log in'
+      end
 
       expect(page).to have_content 'You have to confirm your email address before continuing.'
     end
   end
 
   scenario 'unregistered or with invalid data, user tries to sign in' do
-    fill_in 'Email', with: 'unregistered@test.com'
-    fill_in 'Password', with: '12345678'
-    click_on 'Log in'
+    within '.card-body' do
+      fill_in 'Email', with: 'unregistered@test.com'
+      fill_in 'Password', with: '12345678'
+      click_on 'Log in'
+    end
 
     expect(page).to have_content 'Invalid Email or password.'
   end
@@ -47,7 +53,6 @@ feature 'User can sign in', %q(
       OmniAuth.config.mock_auth[:github] = :invalid_credentials
       click_on 'Sign in with GitHub'
 
-      save_and_open_page
       expect(page).to have_content %(Could not authenticate you from GitHub because "Invalid credentials")
     end
   end

@@ -12,7 +12,7 @@ feature 'User can sign out', %q(
     click_on 'Log out'
 
     expect(page).to have_content 'Signed out successfully.'
-    expect(page).to have_content 'Sign in'
+    expect(page).to have_content 'Log in'
   end
 
   scenario "unauthenticated user can't sign out" do

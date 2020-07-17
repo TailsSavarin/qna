@@ -2,10 +2,11 @@
   .form-row
     .col-auto
       small= f.label :name, 'Link Name'
-      = f.text_field :name, class: 'form-control', placeholder: 'Enter Name'
+      = f.text_field :name, class: 'form-control'
     .col-auto
       small= f.label :url, 'Link URL'
       = f.text_field :url, class: 'form-control', placeholder: 'https://example.com'
     .col-auto.mt-auto
-      = link_to_remove_association 'Remove Link', f, class: 'btn btn-outline-danger',
-                                                     data: { confirm: 'Are you sure?' }
+      = link_to_remove_association 'Remove Link', f,
+                                                  class: 'btn btn-outline-danger',
+                                                  data: { confirm: 'Are you sure?' }

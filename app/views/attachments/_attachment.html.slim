@@ -3,9 +3,7 @@ div id="attachment-#{attachment.id}"
   - if current_user&.author_of?(attachment.record)
     small
       p= link_to 'Delete File', attachment_path(attachment),
-                              method: :delete,
-                              remote: true,
-                              class: 'text-secondary',
-                              data: { confirm: 'Are you sure?' }
-
-
+                                method: :delete,
+                                remote: true,
+                                class: 'text-secondary',
+                                data: { confirm: 'Are you sure?' }
