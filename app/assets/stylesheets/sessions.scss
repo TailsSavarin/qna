@@ -1,41 +1,19 @@
-.btn-login {
+.btn-session {
   border: none;
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
   margin-top: 40px;
-  padding: 9px;
+  padding: 10px;
   width: 270px;
-  text-transform: uppercase;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   color: #fff;
   background-size: 200%;
-  transition: 0.6s;
-  background-image: linear-gradient(to left, #12CBC4,#0652DD,#12CBC4);
+  transition: 0.7s;
+  background-image: linear-gradient(to left, #2d98da,#3867d6,#2d98da);
 }
 
-.btn-login:hover {
-  background-position: right;
-}
-
-.btn-signup {
-  border: none;
-  position: relative;
-  left: 50%;
-  transform: translate(-50%, 0);
-  margin-top: 10px;
-  padding: 9px;
-  width: 270px;
-  text-transform: uppercase;
-  border-radius: 6px;
-  cursor: pointer;
-  color: #fff;
-  background-size: 200%;
-  transition: 0.6s;
-  background-image: linear-gradient(to left, #FFC312,#EE5A24,#FFC312);
-}
-
-.btn-signup:hover {
+.btn-session:hover {
   background-position: right;
 }
