@@ -1,7 +1,7 @@
 .row.justify-content-center.mt-3
   .col.col-md-4
     .h2.text-center
-      | Welcome
+      = link_to image_tag('qna-logo.png', class: 'logo-session', alt: 'qna'), root_path
     .mb-3
       = render 'devise/shared/links_oauth'
     .card.shadow-lg.p-3.mb-5.bg-white.rounded
