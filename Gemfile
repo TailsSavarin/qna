@@ -11,14 +11,14 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
+# Transpile app-like JavaScript.
 gem 'webpacker', '~> 5.1'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
+# Turbolinks makes navigating your web application faster.
 gem 'turbolinks', '~> 5'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+# Build JSON APIs with ease.
 gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
+gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -28,44 +28,42 @@ gem 'jbuilder', '~> 2.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
-# Rubocop, static code analyzer and code formatter. Read more: https://github.com/rubocop-hq/rubocop-rails
+# Rubocop, static code analyzer and code formatter.
 gem 'rubocop-rails', require: false
 
-# AWS SDK Read more: https://github.com/aws/aws-sdk-ruby
-gem "aws-sdk-s3", require: false
+# AWS SDK.
+gem 'aws-sdk-s3', require: false
 
-# Slim templates generator. Read more: https://github.com/slim-template/slim-rails
+# Slim templates generator.
 gem 'slim-rails'
-# Authentication. Read more: https://github.com/heartcombo/devise
+# Authentication.
 gem 'devise'
-# Octicons. Examples: https://primer.style/octicons/ 
+# Octicons.
 gem 'octicons_helper'
-# Sending data to js files. Read more: https://github.com/gazay/gon
+# Sending data to js files.
 gem 'gon'
-# https://github.com/redis/redis-rb/
-gem 'redis'
 
-# Oauth. Read more: https://github.com/omniauth/omniauth
+# Oauth.
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 
-# Social buttons. Read more: https://github.com/gavinkflam/bootstrap-social-rails
+# Social buttons.
 gem 'bootstrap-social-rails'
 
 # Web fonts and stylesheets
 gem 'font-awesome-rails'
 
-# For nested forms. More info: https://github.com/nathanvda/cocoon
+# For nested forms.
 gem 'cocoon'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  # The RSpec testing framework. Read more: https://github.com/rspec/rspec-rails
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  # The RSpec testing framework.
   gem 'rspec-rails', '~> 4.0.0'
-  # It's a fixtures replacement with a straightforward definition syntax and more. Check description: https://github.com/thoughtbot/factory_bot_rails
+  # It's a fixtures replacement with a straightforward definition syntax and more.
   gem 'factory_bot_rails'
 end
 
@@ -73,7 +71,7 @@ group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.2'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  # Spring speeds up development by keeping your application running in the background.
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Email Preview
@@ -88,7 +86,7 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
-  # For RSpec. Read more: https://github.com/thoughtbot/shoulda-matchers
+  # For RSpec.
   gem 'shoulda-matchers'
   # Tests for controllers
   gem 'rails-controller-testing'
@@ -97,4 +95,4 @@ group :test do
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

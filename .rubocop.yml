@@ -1,17 +1,15 @@
 require: rubocop-rails
 
 AllCops:
-  Include:
-    - 'app/**/*.rb'
-    - 'lib/**/*.rb'
-    - 'lib/**/*.rake'
-    - 'config/**/*.rb'
   Exclude:
     - 'db/**/*'
     - 'bin/**/*'
-    - 'lib/**/*.rake'
     - 'config/**/*.rb'
+    - 'script/**/*.rb'
     - 'node_modules/**/*'
+    - 'spec/rails_helper.rb'
+    - 'spec/spec_helper.rb'
+    - !ruby/regexp /old_and_unused\.rb$/
 
   NewCops: enable
   DisplayCopNames: true
@@ -25,6 +23,10 @@ Layout/LineLength:
 Metrics/AbcSize:
   Max: 20
   Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
 
 Metrics/MethodLength:
   Max: 15
