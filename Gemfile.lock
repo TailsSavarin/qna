@@ -400,7 +400,7 @@ DEPENDENCIES
   puma (~> 4.1)
   rails (~> 6.0.3)
   rails-controller-testing
-  redis
+  redis (~> 4.0)
   rspec-rails (~> 4.0.0)
   rubocop-rails
   sass-rails (>= 6)
