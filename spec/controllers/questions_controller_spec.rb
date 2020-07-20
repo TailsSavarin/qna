@@ -164,9 +164,9 @@ RSpec.describe QuestionsController, type: :controller do
           }.to_not change(question, :title)
         end
 
-        it 'renders update view template' do
+        it 'renders json with forbidden status' do
           patch :update, params: { id: question, question: { title: 'Edited title' } }, format: :js
-          expect(response).to render_template :update
+          expect(response.status).to eq(403)
         end
       end
     end

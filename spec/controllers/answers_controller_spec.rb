@@ -305,7 +305,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'renders json with forbidden status' do
           post :vote_up, params: { id: answer }, format: :json
-          expect(response).to have_http_status(:forbidden)
+          expect(response.status).to eq(403)
         end
       end
     end
@@ -349,7 +349,7 @@ RSpec.describe AnswersController, type: :controller do
           }.to_not change(answer, :rating)
         end
 
-        it 'renders json with 422 status' do
+        it 'renders json with forbidden status' do
           post :vote_down, params: { id: answer }, format: :json
           expect(response.status).to eq(403)
         end
@@ -395,7 +395,7 @@ RSpec.describe AnswersController, type: :controller do
           }.to_not change(answer, :rating)
         end
 
-        it 'renders json with 422 status' do
+        it 'renders json with forbidden status' do
           post :revote, params: { id: answer }, format: :json
           expect(response.status).to eq(403)
         end
