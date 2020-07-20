@@ -38,6 +38,8 @@ gem 'aws-sdk-s3', require: false
 gem 'slim-rails'
 # Authentication.
 gem 'devise'
+# Authorization.
+gem 'cancancan'
 # Octicons.
 gem 'octicons_helper'
 # Sending data to js files.
