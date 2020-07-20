@@ -36,9 +36,9 @@ RSpec.describe AttachmentsController, type: :controller do
           }.to_not change(ActiveStorage::Attachment, :count)
         end
 
-        it 'renders destroy view template' do
+        it 'renders json with forbidden status' do
           delete :destroy, params: { id: file }, format: :js
-          expect(response).to render_template :destroy
+          expect(response.status).to eq(403)
         end
       end
     end
