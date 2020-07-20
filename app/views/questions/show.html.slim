@@ -3,5 +3,4 @@
     = link_to 'Ask Question', new_question_path, class: 'btn btn-lg btn-primary'
   .col.col-md-8
     = render @question
-    - if user_signed_in?
-      = render 'answers/form'
+    = render 'answers/form' if can?(:create, Answer)

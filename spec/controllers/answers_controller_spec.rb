@@ -145,9 +145,9 @@ RSpec.describe AnswersController, type: :controller do
             }.to_not change(answer, :body)
           end
 
-          it 'renders update view template' do
+          it 'responses with status forbidden' do
             patch :update, params: { id: answer, answer: { body: 'Edited body' } }, format: :js
-            expect(response).to render_template :update
+            expect(response.status).to eq(403)
           end
         end
       end
@@ -196,9 +196,9 @@ RSpec.describe AnswersController, type: :controller do
           }.not_to change(Answer, :count)
         end
 
-        it 'renders destroy view template' do
+        it 'responses with status forbidden' do
           delete :destroy, params: { id: answer }, format: :js
-          expect(response).to render_template :destroy
+          expect(response.status).to eq(403)
         end
       end
     end
@@ -253,8 +253,8 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer.best).to_not eq true
         end
 
-        it 'renders choose_best view template' do
-          expect(response).to render_template :choose_best
+        it 'responses with status forbidden' do
+          expect(response.status).to eq(403)
         end
       end
     end
@@ -303,9 +303,9 @@ RSpec.describe AnswersController, type: :controller do
           }.to_not change(answer, :rating)
         end
 
-        it 'renders json with 422 status' do
+        it 'renders json with forbidden status' do
           post :vote_up, params: { id: answer }, format: :json
-          expect(response.status).to eq(422)
+          expect(response).to have_http_status(:forbidden)
         end
       end
     end
@@ -351,7 +351,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'renders json with 422 status' do
           post :vote_down, params: { id: answer }, format: :json
-          expect(response.status).to eq(422)
+          expect(response.status).to eq(403)
         end
       end
     end
@@ -397,7 +397,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'renders json with 422 status' do
           post :revote, params: { id: answer }, format: :json
-          expect(response.status).to eq(422)
+          expect(response.status).to eq(403)
         end
       end
     end

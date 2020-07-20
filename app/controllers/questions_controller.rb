@@ -5,6 +5,8 @@ class QuestionsController < ApplicationController
 
   include Voted
 
+  authorize_resource
+
   def index
     @questions = Question.all
   end
@@ -34,16 +36,12 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params) if current_user&.author_of?(@question)
+    @question.update(question_params)
   end
 
   def destroy
-    if current_user&.author_of?(@question)
-      @question.destroy
-      redirect_to questions_path, notice: 'Your question successfully deleted.'
-    else
-      redirect_to questions_path, notice: "You don't have sufficient rights to delete this question."
-    end
+    @question.destroy
+    redirect_to questions_path, notice: 'Your question successfully deleted.'
   end
 
   private

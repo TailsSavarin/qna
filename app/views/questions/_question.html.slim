@@ -7,18 +7,19 @@
     .card-body
       .question-votes-rating.float-right
         .question-rating= "Rating: #{@question.rating}"
-        - if !current_user&.author_of?(@question) && user_signed_in?
-          div class="question-voting-buttons-links #{hide_button_for(@question)}"
+        div class="question-voting-buttons-links #{hide_button_for(@question)}"
+          - if can?(:vote_up, @question)
             = link_to 'Up', vote_up_question_path(@question),
                             method: :post,
                             remote: true,
                             class: 'text-secondary'
-            |  
+          |  
+          - if can?(:vote_down, @question)
             = link_to 'Down', vote_down_question_path(@question),
                               method: :post,
                               remote: true,
                               class: 'text-secondary'
-
+        - if can?(:revote, @question)
           = link_to 'Revote', revote_question_path(@question),
                               method: :post,
                               remote: true,
@@ -32,22 +33,24 @@
         = render partial: 'attachments/attachment', collection: @question.files
       div id="question-#{@question.id}-comments"
         |Comments:
-        = render @question.comments.order(:created_at)
-
-      - if user_signed_in?
+        - if @question.comments.present?
+          = render @question.comments.order(:created_at)
+      - if can?(:create, Comment)
         = render 'comments/form', commentable: @question, local: Comment.new
         .question-add-comment-link
           p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
                                            data: { commentable_type: @question.class.name.downcase,
                                                    commentable_id: @question.id }
-      - if current_user&.author_of?(@question)
+      - if can?(:update, @question)
         = render 'form_edit'
         .question-action-buttons
           = link_to 'Edit Question', '#', id: 'question-edit-link', class: 'text-secondary'
-          |  
+        |  
+        - if can?(:destroy, @question)
           = link_to 'Delete Question', question_path(@question), class: 'text-secondary',
                                                                  method: :delete,
                                                                  data: { confirm: 'Are you sure?' }
       strong Answers:
       .answers
-        = render @question.answers
+        - if @question.answers.present?
+          = render @question.answers
