@@ -214,9 +214,9 @@ RSpec.describe QuestionsController, type: :controller do
           }.not_to change(Question, :count)
         end
 
-        it 'redirects to index view' do
+        it 'redirect to root_path' do
           delete :destroy, params: { id: another_question }
-          expect(response).to redirect_to questions_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -265,9 +265,9 @@ RSpec.describe QuestionsController, type: :controller do
           }.to_not change(question, :rating)
         end
 
-        it 'renders json with 422 status' do
+        it 'renders json with forbidden status' do
           post :vote_up, params: { id: question }, format: :json
-          expect(response.status).to eq(422)
+          expect(response.status).to eq(403)
         end
       end
     end
@@ -311,9 +311,9 @@ RSpec.describe QuestionsController, type: :controller do
           }.to_not change(question, :rating)
         end
 
-        it 'renders json with 422 status' do
+        it 'renders json with forbidden status' do
           post :vote_down, params: { id: question }, format: :json
-          expect(response.status).to eq(422)
+          expect(response.status).to eq(403)
         end
       end
     end
@@ -357,9 +357,9 @@ RSpec.describe QuestionsController, type: :controller do
           }.to_not change(question, :rating)
         end
 
-        it 'renders json with 422 status' do
+        it 'renders json with forbidden status' do
           post :revote, params: { id: question }, format: :json
-          expect(response.status).to eq(422)
+          expect(response.status).to eq(403)
         end
       end
     end
