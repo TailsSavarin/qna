@@ -1,26 +1,29 @@
 require 'rails_helper'
 
-feature 'Author can edit his answer', %q(
+feature 'User can edit his answer', %q(
   In order to supplement a answer or correct errors
-  As an author
+  As an answer's author
   I'd like to be able to edit my answer
 ) do
+
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'authenticated user' do
-    context 'as an author', js: true do
+    context 'author', js: true do
       background do
         sign_in(user)
         visit question_path(question)
       end
 
-      scenario 'edits his answer' do
+      scenario 'edits the answer' do
         within '.answers' do
           click_on 'Edit Answer'
+
           fill_in 'Change Answer', with: 'Edited body'
+
           click_on 'Update Your Answer'
 
           expect(page).to_not have_content answer.body
@@ -29,17 +32,19 @@ feature 'Author can edit his answer', %q(
         end
       end
 
-      scenario 'edits his answer with errors' do
+      scenario 'edits the answer with errors' do
         within '.answers' do
           click_on 'Edit Answer'
-          fill_in 'Change Answer', with: ''
+
+          fill_in 'Change Answer', with: nil
+
           click_on 'Update Your Answer'
 
           expect(page).to have_content "Body can't be blank"
         end
       end
 
-      scenario 'adds attached files while edit his answer' do
+      scenario 'adds attached files while edit the answer' do
         within '.answers' do
           click_on 'Edit Answer'
 
@@ -56,7 +61,7 @@ feature 'Author can edit his answer', %q(
       end
     end
 
-    scenario 'non author tries to edit the answer' do
+    scenario 'not author tries to edit the answer' do
       sign_in(another_user)
       visit question_path(question)
 
@@ -66,7 +71,7 @@ feature 'Author can edit his answer', %q(
     end
   end
 
-  scenario "unauthenticated user can't edit the answer" do
+  scenario 'unauthenticated user can not edit the answer' do
     visit question_path(question)
 
     within '.answers' do

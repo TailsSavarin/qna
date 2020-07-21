@@ -1,10 +1,11 @@
 require 'rails_helper'
 
-feature 'User can add link to answer', %q(
+feature 'User can add links to answer', %q(
   In order to provide additional info to my answer
   As an answer's author
   I'd like to be able to add links
 ) do
+
   given(:user) { create(:user) }
   given(:question) { create(:question) }
   given(:bad_url) { 'www.google.com' }
@@ -17,9 +18,10 @@ feature 'User can add link to answer', %q(
     visit question_path(question)
   end
 
-  describe 'user creates question and', js: true do
+  describe 'user creates answer and', js: true do
     background do
       fill_in 'Your Answer:', with: 'Test text'
+
       click_on 'Add Link'
     end
 
@@ -34,7 +36,7 @@ feature 'User can add link to answer', %q(
       end
     end
 
-    scenario 'adds bad link' do
+    scenario 'adds link with errors' do
       fill_in 'Link Name', with: 'Google'
       fill_in 'Link URL', with: bad_url
 
@@ -49,9 +51,7 @@ feature 'User can add link to answer', %q(
 
       click_on 'Post Your Answer'
 
-      within '.answers' do
-        expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
-      end
+      expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
     end
   end
 
@@ -61,6 +61,7 @@ feature 'User can add link to answer', %q(
     scenario 'adds link' do
       within "#answer-#{answer.id}" do
         click_on 'Add Link'
+
         fill_in 'Link Name', with: 'Google'
         fill_in 'Link URL', with: good_url
 
@@ -70,7 +71,7 @@ feature 'User can add link to answer', %q(
       end
     end
 
-    scenario 'adds bad link' do
+    scenario 'adds link with errors' do
       within "#answer-#{answer.id}" do
         click_on 'Add Link'
 

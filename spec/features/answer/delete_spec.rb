@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-feature 'Author can delete his answer', %q(
+feature 'User can delete answer', %q(
   If decide that it's necessary
-  As an author
+  As an answer's author
   I'd like to be able to delete my answer
 ) do
   given(:user) { create(:user) }
@@ -11,7 +11,7 @@ feature 'Author can delete his answer', %q(
   given!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'authenticated user' do
-    scenario 'author deletes his answer', js: true do
+    scenario 'author deletes the answer', js: true do
       sign_in(user)
       visit question_path(question)
 
@@ -23,7 +23,7 @@ feature 'Author can delete his answer', %q(
       end
     end
 
-    scenario 'non author tries to delete the answer' do
+    scenario 'not author tries to delete the answer' do
       sign_in(another_user)
       visit question_path(question)
 
@@ -33,7 +33,7 @@ feature 'Author can delete his answer', %q(
     end
   end
 
-  scenario "unauthenticated user can't delete the answer" do
+  scenario 'unauthenticated user can not delete the answer' do
     visit question_path(question)
 
     within '.answers' do
