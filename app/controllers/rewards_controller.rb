@@ -1,5 +1,4 @@
 class RewardsController < ApplicationController
-
   authorize_resource
 
   def index
