@@ -1,5 +1,4 @@
 class CommentsController < ApplicationController
-  before_action :authenticate_user!
   before_action :find_commentable, only: %i[create]
   after_action :publish_comment, only: %i[create]
 
