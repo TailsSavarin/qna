@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can watch his rewards', %q(
   In order to get information about his rewards
-  As an user
+  As an reward's owner
   I'd like to be able to watch watch my rewards
 ) do
   given(:user) { create(:user) }

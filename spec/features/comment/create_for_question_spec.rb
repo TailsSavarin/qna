@@ -14,7 +14,7 @@ feature 'User can add comments to question', %q(
       visit question_path(question)
     end
 
-    scenario 'comments on the question' do
+    scenario 'adds comment to the question' do
       click_on 'Add a comment'
 
       fill_in :comment_body, with: 'Test comment'
@@ -24,21 +24,22 @@ feature 'User can add comments to question', %q(
       expect(page).to have_content 'Test comment'
     end
 
-    scenario 'comments on the question with errors' do
+    scenario 'adds comment to the question with errors' do
       click_on 'Add a comment'
+
       click_on 'Post Your Comment'
 
       expect(page).to have_content "Body can't be blank"
     end
   end
 
-  scenario 'unauthenticated user can not comments on the question' do
+  scenario 'unauthenticated user can not add comment to the question' do
     visit question_path(question)
     expect(page).to_not have_link 'Add a comment'
   end
 
   context 'multiple sessions' do
-    scenario 'comment appears on another user page', js: true do
+    scenario 'question comment appears on another user page', js: true do
       Capybara.using_session('authenticated_user') do
         sign_in(user)
         visit question_path(question)

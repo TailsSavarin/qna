@@ -15,7 +15,7 @@ feature 'User can sign out', %q(
     expect(page).to have_content 'Log in'
   end
 
-  scenario "unauthenticated user can't sign out" do
+  scenario 'unauthenticated user can not sign out' do
     expect(page).to_not have_link 'Log out'
   end
 end
