@@ -43,7 +43,7 @@ shared_examples_for 'voted' do
         }.to_not change(votable.votes, :count)
       end
 
-      it 'return unauthorized status' do
+      it 'returns unauthorized status' do
         post :vote_up, params: { id: votable }, format: :json
         expect(response).to have_http_status(:unauthorized) # 401
       end
@@ -92,7 +92,7 @@ shared_examples_for 'voted' do
         }.to_not change(votable.votes, :count)
       end
 
-      it 'return unauthorized status' do
+      it 'returns unauthorized status' do
         post :vote_down, params: { id: votable }, format: :json
         expect(response).to have_http_status(:unauthorized) # 401
       end
@@ -144,7 +144,7 @@ shared_examples_for 'voted' do
         }.to_not change(votable.votes, :count)
       end
 
-      it 'return unauthorized status' do
+      it 'returns unauthorized status' do
         delete :revote, params: { id: votable }, format: :json
         expect(response).to have_http_status(:unauthorized) # 401
       end
