@@ -14,6 +14,7 @@ feature 'User can sign in', %q(
       within '.card-body' do
         fill_in 'Email', with: confirmed_user.email
         fill_in 'Password', with: confirmed_user.password
+
         click_on 'Log in'
       end
 
@@ -24,6 +25,7 @@ feature 'User can sign in', %q(
       within '.card-body' do
         fill_in 'Email', with: unconfirmed_user.email
         fill_in 'Password', with: unconfirmed_user.password
+
         click_on 'Log in'
       end
 
@@ -35,6 +37,7 @@ feature 'User can sign in', %q(
     within '.card-body' do
       fill_in 'Email', with: 'unregistered@test.com'
       fill_in 'Password', with: '12345678'
+
       click_on 'Log in'
     end
 
@@ -44,6 +47,7 @@ feature 'User can sign in', %q(
   describe 'sign in with GitHub' do
     scenario 'user tries to sign in' do
       mock_auth_github
+
       click_on 'Sign in with GitHub'
 
       expect(page).to have_content 'Successfully authenticated from Github account.'
@@ -51,6 +55,7 @@ feature 'User can sign in', %q(
 
     scenario 'user handle authentication error' do
       OmniAuth.config.mock_auth[:github] = :invalid_credentials
+
       click_on 'Sign in with GitHub'
 
       expect(page).to have_content %(Could not authenticate you from GitHub because "Invalid credentials")
@@ -60,6 +65,7 @@ feature 'User can sign in', %q(
   describe 'sign in with Twitter' do
     scenario 'user tries to sign in' do
       mock_auth_twitter
+
       click_on 'Sign in with Twitter'
 
       expect(page).to have_content 'Successfully authenticated from Twitter account.'
@@ -67,6 +73,7 @@ feature 'User can sign in', %q(
 
     scenario 'user handle authentication error' do
       OmniAuth.config.mock_auth[:twitter] = :invalid_credentials
+
       click_on 'Sign in with Twitter'
 
       expect(page).to have_content %(Could not authenticate you from Twitter because "Invalid credentials")
@@ -76,6 +83,7 @@ feature 'User can sign in', %q(
   describe 'sign in with Facebook' do
     scenario 'user tries to sign in' do
       mock_auth_facebook
+
       click_on 'Sign in with Facebook'
 
       expect(page).to have_content 'Successfully authenticated from Facebook account.'
@@ -83,6 +91,7 @@ feature 'User can sign in', %q(
 
     scenario 'user handle authentication error' do
       OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
+
       click_on 'Sign in with Facebook'
 
       expect(page).to have_content %(Could not authenticate you from Facebook because "Invalid credentials")

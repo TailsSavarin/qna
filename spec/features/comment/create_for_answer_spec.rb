@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User can add comments to answer', %q(
+feature 'User can add comments to the answer', %q(
   In order to clarify information or correct the author
   As an authenticated user
   I'd like to be able to add comments
@@ -15,7 +15,7 @@ feature 'User can add comments to answer', %q(
       visit question_path(question)
     end
 
-    scenario 'comments on the answer' do
+    scenario 'adds comment to the answer' do
       within "#answer-#{answer.id}" do
         click_on 'Add a comment'
 
@@ -27,9 +27,10 @@ feature 'User can add comments to answer', %q(
       end
     end
 
-    scenario 'comments on the answer with errors' do
+    scenario 'adds comment to the answer with errors' do
       within "#answer-#{answer.id}" do
         click_on 'Add a comment'
+
         click_on 'Post Your Comment'
 
         expect(page).to have_content "Body can't be blank"
@@ -37,7 +38,7 @@ feature 'User can add comments to answer', %q(
     end
   end
 
-  scenario 'unauthenticated user can not comments on the answer' do
+  scenario 'unauthenticated user can not add comment to the answer' do
     visit question_path(question)
     within "#answer-#{answer.id}" do
       expect(page).to_not have_link 'Add a comment'
@@ -45,7 +46,7 @@ feature 'User can add comments to answer', %q(
   end
 
   context 'multiple sessions' do
-    scenario 'comment appears on another user page', js: true do
+    scenario 'answer comment appears on another user page', js: true do
       Capybara.using_session('authenticated_user') do
         sign_in(user)
         visit question_path(question)

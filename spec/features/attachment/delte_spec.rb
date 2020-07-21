@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-feature 'Author can delete files from question/answer', %q(
+feature 'User can delete files from question or answer', %q(
   In order to delete excess or unnecessary files
-  As an author
+  As an file's author
   I'd like to be able to delete attached files
 ) do
   given(:user) { create(:user) }
@@ -47,20 +47,20 @@ feature 'Author can delete files from question/answer', %q(
       end
     end
 
-    context 'non author' do
+    context 'not author' do
       background do
         sign_in(another_user)
         visit question_path(question)
       end
 
-      scenario 'tries to delete attache files from the question' do
+      scenario 'tries to delete attached files from the question' do
         within '#question' do
           expect(page).to have_content 'test.jpg'
           expect(page).to_not have_link 'Delete File'
         end
       end
 
-      scenario 'tries to delete attache files from the answer' do
+      scenario 'tries to delete attached files from the answer' do
         within '.answers' do
           expect(page).to have_content 'test.png'
           expect(page).to_not have_link 'Delete File'
@@ -72,14 +72,14 @@ feature 'Author can delete files from question/answer', %q(
   describe 'unauthenticated user' do
     background { visit question_path(question) }
 
-    scenario 'can not delete attache files from the question' do
+    scenario 'can not delete attached files from the question' do
       within '#question' do
         expect(page).to have_content 'test.jpg'
         expect(page).to_not have_link 'Delete File'
       end
     end
 
-    scenario 'can not delete attache files from the answer' do
+    scenario 'can not delete attached files from the answer' do
       within '.answers' do
         expect(page).to have_content 'test.png'
         expect(page).to_not have_link 'Delete File'
