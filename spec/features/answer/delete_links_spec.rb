@@ -5,7 +5,6 @@ feature 'User can delete link from the answer', %q(
   As an answer's author
   I'd like to be able to delete links
 ) do
-
   given(:user) { create(:user) }
   given(:question) { create(:question) }
   given(:url) { 'https://www.yandex.ru' }

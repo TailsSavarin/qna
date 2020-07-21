@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User can add link to question', %q(
+feature 'User can add link to the question', %q(
   In order to provide additional info to my question
   As an question's author
   I'd like to be able to add links
@@ -23,6 +23,7 @@ feature 'User can add link to question', %q(
     scenario 'adds link' do
       within '#links' do
         click_on 'Add Link'
+
         fill_in 'Link Name', with: 'Google'
         fill_in 'Link URL', with: good_url
       end
@@ -34,9 +35,10 @@ feature 'User can add link to question', %q(
       end
     end
 
-    scenario 'adds bad link' do
+    scenario 'adds link with errors' do
       within '#links' do
         click_on 'Add Link'
+
         fill_in 'Name', with: 'Google'
         fill_in 'URL', with: bad_url
       end
@@ -49,6 +51,7 @@ feature 'User can add link to question', %q(
     scenario 'adds gist link' do
       within '#links' do
         click_on 'Add Link'
+
         fill_in 'Name', with: 'Gist'
         fill_in 'URL', with: gist_url
       end
@@ -70,6 +73,7 @@ feature 'User can add link to question', %q(
     scenario 'adds link' do
       within '#edit-question' do
         click_on 'Add Link'
+
         fill_in 'Link Name', with: 'Google'
         fill_in 'Link URL', with: good_url
 
@@ -81,9 +85,10 @@ feature 'User can add link to question', %q(
       end
     end
 
-    scenario 'adds bad link' do
+    scenario 'adds link with errors' do
       within '#edit-question' do
         click_on 'Add Link'
+
         fill_in 'Link Name', with: 'Google'
         fill_in 'Link URL', with: bad_url
 
@@ -96,6 +101,7 @@ feature 'User can add link to question', %q(
     scenario 'adds gist link' do
       within '#edit-question' do
         click_on 'Add Link'
+
         fill_in 'Link Name', with: 'Gist'
         fill_in 'Link URL', with: gist_url
 

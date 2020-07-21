@@ -14,7 +14,7 @@ feature 'User can create the question', %q(
       click_on 'Ask Question'
     end
 
-    scenario 'creates a question' do
+    scenario 'creates the question' do
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'text text text'
 
@@ -25,7 +25,7 @@ feature 'User can create the question', %q(
       expect(page).to have_content 'text text text'
     end
 
-    scenario 'creates question with errors' do
+    scenario 'creates the question with errors' do
       click_on 'Create Your Question'
 
       expect(page).to have_content "Title can't be blank"
@@ -48,7 +48,7 @@ feature 'User can create the question', %q(
     end
   end
 
-  scenario 'unauthenticated user tries to ask a question' do
+  scenario 'unauthenticated user tries to ask the question' do
     visit questions_path
 
     click_on 'Ask Question'

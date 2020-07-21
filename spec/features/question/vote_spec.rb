@@ -1,18 +1,18 @@
 require 'rails_helper'
 
-feature 'Authenticated user can vote for the question that he liked', %q(
+feature 'User can vote for the question that he liked', %q(
   In order to highlight the question
   As an authenticated user
   I'd like to be able to vote
 ) do
   given(:user) { create(:user) }
-  given!(:question) { create(:question, user: user) }
   given!(:another_question) { create(:question) }
+  given!(:question) { create(:question, user: user) }
 
   describe 'authenticated user', js: true do
     background { sign_in(user) }
 
-    context 'author of the question' do
+    context 'author' do
       background { visit question_path(question) }
 
       scenario 'cannot vote for his question' do
@@ -21,7 +21,7 @@ feature 'Authenticated user can vote for the question that he liked', %q(
       end
     end
 
-    context 'not author of the question' do
+    context 'not author' do
       background { visit question_path(another_question) }
 
       scenario 'votes up for the question' do

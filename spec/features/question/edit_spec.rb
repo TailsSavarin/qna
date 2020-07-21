@@ -1,19 +1,20 @@
 require 'rails_helper'
 
-feature 'Author can edit his question', %q(
+feature 'User can edit his question', %q(
   In order to supplement a question or correct errors
-  As an author
-  I'd like to be able to edit my question
+  As an question's author
+  I'd like to be able to edit question
 ) do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
   describe 'authenticated user' do
-    context 'as an author', js: true do
+    context 'author', js: true do
       background do
         sign_in(user)
         visit question_path(question)
+
         click_on 'Edit Question'
       end
 
@@ -21,6 +22,7 @@ feature 'Author can edit his question', %q(
         within '#question' do
           fill_in 'Title', with: 'Edited title'
           fill_in 'Body', with: 'Edited body'
+
           click_on 'Update Your Question'
 
           expect(page).to_not have_content question.title
@@ -35,6 +37,7 @@ feature 'Author can edit his question', %q(
         within '#question' do
           fill_in 'Title', with: ''
           fill_in 'Body', with: ''
+
           click_on 'Update Your Question'
 
           expect(page).to have_content "Title can't be blank"
@@ -57,7 +60,7 @@ feature 'Author can edit his question', %q(
       end
     end
 
-    scenario 'non author tries to edit the question' do
+    scenario 'not author tries to edit the question' do
       sign_in(another_user)
       visit question_path(question)
 
@@ -65,7 +68,7 @@ feature 'Author can edit his question', %q(
     end
   end
 
-  scenario "unauthenticated user can't edit the question" do
+  scenario 'unauthenticated user can not edit the question' do
     visit question_path(question)
 
     expect(page).not_to have_link 'Edit Question'

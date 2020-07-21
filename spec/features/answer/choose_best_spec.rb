@@ -5,7 +5,6 @@ feature 'User can choose the best answer to his question', %q(
   As an question's author
   I'd like to be able to choose the best answer for my question
 ) do
-
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }

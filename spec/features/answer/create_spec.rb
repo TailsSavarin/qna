@@ -5,7 +5,6 @@ feature 'User can write the answer to the question', %q(
   As an authenticated user
   I'd like to be able to write the answer
 ) do
-
   given(:user) { create(:user) }
   given!(:question) { create(:question) }
 

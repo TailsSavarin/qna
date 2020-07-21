@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User can watch the question and answers to it', %q(
+feature 'User can watch the question and answers for him', %q(
   In order to get the information that interests him
   As an user
   I'd like to be able to watch the question and answers to it
@@ -9,7 +9,7 @@ feature 'User can watch the question and answers to it', %q(
   given(:question) { create(:question) }
   given!(:answers) { create_list(:answer, 2, question: question) }
 
-  scenario 'authenticated user tries to watch the question and answers to it' do
+  scenario 'authenticated user tries to watch the question' do
     sign_in(user)
     visit question_path(question)
 
@@ -18,7 +18,7 @@ feature 'User can watch the question and answers to it', %q(
     answers.each { |answer| expect(page).to have_content answer.body }
   end
 
-  scenario 'unauthenticated user tries to watch the question and answers to it' do
+  scenario 'unauthenticated user tries to watch the question' do
     visit question_path(question)
 
     expect(page).to have_content question.title
