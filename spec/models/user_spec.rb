@@ -13,8 +13,8 @@ RSpec.describe User, type: :model do
   end
 
   describe '.find_for_oauth' do
-    let(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456') }
     let(:service) { double('FindForOauthSerivce') }
+    let(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456') }
 
     it 'calls FindForOauthService' do
       expect(FindForOauthService).to receive(:new).with(auth).and_return(service)
@@ -24,11 +24,11 @@ RSpec.describe User, type: :model do
   end
 
   describe '#author_of?' do
-    it 'author of the resource' do
+    it 'returns true if user is an author of the resource' do
       expect(user).to be_author_of(question)
     end
 
-    it 'not author of the resource' do
+    it 'returns false if user in not an author of the resource' do
       expect(user).not_to be_author_of(another_question)
     end
   end
@@ -36,11 +36,11 @@ RSpec.describe User, type: :model do
   describe '#voted_for?' do
     let!(:vote) { create(:vote, user: user, votable: another_question) }
 
-    it 'voted for the resource' do
+    it 'returns true if user voted for the resource' do
       expect(user).to be_voted_for(another_question)
     end
 
-    it 'not voted for the resource' do
+    it 'returns false if user not voted for the resource' do
       expect(user).to_not be_voted_for(question)
     end
   end

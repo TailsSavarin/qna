@@ -20,6 +20,10 @@ Layout/LineLength:
   Exclude:
     - 'spec/**/*.rb'
 
+Layout/FirstHashElementIndentation:
+  Exclude:
+    - 'spec/**/*.rb'
+
 Metrics/AbcSize:
   Max: 20
   Enabled: false
