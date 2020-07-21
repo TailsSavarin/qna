@@ -12,7 +12,7 @@ RSpec.describe AttachmentsController, type: :controller do
     let(:files) { question.files }
 
     context 'authenticated user' do
-      context 'author' do
+      context 'author of the question' do
         before { login(user) }
 
         it 'deletes file from the database' do
@@ -21,38 +21,38 @@ RSpec.describe AttachmentsController, type: :controller do
           }.to change(ActiveStorage::Attachment, :count).by(-1)
         end
 
-        it 'renders destroy view template' do
+        it 'renders destroy template' do
           delete :destroy, params: { id: file }, format: :js
           expect(response).to render_template :destroy
         end
       end
 
-      context 'non author' do
+      context 'not author of the question' do
         before { login(another_user) }
 
-        it 'dose not deletes file from the database' do
+        it 'does not delete file from the database' do
           expect {
             delete :destroy, params: { id: file }, format: :js
           }.to_not change(ActiveStorage::Attachment, :count)
         end
 
-        it 'renders json with forbidden status' do
+        it 'returns forbidden status' do
           delete :destroy, params: { id: file }, format: :js
-          expect(response.status).to eq(403)
+          expect(response).to have_http_status(:forbidden) # 403
         end
       end
     end
 
     context 'unauthenticated user' do
-      it 'does not deletes file from the database' do
+      it 'does not delete file from the database' do
         expect {
           delete :destroy, params: { id: file }, format: :js
         }.to_not change(ActiveStorage::Attachment, :count)
       end
 
-      it 'responses with status 401' do
+      it 'returns unauthorized status' do
         delete :destroy, params: { id: file }, format: :js
-        expect(response.status).to eq(401)
+        expect(response).to have_http_status(:unauthorized) # 401
       end
     end
   end

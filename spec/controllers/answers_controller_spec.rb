@@ -39,9 +39,9 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    let(:answers) { question.answers }
     let(:question) { create(:question) }
     let(:answer) { create(:answer, question: question, user: user) }
-    let(:answers) { question.answers }
 
     context 'authenticated user' do
       before { login(user) }
