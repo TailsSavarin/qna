@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe RewardsController, type: :controller do
   let(:user) { create(:user) }
-  let(:user_rewards) { create_list(:reward, 5, user: user) }
+  let(:user_rewards) { create_list(:reward, 2, user: user) }
 
   describe 'GET #index' do
     before do
