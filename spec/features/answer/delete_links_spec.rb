@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 feature 'User can delete link from the answer', %q(
-  In order to remove unnecessary or excess links from my answer
-  As an answers's author
+  In order to remove unnecessary or excess links
+  As an answer's author
   I'd like to be able to delete links
 ) do
+
   given(:user) { create(:user) }
   given(:question) { create(:question) }
   given(:url) { 'https://www.yandex.ru' }
@@ -16,7 +17,7 @@ feature 'User can delete link from the answer', %q(
     visit question_path(question)
   end
 
-  scenario 'user creates answer and deletes excess link', js: true do
+  scenario 'user creates answer and deletes link', js: true do
     within '.new-answer' do
       click_on 'Add Link'
 
@@ -34,7 +35,7 @@ feature 'User can delete link from the answer', %q(
     expect(page).to_not have_link 'Yandex', href: url
   end
 
-  scenario 'user edits answer and deletes excess link', js: true do
+  scenario 'author edits answer and deletes link', js: true do
     expect(page).to have_link link.name, href: link.url
 
     click_on 'Edit Answer'
