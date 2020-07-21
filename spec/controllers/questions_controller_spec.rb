@@ -104,7 +104,7 @@ RSpec.describe QuestionsController, type: :controller do
           }.to_not change(Question, :count)
         end
 
-        it 'renders new template' do
+        it 're-renders new template' do
           post :create, params: { question: attributes_for(:question, :invalid) }
           expect(response).to render_template :new
         end
@@ -172,7 +172,7 @@ RSpec.describe QuestionsController, type: :controller do
           }.to_not change(question, :title)
         end
 
-        it 'return forbidden status' do
+        it 'returns forbidden status' do
           patch :update, params: { id: question, question: { title: 'NewTitle' } }, format: :js
           expect(response).to have_http_status(:forbidden) # 403
         end
@@ -186,7 +186,7 @@ RSpec.describe QuestionsController, type: :controller do
         }.to_not change(question, :title)
       end
 
-      it 'return unauthorized status' do
+      it 'returns unauthorized status' do
         patch :update, params: { id: question, question: { title: 'NewTitle' } }, format: :js
         expect(response).to have_http_status(:unauthorized) # 401
       end

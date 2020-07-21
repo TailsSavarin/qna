@@ -1,22 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  it_behaves_like 'voted'
+
   let(:user) { create(:user) }
   let(:another_user) { create(:user) }
 
   describe 'GET #show' do
     let(:answer) { create(:answer) }
 
-    before do
-      login(user)
-      get :show, params: { id: answer }
-    end
+    before { get :show, params: { id: answer } }
 
     it 'assigns the requested answer to @answer' do
       expect(assigns(:answer)).to eq answer
     end
 
-    it 'renders show view template' do
+    it 'renders show template' do
       expect(response).to render_template :show
     end
   end
@@ -30,124 +29,117 @@ RSpec.describe AnswersController, type: :controller do
       get :new, params: { question_id: question }
     end
 
-    it 'assigns a new Answer to @answer' do
+    it 'assigns a new answer to @answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
-    it 'renders new view template' do
+    it 'renders new template' do
       expect(response).to render_template :new
     end
   end
 
   describe 'POST #create' do
     let(:question) { create(:question) }
-    let!(:answer) { create(:answer, question: question, user: user) }
+    let(:answer) { create(:answer, question: question, user: user) }
     let(:answers) { question.answers }
 
     context 'authenticated user' do
       before { login(user) }
 
       context 'with valid attributes' do
-        it 'saves a new Answer in the database' do
+        it 'saves a new answer in the database' do
           expect {
-            post :create, params: { question_id: question,
-                                    answer: attributes_for(:answer) }, format: :js
+            post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
           }.to change(answers, :count).by(1)
         end
 
         it 'user is author of the answer' do
-          post :create, params: { question_id: question,
-                                  answer: attributes_for(:answer) }, format: :js
+          post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
           expect(user).to be_author_of(assigns(:answer))
         end
 
-        it 'renders create view template' do
-          post :create, params: { question_id: question,
-                                  answer: attributes_for(:answer) }, format: :js
+        it 'renders create template' do
+          post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
           expect(response).to render_template :create
         end
       end
 
       context 'with invalid attributes' do
-        it 'does not saves answer in the database' do
+        it 'does not save answer in the database' do
           expect {
-            post :create, params: { question_id: question,
-                                    answer: attributes_for(:answer, :invalid) }, format: :js
+            post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js
           }.to_not change(answers, :count)
         end
 
-        it 'renders create view template' do
-          post :create, params: { question_id: question,
-                                  answer: attributes_for(:answer, :invalid) }, format: :js
+        it 'renders create template' do
+          post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js
           expect(response).to render_template :create
         end
       end
     end
 
     context 'unauthenticated user' do
-      it 'does not saves answer in the database' do
+      it 'does not save answer in the database' do
         expect {
-          post :create, params: { question_id: question,
-                                  answer: attributes_for(:answer) }, format: :js
+          post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
         }.to_not change(answers, :count)
       end
 
-      it 'responses with status 401' do
-        post :create, params: { question_id: question,
-                                answer: attributes_for(:answer) }, format: :js
-        expect(response.status).to eq(401)
+      it 'returns unauthorized status' do
+        post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
+        expect(response).to have_http_status(:unauthorized) # 401
       end
     end
   end
 
   describe 'PATCH #update' do
     let(:question) { create(:question) }
-    let!(:answer) { create(:answer, question: question, user: user) }
+    let(:answer) { create(:answer, question: question, user: user) }
 
     context 'authenticated user' do
-      context 'auhtor' do
+      context 'auhtor of the answer' do
         before { login(user) }
 
         context 'with valid attributes' do
           it 'changes answer attributes' do
-            patch :update, params: { id: answer, answer: { body: 'Edited body' } }, format: :js
+            patch :update, params: { id: answer, answer: { body: 'NewBody' } }, format: :js
+
             answer.reload
-            expect(answer.body).to eq 'Edited body'
+
+            expect(answer.body).to eq 'NewBody'
           end
 
-          it 'renders update view template' do
-            patch :update, params: { id: answer, answer: { body: 'Edited body' } }, format: :js
+          it 'renders update template' do
+            patch :update, params: { id: answer, answer: { body: 'NewBody' } }, format: :js
             expect(response).to render_template :update
           end
         end
 
         context 'with ivalid attributes' do
-          it 'does not changes answer attributes' do
+          it 'does not change answer attributes' do
             expect {
-              patch :update, params: { id: answer,
-                                       answer: attributes_for(:answer, :invalid) }, format: :js
+              patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
             }.to_not change(answer, :body)
           end
 
           it 'renders update view template' do
-            patch :update, params: { id: answer,
-                                     answer: attributes_for(:answer, :invalid) }, format: :js
+            patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
             expect(response).to render_template :update
           end
         end
 
-        context 'non author' do
+        context 'not author of the answer' do
           before { login(another_user) }
 
-          it 'does not changes answer attributes' do
+          it 'does not change answer attributes' do
             expect {
-              patch :update, params: { id: answer, answer: { body: 'Edited body' } }, format: :js
+              patch :update, params: { id: answer, answer: { body: 'NewBody' } }, format: :js
             }.to_not change(answer, :body)
           end
 
-          it 'responses with status forbidden' do
-            patch :update, params: { id: answer, answer: { body: 'Edited body' } }, format: :js
-            expect(response.status).to eq(403)
+          it 'returns forbidden status' do
+            patch :update, params: { id: answer, answer: { body: 'NewBody' } }, format: :js
+            expect(response).to have_http_status(:forbidden) # 403
           end
         end
       end
@@ -156,13 +148,13 @@ RSpec.describe AnswersController, type: :controller do
     context 'unauthenticated user' do
       it 'does not change answer attributes' do
         expect {
-          patch :update, params: { id: answer, answer: { body: 'Edited body' } }, format: :js
+          patch :update, params: { id: answer, answer: { body: 'NewBody' } }, format: :js
         }.to_not change(answer, :body)
       end
 
-      it 'responses with status 401' do
-        post :update, params: { id: answer, answer: { body: 'Edited body' } }, format: :js
-        expect(response.status).to eq(401)
+      it 'returns unauthorized status' do
+        post :update, params: { id: answer, answer: { body: 'NewBody' } }, format: :js
+        expect(response).to have_http_status(:unauthorized) # 401
       end
     end
   end
@@ -172,7 +164,7 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer) { create(:answer, question: question, user: user) }
 
     context 'authenticated user' do
-      context 'author' do
+      context 'author of the answer' do
         before { login(user) }
 
         it 'deletes answer from the database' do
@@ -181,38 +173,38 @@ RSpec.describe AnswersController, type: :controller do
           }.to change(Answer, :count).by(-1)
         end
 
-        it 'renders destroy view template' do
+        it 'renders destroy template' do
           delete :destroy, params: { id: answer }, format: :js
           expect(response).to render_template :destroy
         end
       end
 
-      context 'non author' do
+      context 'not author of the answer' do
         before { login(another_user) }
 
-        it "doesn't deletes answer from the database" do
+        it 'does not delete answer from the database' do
           expect {
             delete :destroy, params: { id: answer }, format: :js
           }.not_to change(Answer, :count)
         end
 
-        it 'responses with status forbidden' do
+        it 'returns forbidden status' do
           delete :destroy, params: { id: answer }, format: :js
-          expect(response.status).to eq(403)
+          expect(response).to have_http_status(:forbidden) # 403
         end
       end
     end
 
     context 'unauthenticated user' do
-      it 'does not deletes answer from the database' do
+      it 'does not delete answer from the database' do
         expect {
           delete :destroy, params: { id: answer }, format: :js
         }.not_to change(Answer, :count)
       end
 
-      it 'responses with status 401' do
+      it 'returns unauthorized status' do
         delete :destroy, params: { id: answer }, format: :js
-        expect(response.status).to eq(401)
+        expect(response).to have_http_status(:unauthorized) # 401
       end
     end
   end
@@ -222,7 +214,7 @@ RSpec.describe AnswersController, type: :controller do
     let(:answer) { create(:answer, question: question) }
 
     context 'authenticated user' do
-      context 'author' do
+      context 'author of the question' do
         before do
           login(user)
           post :choose_best, params: { id: answer }, format: :js
@@ -234,27 +226,29 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'updates best attribute' do
           answer.reload
+
           expect(answer.best).to eq true
         end
 
-        it 'renders choose_best view template' do
+        it 'renders choose best template' do
           expect(response).to render_template :choose_best
         end
       end
 
-      context 'non author' do
+      context 'not author of the question' do
         before do
           login(another_user)
           post :choose_best, params: { id: answer }, format: :js
         end
 
-        it 'does not updates best attribute' do
+        it 'does not update best attribute' do
           answer.reload
+
           expect(answer.best).to_not eq true
         end
 
-        it 'responses with status forbidden' do
-          expect(response.status).to eq(403)
+        it 'returns forbidden status' do
+          expect(response).to have_http_status(:forbidden) # 403
         end
       end
     end
@@ -262,151 +256,14 @@ RSpec.describe AnswersController, type: :controller do
     context 'unauthenticated user' do
       before { post :choose_best, params: { id: answer }, format: :js }
 
-      it 'does not updates best attribute' do
+      it 'does not update best attribute' do
         answer.reload
+
         expect(answer.best).to_not eq true
       end
 
-      it 'responses with status 401' do
-        expect(response.status).to eq(401)
-      end
-    end
-  end
-
-  describe 'POST #vote_up' do
-    let!(:answer) { create(:answer, user: another_user) }
-
-    context 'authenticated user' do
-      context 'not author of the answer' do
-        before { login(user) }
-
-        it 'create vote up' do
-          expect {
-            post :vote_up, params: { id: answer }, format: :json
-          }.to change(answer, :rating).by(1)
-        end
-
-        it 'renders json with answer id and rating' do
-          rendered_body = { id: answer.id, rating: answer.rating + 1 }.to_json
-
-          post :vote_up, params: { id: answer }, format: :json
-          expect(response.body).to eq rendered_body
-        end
-      end
-
-      context 'author of the answer' do
-        before { login(another_user) }
-
-        it 'does not create vote up' do
-          expect {
-            post :vote_up, params: { id: answer }, format: :json
-          }.to_not change(answer, :rating)
-        end
-
-        it 'renders json with forbidden status' do
-          post :vote_up, params: { id: answer }, format: :json
-          expect(response.status).to eq(403)
-        end
-      end
-    end
-
-    context 'unauthenticated user' do
-      it 'does not create vote up' do
-        expect {
-          post :vote_up, params: { id: answer }, format: :json
-        }.to_not change(answer, :rating)
-      end
-    end
-  end
-
-  describe 'POST #vote_down' do
-    let!(:answer) { create(:answer, user: another_user) }
-
-    context 'authenticated user' do
-      context 'not author of the answer' do
-        before { login(user) }
-
-        it 'create vote down' do
-          expect {
-            post :vote_down, params: { id: answer }, format: :json
-          }.to change(answer, :rating).by(-1)
-        end
-
-        it 'renders json with answer id and rating' do
-          rendered_body = { id: answer.id, rating: answer.rating - 1 }.to_json
-
-          post :vote_down, params: { id: answer }, format: :json
-          expect(response.body).to eq rendered_body
-        end
-      end
-
-      context 'author of the answer' do
-        before { login(another_user) }
-
-        it 'does not create vote down' do
-          expect {
-            post :vote_down, params: { id: answer }, format: :json
-          }.to_not change(answer, :rating)
-        end
-
-        it 'renders json with forbidden status' do
-          post :vote_down, params: { id: answer }, format: :json
-          expect(response.status).to eq(403)
-        end
-      end
-    end
-
-    context 'unauthenticated user' do
-      it 'does not create vote down' do
-        expect {
-          post :vote_down, params: { id: answer }, format: :json
-        }.to_not change(answer, :rating)
-      end
-    end
-  end
-
-  describe 'POST #revote' do
-    let!(:answer) { create(:answer, user: another_user) }
-    let!(:vote) { create(:vote, user: user, value: 1, votable: answer) }
-
-    context 'authenticated user' do
-      context 'not author of the answer' do
-        before { login(user) }
-
-        it 're-vote votes' do
-          expect {
-            post :revote, params: { id: answer }, format: :json
-          }.to change(answer, :rating).by(-1)
-        end
-
-        it 'renders json with answer id and rating' do
-          post :revote, params: { id: answer }, format: :json
-          rendered_body = { id: answer.id, rating: answer.rating }.to_json
-          expect(response.body).to eq rendered_body
-        end
-      end
-
-      context 'author of the answer' do
-        before { login(another_user) }
-
-        it 'dose not make re-vote' do
-          expect {
-            post :revote, params: { id: answer }, format: :json
-          }.to_not change(answer, :rating)
-        end
-
-        it 'renders json with forbidden status' do
-          post :revote, params: { id: answer }, format: :json
-          expect(response.status).to eq(403)
-        end
-      end
-    end
-
-    context 'unauthenticated user' do
-      it 'dose not make re-vote' do
-        expect {
-          post :revote, params: { id: answer }, format: :json
-        }.to_not change(answer, :rating)
+      it 'returns unauthorized status' do
+        expect(response).to have_http_status(:unauthorized) # 401
       end
     end
   end
