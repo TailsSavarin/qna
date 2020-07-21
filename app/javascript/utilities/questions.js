@@ -18,4 +18,8 @@ $(document).on('turbolinks:load', function(){
     $(`#question .question-revote-link`).hide();
     $(`#question .question-rating`).html('Rating: ' + question.rating);
   })
+
+  .on('ajax:error', function(e) {
+    window.location = 'http://localhost:3000/403'
+  })
 });

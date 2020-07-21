@@ -2,7 +2,7 @@ shared_examples_for 'voted' do
   let(:votable) { create(described_class.controller_name.singularize.to_sym, user: another_user) }
 
   describe 'POST #vote_up' do
-    context 'authorized user' do
+    context 'authenticated user' do
       context 'not author of the votable' do
         before { login(user) }
 
@@ -36,22 +36,22 @@ shared_examples_for 'voted' do
       end
     end
 
-    context 'unauthorized user' do
+    context 'unauthenticated user' do
       it 'does not create vote up' do
         expect {
           post :vote_up, params: { id: votable }, format: :json
         }.to_not change(votable.votes, :count)
       end
 
-      it 'returns forbidden status' do
+      it 'return unauthorized status' do
         post :vote_up, params: { id: votable }, format: :json
-        expect(response).to have_http_status(:forbidden) # 403
+        expect(response).to have_http_status(:unauthorized) # 401
       end
     end
   end
 
   describe 'POST #vote_down' do
-    context 'authorized user' do
+    context 'authenticated user' do
       context 'not author of the votable' do
         before { login(user) }
 
@@ -85,16 +85,16 @@ shared_examples_for 'voted' do
       end
     end
 
-    context 'unauthorized user' do
+    context 'unauthenticated user' do
       it 'does not create vote down' do
         expect {
           post :vote_down, params: { id: votable }, format: :json
         }.to_not change(votable.votes, :count)
       end
 
-      it 'returns forbidden status' do
+      it 'return unauthorized status' do
         post :vote_down, params: { id: votable }, format: :json
-        expect(response).to have_http_status(:forbidden) # 403
+        expect(response).to have_http_status(:unauthorized) # 401
       end
     end
   end
@@ -102,7 +102,7 @@ shared_examples_for 'voted' do
   describe 'POST #revote' do
     let!(:vote) { create(:vote, user: user, value: 1, votable: votable) }
 
-    context 'authorized user' do
+    context 'authenticated user' do
       context 'not author of the votable' do
         before { login(user) }
 
@@ -137,16 +137,16 @@ shared_examples_for 'voted' do
       end
     end
 
-    context 'unauthorized user' do
+    context 'unauthenticated user' do
       it 'dose not remove past vote' do
         expect {
           post :revote, params: { id: votable }, format: :json
         }.to_not change(votable.votes, :count)
       end
 
-      it 'returns forbidden status' do
+      it 'return unauthorized status' do
         delete :revote, params: { id: votable }, format: :json
-        expect(response).to have_http_status(:forbidden) # 403
+        expect(response).to have_http_status(:unauthorized) # 401
       end
     end
   end

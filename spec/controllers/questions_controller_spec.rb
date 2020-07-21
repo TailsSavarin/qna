@@ -76,7 +76,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     let(:question) { create(:question, user: user) }
 
-    context 'authorized user' do
+    context 'authenticated user' do
       before { login(user) }
 
       context 'with valid attributes' do
@@ -111,7 +111,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'unauthorized user' do
+    context 'unauthenticated user' do
       it 'does not saves question in the database' do
         expect {
           post :create, params: { question: attributes_for(:question) }
@@ -128,7 +128,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
     let(:question) { create(:question, user: user) }
 
-    context 'authorized user' do
+    context 'authenticated user' do
       context 'author of the question' do
         before { login(user) }
 
@@ -179,16 +179,16 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'unauthorized user' do
+    context 'unauthenticated user' do
       it 'does not change question attributes' do
         expect {
           patch :update, params: { id: question, question: { title: 'NewTitle' } }, format: :js
         }.to_not change(question, :title)
       end
 
-      it 'return forbidden status' do
+      it 'return unauthorized status' do
         patch :update, params: { id: question, question: { title: 'NewTitle' } }, format: :js
-        expect(response).to have_http_status(:forbidden) # 403
+        expect(response).to have_http_status(:unauthorized) # 401
       end
     end
   end
@@ -197,7 +197,7 @@ RSpec.describe QuestionsController, type: :controller do
     let!(:another_question) { create(:question) }
     let!(:question) { create(:question, user: user) }
 
-    context 'authorized user' do
+    context 'authenticated user' do
       context 'author of the question' do
         before { login(user) }
 
@@ -229,7 +229,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'unauthorized user' do
+    context 'unauthenticated user' do
       it 'does not delete quesiton from the database' do
         expect {
           delete :destroy, params: { id: question }
