@@ -2,10 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Link, type: :model do
   let(:question) { create(:question) }
-  let(:gist_link) do
-    create(:link, :for_question, linkable: question, name: 'Gist',
-                                 url: 'https://gist.github.com/Test/123')
-  end
+  let(:ordinary_link) { create(:link, :for_question, linkable: question) }
+  let(:gist_link) { create(:link, :for_question, linkable: question, url: 'https://gist.github.com/Test/123') }
 
   describe 'associations' do
     it { should belong_to(:linkable) }
@@ -18,13 +16,11 @@ RSpec.describe Link, type: :model do
   end
 
   describe '#gist?' do
-    let(:ordinary_link) { create(:link, :for_question, linkable: question) }
-
-    it 'gist' do
+    it 'returns true if link is a gist' do
       expect(gist_link).to be_gist
     end
 
-    it 'not the gist' do
+    it 'returns false if link is not a gist' do
       expect(ordinary_link).to_not be_gist
     end
   end

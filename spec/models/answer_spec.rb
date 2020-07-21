@@ -29,10 +29,10 @@ RSpec.describe Answer, type: :model do
 
   describe '#select_best' do
     let!(:answer) { create(:answer, user: user, question: question) }
-    let!(:best_answer) { create(:answer, user: another_user, question: question, best: true) }
     let!(:reward) { create(:reward, user: another_user, question: question) }
+    let!(:best_answer) { create(:answer, user: another_user, question: question, best: true) }
 
-    it 'select answer as best' do
+    it 'selects answer as best' do
       answer.select_best
 
       expect(best_answer.reload.best).to eq false
