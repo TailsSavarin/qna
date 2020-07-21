@@ -5,7 +5,6 @@ feature 'User can edit his answer', %q(
   As an answer's author
   I'd like to be able to edit my answer
 ) do
-
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question) }

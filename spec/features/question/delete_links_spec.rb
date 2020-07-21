@@ -12,7 +12,7 @@ feature 'User can delete link from the question', %q(
 
   background { sign_in(user) }
 
-  scenario 'user creates question and deletes excess link', js: true do
+  scenario 'user creates question and deletes link', js: true do
     visit new_question_path
 
     click_on 'Add Link'
@@ -28,7 +28,7 @@ feature 'User can delete link from the question', %q(
     expect(page).to_not have_link 'Remove Link'
   end
 
-  scenario 'user edits question and deletes excess link', js: true do
+  scenario 'user edits question and deletes link', js: true do
     visit question_path(question)
 
     expect(page).to have_link link.name, href: link.url

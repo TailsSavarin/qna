@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User can add reward to the new question', %q(
+feature 'User can add reward for the new question', %q(
   In order to reward another user for the best answer to your question
   As an question's author
   I'd like to be able to add reward
@@ -27,7 +27,6 @@ feature 'User can add reward to the new question', %q(
 
   scenario 'user creates question and adds reward with errors' do
     within '#reward' do
-      fill_in 'Reward Title', with: ''
       attach_file 'Reward Image', Rails.root / 'spec' / 'fixtures' / 'files' / 'test.jpg'
     end
 
