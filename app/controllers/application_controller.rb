@@ -3,9 +3,9 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
-      format.html { redirect_to root_path, alert: exception.message }
-      format.json { render json: {}, status: :forbidden }
-      format.js { render file: Rails.root.join('public/403'), formats: [:html], status: :forbidden, layout: false }
+      format.html { redirect_to new_user_session_url, alert: exception.message }
+      format.json { head :forbidden }
+      format.js { head :forbidden }
     end
   end
 

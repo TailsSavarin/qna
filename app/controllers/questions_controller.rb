@@ -1,5 +1,4 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show]
   before_action :set_question, only: %i[show update destroy]
   after_action :publish_question, only: %i[create]
 
