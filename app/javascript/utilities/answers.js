@@ -19,4 +19,8 @@ $(document).on('turbolinks:load', function(){
     $(`#answer-${answer.id} .answer-revote-link`).hide();
     $(`#answer-${answer.id} .answer-rating`).html('Rating: ' + answer.rating);
   })
+
+  .on('ajax:error', function(e) {
+    window.location = 'http://localhost:3000/403'
+  })
 });

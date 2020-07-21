@@ -1,4 +1,5 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, except: :show
   before_action :set_question, only: %i[new create]
   before_action :set_answer, only: %i[show destroy update choose_best]
   after_action :publish_answer, only: %i[create]
