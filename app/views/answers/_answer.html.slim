@@ -35,7 +35,8 @@ div id="answer-#{answer.id}"
         | Files: 
         = render partial: 'attachments/attachment', collection: answer.files
       div id="answer-#{answer.id}-comments"
-        | Comments:
+        small
+          | Comments:
         = render answer.comments.order(:created_at)
       - if can?(:create, Comment)
         = render 'comments/form', commentable: answer, local: Comment.new

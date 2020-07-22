@@ -6,6 +6,10 @@ $(document).on('turbolinks:load', function(){
     var commentableType = $(this).data('commentableType');
     $(`#new-comment-${commentableType}-${commentableId}`).show();
   })
+
+  .on('ajax:error', function(e) {
+    window.location = 'http://localhost:3000/403'
+  })
 })
 
 
