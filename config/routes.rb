@@ -1,15 +1,16 @@
 Rails.application.routes.draw do
-  get 'comments/create'
+  use_doorkeeper
   get 'rewards/index'
+  get 'comments/create'
   root 'questions#index'
 
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 
   concern :votable do
     member do
+      post :revote
       post :vote_up
       post :vote_down
-      post :revote
     end
   end
 
