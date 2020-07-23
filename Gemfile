@@ -41,7 +41,7 @@ gem 'cancancan'
 gem 'octicons_helper'
 # Sending data to js files.
 gem 'gon'
-# OAuth 2 provider
+# OAuth 2 provider.
 gem 'doorkeeper', '5.1.1'
 # Oauth.
 gem 'omniauth'
@@ -50,10 +50,12 @@ gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 # Social buttons.
 gem 'bootstrap-social-rails'
-# Web fonts and stylesheets
+# Web fonts and stylesheets.
 gem 'font-awesome-rails'
 # For nested forms.
 gem 'cocoon'
+
+gem 'active_model_serializers', '~> 0.10'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
