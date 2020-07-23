@@ -20,7 +20,7 @@ describe 'Questions API', type: :request do
 
     context 'authorized' do
       let(:question) { questions.first }
-      let(:question_json) { json.first }
+      let(:question_json) { json['questions'].first }
       let(:access_token) { create(:access_token) }
       let!(:questions) { create_list(:question, 2) }
       let!(:answers) { create_list(:answer, 2, question: question) }
@@ -32,13 +32,21 @@ describe 'Questions API', type: :request do
       end
 
       it 'returns list of questions' do
-        expect(json.size).to eq 2
+        expect(json['questions'].size).to eq 2
       end
 
       it 'returns all publick fields' do
-        %w[id title body user_id created_at updated_at].each do |attr|
+        %w[id title body created_at updated_at].each do |attr|
           expect(question_json[attr]).to eq question.send(attr).as_json
         end
+      end
+
+      it 'contains user object' do
+        expect(question_json['user']['id']).to eq question.user.id
+      end
+
+      it 'contains short title' do
+        expect(question_json['short_title']).to eq question.title.truncate(11)
       end
 
       describe 'answers' do
