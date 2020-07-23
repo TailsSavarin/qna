@@ -27,13 +27,10 @@ gem 'redis', '~> 4.0'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
-
 # Rubocop, static code analyzer and code formatter.
 gem 'rubocop-rails', require: false
-
 # AWS SDK.
 gem 'aws-sdk-s3', require: false
-
 # Slim templates generator.
 gem 'slim-rails'
 # Authentication.
@@ -44,19 +41,17 @@ gem 'cancancan'
 gem 'octicons_helper'
 # Sending data to js files.
 gem 'gon'
-
+# OAuth 2 provider
+gem 'doorkeeper'
 # Oauth.
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
-
 # Social buttons.
 gem 'bootstrap-social-rails'
-
 # Web fonts and stylesheets
 gem 'font-awesome-rails'
-
 # For nested forms.
 gem 'cocoon'
 
