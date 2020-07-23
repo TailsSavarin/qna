@@ -24,6 +24,14 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  namespace :api do
+    namespace :v1 do
+      resource :profiles, only: [] do
+        get :me, on: :collection
+      end
+    end
+  end
+
   resources :attachments, only: :destroy
   resources :rewards, only: :index
 

@@ -34,6 +34,7 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 RSpec.configure do |config|
   config.include ActiveStorageHelpers
+  config.include ApiHelpers, type: :request
   config.include FactoryBot::Syntax::Methods
   config.include FeatureHelpers, type: :feature
   config.include OmniauthHelpers, type: :feature
