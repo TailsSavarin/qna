@@ -42,7 +42,7 @@ gem 'octicons_helper'
 # Sending data to js files.
 gem 'gon'
 # OAuth 2 provider
-gem 'doorkeeper'
+gem 'doorkeeper', '5.1.1'
 # Oauth.
 gem 'omniauth'
 gem 'omniauth-github'
