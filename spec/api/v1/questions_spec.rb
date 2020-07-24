@@ -50,7 +50,7 @@ describe 'Questions API', type: :request do
         end
 
         it 'returns all public fields' do
-          %w[id question_id user_id body best created_at updated_at].each do |attr|
+          %w[id user_id body best created_at updated_at].each do |attr|
             expect(answer_json[attr]).to eq answer.send(attr).as_json
           end
         end
@@ -123,6 +123,57 @@ describe 'Questions API', type: :request do
           %w[id commentable_type commentable_id user_id body created_at updated_at].each do |attr|
             expect(comment_json[attr]).to eq comment.send(attr).as_json
           end
+        end
+      end
+    end
+  end
+
+  describe 'POST /api/v1/questions' do
+    let(:api_path) { '/api/v1/questions' }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :post }
+    end
+
+    context 'authorized' do
+      let(:question_json) { json['question'] }
+      let(:access_token) { create(:access_token) }
+
+      context 'with valid parameters' do
+        it 'returns success status' do
+          post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }, headers: headers
+          expect(response).to be_successful
+        end
+
+        it 'creates a new question' do
+          expect {
+            post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }, headers: headers
+          }.to change(Question, :count).by(1)
+        end
+
+        it 'returns all public fields' do
+          post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }, headers: headers
+          %w[id user_id title body created_at updated_at].each do |attr|
+            expect(question_json[attr]).to eq Question.first.send(attr).as_json
+          end
+        end
+      end
+
+      context 'with invalid parameters' do
+        it 'returns unprocessable_entity status' do
+          post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+
+        it 'dose not creates a new question' do
+          expect {
+            post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers
+          }.to_not change(Question, :count)
+        end
+
+        it 'returns errors message' do
+          post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers
+          expect(json['errors'].first).to eq "Title can't be blank"
         end
       end
     end
