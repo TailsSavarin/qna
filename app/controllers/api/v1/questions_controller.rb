@@ -1,11 +1,33 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
+  before_action :set_question, only: %i[show]
+
   def index
     @questions = Question.all
     render json: @questions, each_serializer: QuestionsSerializer
   end
 
   def show
-    @question = Question.with_attached_files.find(params[:id])
     render json: @question, serializer: QuestionSerializer
+  end
+
+  def create
+    @question = Question.new(question_params)
+    @question.user = current_resource_owner
+
+    if @question.save
+      render json: @question, serializer: QuestionSerializer
+    else
+      render json: { errors: @question.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def set_question
+    @question = Question.with_attached_files.find(params[:id])
+  end
+
+  def question_params
+    params.require(:question).permit(:title, :body)
   end
 end

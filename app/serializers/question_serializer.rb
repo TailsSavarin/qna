@@ -6,6 +6,7 @@ class QuestionSerializer < ActiveModel::Serializer
   belongs_to :user
   has_many :links
   has_many :comments
+  has_many :answers
 
   def files_url
     object.files.map { |file| { url: rails_blob_url(file, only_path: true) } }
