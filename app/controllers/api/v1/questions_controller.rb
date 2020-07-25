@@ -1,5 +1,7 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
-  before_action :set_question, only: %i[show]
+  before_action :set_question, only: %i[show update]
+
+  authorize_resource
 
   def index
     @questions = Question.all
@@ -15,6 +17,14 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     @question.user = current_resource_owner
 
     if @question.save
+      render json: @question, serializer: QuestionSerializer
+    else
+      render json: { errors: @question.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @question.update(question_params)
       render json: @question, serializer: QuestionSerializer
     else
       render json: { errors: @question.errors.full_messages }, status: :unprocessable_entity
