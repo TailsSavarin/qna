@@ -38,7 +38,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   private
 
   def set_question
-    @question = Question.with_attached_files.find(params[:id])
+    @question = Question.find(params[:id])
   end
 
   def question_params
