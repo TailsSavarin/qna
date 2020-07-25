@@ -178,7 +178,7 @@ describe 'Questions API', type: :request do
   end
 
   describe 'PATCH /api/v1/answers/:id' do
-    let(:answer) { create(:answer, question: question) }
+    let(:answer) { create(:answer, user: user, question: question) }
     let(:api_path) { "/api/v1/answers/#{answer.id}" }
 
     it_behaves_like 'API Authorizable' do
@@ -225,6 +225,66 @@ describe 'Questions API', type: :request do
               expect(json['errors'].first).to eq "Body can't be blank"
             end
           end
+        end
+
+        context 'not author of the answer' do
+          let(:invalid_request) do
+            patch api_path, params: { access_token: another_access_token.token,
+                                      id: answer,
+                                      answer: { body: 'NewBody' } }, headers: headers
+          end
+
+          it 'returns forbidden status' do
+            invalid_request
+            expect(response).to have_http_status(:forbidden)
+          end
+
+          it 'does not change answer attributes' do
+            expect { invalid_request }.to_not change(answer, :body)
+          end
+        end
+      end
+    end
+  end
+
+  describe 'DELETE /api/v1/answers/:id' do
+    let!(:answer) { create(:answer, user: user, question: question) }
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+    end
+
+    context 'authorized' do
+      context 'author of the answer' do
+        let(:valid_request) do
+          delete api_path, params: { access_token: access_token.token,
+                                     id: answer }, headers: headers
+        end
+
+        it 'deletes the question' do
+          expect { valid_request }.to change(question.answers, :count).by(-1)
+        end
+
+        it 'returns no content status' do
+          valid_request
+          expect(response).to have_http_status(:no_content)
+        end
+      end
+
+      context 'not author of the answer' do
+        let(:invalid_request) do
+          delete api_path, params: { access_token: another_access_token.token,
+                                     id: answer }, headers: headers
+        end
+
+        it 'returns forbidden status' do
+          invalid_request
+          expect(response).to have_http_status(:forbidden)
+        end
+
+        it 'does not delete answer' do
+          expect { invalid_request }.to_not change(question.answers, :count)
         end
       end
     end
