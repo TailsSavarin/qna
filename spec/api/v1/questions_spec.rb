@@ -191,7 +191,7 @@ describe 'Questions API', type: :request do
     context 'authorized' do
       let(:question_json) { json['question'] }
 
-      context'author of the question' do
+      context 'author of the question' do
         context 'with valid attributes' do
           it 'returns success status' do
             patch api_path, params: { access_token: access_token.token, id: question, question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
@@ -238,6 +238,43 @@ describe 'Questions API', type: :request do
           expect {
             patch api_path, params: { access_token: another_access_token.token, id: question, question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
           }.to_not change(question, :title)
+        end
+      end
+    end
+  end
+
+  describe 'DELETE /api/v1/questions/:id' do
+    let!(:question) { create(:question, user: user) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+    end
+
+    context 'authorized' do
+      context 'author' do
+        it 'deletes the question' do
+          expect {
+            delete api_path, params: { access_token: access_token.token, id: question}, headers: headers
+          }.to change(Question, :count).by(-1)
+        end
+
+        it 'returns no content status' do
+          delete api_path, params: { access_token: access_token.token, id: question}, headers: headers
+          expect(response).to have_http_status(:no_content)
+        end
+      end
+
+      context 'not author of the question' do
+        it 'returns forbidden status' do
+          delete api_path, params: { access_token: another_access_token.token, id: question}, headers: headers
+          expect(response).to have_http_status(:forbidden)
+        end
+
+        it 'does not delete question' do
+          expect {
+            delete api_path, params: { access_token: another_access_token.token, id: question}, headers: headers
+          }.to_not change(Question, :count)
         end
       end
     end
