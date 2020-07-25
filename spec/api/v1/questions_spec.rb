@@ -174,7 +174,7 @@ describe 'Questions API', type: :request do
           expect(response).to have_http_status(:unprocessable_entity)
         end
 
-        it 'dose not saves question in the database' do
+        it 'does not save question in the database' do
           expect { invalid_request }.to_not change(Question, :count)
         end
 
