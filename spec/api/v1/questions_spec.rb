@@ -22,9 +22,7 @@ describe 'Questions API', type: :request do
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns success status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Status Successful'
 
       it 'returns list of questions' do
         expect(json['questions'].size).to eq 2
@@ -80,9 +78,7 @@ describe 'Questions API', type: :request do
         get api_path, params: { access_token: access_token.token }, headers: headers
       end
 
-      it 'returns success status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Status Successful'
 
       it 'returns all public fields' do
         %w[id user_id title body created_at updated_at].each do |attr|
@@ -205,9 +201,7 @@ describe 'Questions API', type: :request do
                                       question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
           end
 
-          it 'returns success status' do
-            expect(response).to be_successful
-          end
+          it_behaves_like 'Status Successful'
 
           it 'changes question attributes' do
             %w[title body].each do |attr|
@@ -254,6 +248,11 @@ describe 'Questions API', type: :request do
         it 'does not change question attributes' do
           expect { invalid_request }.to_not change(question, :title)
         end
+
+        it 'returns errors message' do
+          invalid_request
+          expect(json['errors']).to eq 'You are not authorized to access this page.'
+        end
       end
     end
   end
@@ -296,6 +295,11 @@ describe 'Questions API', type: :request do
 
         it 'does not delete question' do
           expect { invalid_request }.to_not change(Question, :count)
+        end
+
+        it 'returns errors message' do
+          invalid_request
+          expect(json['errors']).to eq 'You are not authorized to access this page.'
         end
       end
     end

@@ -16,9 +16,7 @@ describe 'Profiles API', type: :request do
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns success status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Status Successful'
 
       it 'returns all public fields' do
         %w[id email created_at updated_at admin].each do |attr|
@@ -50,9 +48,7 @@ describe 'Profiles API', type: :request do
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns success status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Status Successful'
 
       it 'returns all public fields' do
         %w[id email created_at updated_at admin].each do |attr|
