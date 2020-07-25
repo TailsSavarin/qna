@@ -42,6 +42,10 @@ Style/IdenticalConditionalBranches:
   Exclude:
     - 'app/services/*.rb'
 
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'app/controllers/api/**/*.rb'
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 
