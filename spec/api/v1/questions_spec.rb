@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 describe 'Questions API', type: :request do
-  let(:user) { create(:user) }
-  let(:another_user) { create(:user) }
   let(:headers) { { 'ACCEPT' => 'application/json' } }
+  let(:user) { create(:user) }
   let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+  let(:another_user) { create(:user) }
   let(:another_access_token) { create(:access_token, resource_owner_id: another_user.id) }
 
   describe 'GET /api/v1/questions' do
@@ -16,8 +16,8 @@ describe 'Questions API', type: :request do
 
     context 'authorized' do
       let(:question) { questions.first }
-      let!(:questions) { create_list(:question, 2) }
       let(:question_json) { json['questions'].first }
+      let!(:questions) { create_list(:question, 2) }
       let!(:answers) { create_list(:answer, 2, question: question) }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
@@ -141,19 +141,22 @@ describe 'Questions API', type: :request do
       let(:question_json) { json['question'] }
 
       context 'with valid attributes' do
+        let(:valid_request) do
+          post api_path, params: { access_token: access_token.token,
+                                   question: attributes_for(:question) }, headers: headers
+        end
+
         it 'returns success status' do
-          post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }, headers: headers
+          valid_request
           expect(response).to be_successful
         end
 
         it 'saves a new question in the database' do
-          expect {
-            post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }, headers: headers
-          }.to change(Question, :count).by(1)
+          expect { valid_request }.to change(Question, :count).by(1)
         end
 
         it 'returns all public fields' do
-          post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }, headers: headers
+          valid_request
           %w[id user_id title body created_at updated_at].each do |attr|
             expect(question_json[attr]).to eq assigns(:question).send(attr).as_json
           end
@@ -161,19 +164,22 @@ describe 'Questions API', type: :request do
       end
 
       context 'with invalid attributes' do
+        let(:invalid_request) do
+          post api_path, params: { access_token: access_token.token,
+                                   question: attributes_for(:question, :invalid) }, headers: headers
+        end
+
         it 'returns unprocessable_entity status' do
-          post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers
+          invalid_request
           expect(response).to have_http_status(:unprocessable_entity)
         end
 
         it 'dose not saves question in the database' do
-          expect {
-            post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers
-          }.to_not change(Question, :count)
+          expect { invalid_request }.to_not change(Question, :count)
         end
 
         it 'returns errors message' do
-          post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers
+          invalid_request
           expect(json['errors'].first).to eq "Title can't be blank"
         end
       end
@@ -193,16 +199,17 @@ describe 'Questions API', type: :request do
 
       context 'author of the question' do
         context 'with valid attributes' do
+          before do
+            patch api_path, params: { access_token: access_token.token,
+                                      id: question,
+                                      question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
+          end
+
           it 'returns success status' do
-            patch api_path, params: { access_token: access_token.token, id: question, question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
             expect(response).to be_successful
           end
 
           it 'changes question attributes' do
-            patch api_path, params: { access_token: access_token.token, id: question, question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
-
-            question.reload
-
             %w[title body].each do |attr|
               expect(question_json[attr]).to eq assigns(:question).send(attr).as_json
             end
@@ -210,34 +217,42 @@ describe 'Questions API', type: :request do
         end
 
         context 'with invalid attributes' do
+          let(:invalid_request) do
+            patch api_path, params: { access_token: access_token.token,
+                                      id: question,
+                                      question: attributes_for(:question, :invalid) }, headers: headers
+          end
+
           it 'returns unprocessable_entity status' do
-            patch api_path, params: { access_token: access_token.token, id: question, question: attributes_for(:question, :invalid) }, headers: headers
+            invalid_request
             expect(response).to have_http_status(:unprocessable_entity)
           end
 
           it 'does not change question attributes' do
-            expect {
-              patch api_path, params: { access_token: access_token.token, id: question, question: attributes_for(:question, :invalid) }, headers: headers
-            }.to_not change(question, :title)
+            expect { invalid_request }.to_not change(question, :title)
           end
 
           it 'returns errors message' do
-            patch api_path, params: { access_token: access_token.token, id: question, question: attributes_for(:question, :invalid) }, headers: headers
+            invalid_request
             expect(json['errors'].first).to eq "Title can't be blank"
           end
         end
       end
 
       context 'not author of the question' do
+        let(:invalid_request) do
+          patch api_path, params: { access_token: another_access_token.token,
+                                    id: question,
+                                    question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
+        end
+
         it 'returns forbidden status' do
-          patch api_path, params: { access_token: another_access_token.token, id: question, question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
+          invalid_request
           expect(response).to have_http_status(:forbidden)
         end
 
         it 'does not change question attributes' do
-          expect {
-            patch api_path, params: { access_token: another_access_token.token, id: question, question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
-          }.to_not change(question, :title)
+          expect { invalid_request }.to_not change(question, :title)
         end
       end
     end
@@ -253,28 +268,34 @@ describe 'Questions API', type: :request do
 
     context 'authorized' do
       context 'author' do
+        let(:valid_request) do
+          delete api_path, params: { access_token: access_token.token,
+                                     id: question }, headers: headers
+        end
+
         it 'deletes the question' do
-          expect {
-            delete api_path, params: { access_token: access_token.token, id: question}, headers: headers
-          }.to change(Question, :count).by(-1)
+          expect { valid_request }.to change(Question, :count).by(-1)
         end
 
         it 'returns no content status' do
-          delete api_path, params: { access_token: access_token.token, id: question}, headers: headers
+          valid_request
           expect(response).to have_http_status(:no_content)
         end
       end
 
       context 'not author of the question' do
+        let(:invalid_request) do
+          delete api_path, params: { access_token: another_access_token.token,
+                                     id: question }, headers: headers
+        end
+
         it 'returns forbidden status' do
-          delete api_path, params: { access_token: another_access_token.token, id: question}, headers: headers
+          invalid_request
           expect(response).to have_http_status(:forbidden)
         end
 
         it 'does not delete question' do
-          expect {
-            delete api_path, params: { access_token: another_access_token.token, id: question}, headers: headers
-          }.to_not change(Question, :count)
+          expect { invalid_request }.to_not change(Question, :count)
         end
       end
     end
