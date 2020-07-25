@@ -1,7 +1,11 @@
 require 'rails_helper'
 
 describe 'Questions API', type: :request do
+  let(:user) { create(:user) }
+  let(:another_user) { create(:user) }
   let(:headers) { { 'ACCEPT' => 'application/json' } }
+  let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+  let(:another_access_token) { create(:access_token, resource_owner_id: another_user.id) }
 
   describe 'GET /api/v1/questions' do
     let(:api_path) { '/api/v1/questions' }
@@ -12,7 +16,6 @@ describe 'Questions API', type: :request do
 
     context 'authorized' do
       let(:question) { questions.first }
-      let(:access_token) { create(:access_token) }
       let!(:questions) { create_list(:question, 2) }
       let(:question_json) { json['questions'].first }
       let!(:answers) { create_list(:answer, 2, question: question) }
@@ -68,7 +71,6 @@ describe 'Questions API', type: :request do
 
     context 'authorized' do
       let(:question_json) { json['question'] }
-      let(:access_token) { create(:access_token) }
       let!(:comment) { create(:comment, commentable: question) }
       let!(:link) { create(:link, :for_question, linkable: question) }
 
@@ -137,15 +139,14 @@ describe 'Questions API', type: :request do
 
     context 'authorized' do
       let(:question_json) { json['question'] }
-      let(:access_token) { create(:access_token) }
 
-      context 'with valid parameters' do
+      context 'with valid attributes' do
         it 'returns success status' do
           post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }, headers: headers
           expect(response).to be_successful
         end
 
-        it 'creates a new question' do
+        it 'saves a new question in the database' do
           expect {
             post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }, headers: headers
           }.to change(Question, :count).by(1)
@@ -154,18 +155,18 @@ describe 'Questions API', type: :request do
         it 'returns all public fields' do
           post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }, headers: headers
           %w[id user_id title body created_at updated_at].each do |attr|
-            expect(question_json[attr]).to eq Question.first.send(attr).as_json
+            expect(question_json[attr]).to eq assigns(:question).send(attr).as_json
           end
         end
       end
 
-      context 'with invalid parameters' do
+      context 'with invalid attributes' do
         it 'returns unprocessable_entity status' do
           post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers
           expect(response).to have_http_status(:unprocessable_entity)
         end
 
-        it 'dose not creates a new question' do
+        it 'dose not saves question in the database' do
           expect {
             post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers
           }.to_not change(Question, :count)
@@ -174,6 +175,69 @@ describe 'Questions API', type: :request do
         it 'returns errors message' do
           post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers
           expect(json['errors'].first).to eq "Title can't be blank"
+        end
+      end
+    end
+  end
+
+  describe 'PATCH /api/v1/questions/:id' do
+    let(:question) { create(:question, user: user) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+    end
+
+    context 'authorized' do
+      let(:question_json) { json['question'] }
+
+      context'author of the question' do
+        context 'with valid attributes' do
+          it 'returns success status' do
+            patch api_path, params: { access_token: access_token.token, id: question, question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
+            expect(response).to be_successful
+          end
+
+          it 'changes question attributes' do
+            patch api_path, params: { access_token: access_token.token, id: question, question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
+
+            question.reload
+
+            %w[title body].each do |attr|
+              expect(question_json[attr]).to eq assigns(:question).send(attr).as_json
+            end
+          end
+        end
+
+        context 'with invalid attributes' do
+          it 'returns unprocessable_entity status' do
+            patch api_path, params: { access_token: access_token.token, id: question, question: attributes_for(:question, :invalid) }, headers: headers
+            expect(response).to have_http_status(:unprocessable_entity)
+          end
+
+          it 'does not change question attributes' do
+            expect {
+              patch api_path, params: { access_token: access_token.token, id: question, question: attributes_for(:question, :invalid) }, headers: headers
+            }.to_not change(question, :title)
+          end
+
+          it 'returns errors message' do
+            patch api_path, params: { access_token: access_token.token, id: question, question: attributes_for(:question, :invalid) }, headers: headers
+            expect(json['errors'].first).to eq "Title can't be blank"
+          end
+        end
+      end
+
+      context 'not author of the question' do
+        it 'returns forbidden status' do
+          patch api_path, params: { access_token: another_access_token.token, id: question, question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
+          expect(response).to have_http_status(:forbidden)
+        end
+
+        it 'does not change question attributes' do
+          expect {
+            patch api_path, params: { access_token: another_access_token.token, id: question, question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
+          }.to_not change(question, :title)
         end
       end
     end
