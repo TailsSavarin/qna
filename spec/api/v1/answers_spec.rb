@@ -31,7 +31,6 @@ describe 'Questions API', type: :request do
         expect(answer_json['user']['id']).to eq answer.user.id
       end
 
-
       it 'contains short body' do
         expect(answer_json['short_body']).to eq answer.body.truncate(20)
       end
