@@ -1,8 +1,12 @@
 require 'rails_helper'
 
 describe 'Questions API', type: :request do
-  let(:question) { create(:question) }
   let(:headers) { { 'ACCEPT' => 'application/json' } }
+  let(:question) { create(:question) }
+  let(:user) { create(:user) }
+  let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+  let(:another_user) { create(:user) }
+  let(:another_access_token) { create(:access_token, resource_owner_id: another_user.id) }
 
   describe 'GET /api/v1/questions/:id/answers' do
     let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
@@ -14,7 +18,6 @@ describe 'Questions API', type: :request do
     context 'authorized' do
       let(:answer) { answers.first }
       let(:answer_json) { json['answers'].first }
-      let(:access_token) { create(:access_token) }
       let!(:answers) { create_list(:answer, 2, question: question) }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
@@ -57,7 +60,6 @@ describe 'Questions API', type: :request do
 
     context 'authorized' do
       let(:answer_json) { json['answer'] }
-      let(:access_token) { create(:access_token) }
       let!(:comment) { create(:comment, commentable: answer) }
       let!(:link) { create(:link, :for_answer, linkable: answer) }
 
@@ -117,7 +119,7 @@ describe 'Questions API', type: :request do
     end
   end
 
- describe 'POST /api/v1/questions/:id/answers' do
+  describe 'POST /api/v1/questions/:id/answers' do
     let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
 
     it_behaves_like 'API Authorizable' do
@@ -125,7 +127,6 @@ describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
-      let(:access_token) { create(:access_token) }
       let(:answer_json) { json['answer'] }
 
       context 'with valid attributes' do
@@ -171,6 +172,59 @@ describe 'Questions API', type: :request do
         it 'returns errors message' do
           invalid_request
           expect(json['errors'].first).to eq "Body can't be blank"
+        end
+      end
+    end
+  end
+
+  describe 'PATCH /api/v1/answers/:id' do
+    let(:answer) { create(:answer, question: question) }
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+
+      context 'authorized' do
+        let(:answer_json) { json['answer'] }
+
+        context 'author of the answer' do
+          context 'with valid attributes' do
+            before do
+              patch api_path, params: { access_token: access_token.token,
+                                        id: answer,
+                                        answer: { body: 'NewBody' } }, headers: headers
+            end
+
+            it 'returns success status' do
+              expect(response).to be_successful
+            end
+
+            it 'changes answer attributes' do
+              expect(answer_json['body']).to eq assigns(:answer).body
+            end
+          end
+
+          context 'with invalid attributes' do
+            let(:invalid_request) do
+              patch api_path, params: { access_token: access_token.token,
+                                        id: answer,
+                                        answer: attributes_for(:answer, :invalid) }, headers: headers
+            end
+
+            it 'returns unprocessable entity status' do
+              invalid_request
+              expect(response).to have_http_status(:unprocessable_entity)
+            end
+
+            it 'does not change answer attributes' do
+              expect { invalid_request }.to_not change(answer, :body)
+            end
+
+            it 'returns errors message' do
+              invalid_request
+              expect(json['errors'].first).to eq "Body can't be blank"
+            end
+          end
         end
       end
     end
