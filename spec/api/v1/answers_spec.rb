@@ -22,9 +22,7 @@ describe 'Questions API', type: :request do
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns success status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Status Successful'
 
       it 'returns list of answers' do
         expect(json['answers'].size).to eq 2
@@ -69,9 +67,7 @@ describe 'Questions API', type: :request do
         get api_path, params: { access_token: access_token.token }, headers: headers
       end
 
-      it 'returns success status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Status Successful'
 
       it 'returns all public fields' do
         %w[id user_id body best rating created_at updated_at].each do |attr|
@@ -128,6 +124,7 @@ describe 'Questions API', type: :request do
 
     context 'authorized' do
       let(:answer_json) { json['answer'] }
+      let(:answers) { question.answers }
 
       context 'with valid attributes' do
         let(:valid_request) do
@@ -142,7 +139,7 @@ describe 'Questions API', type: :request do
         end
 
         it 'saves a new answer in the database' do
-          expect { valid_request }.to change(question.answers, :count).by(1)
+          expect { valid_request }.to change(answers, :count).by(1)
         end
 
         it 'returns all public fields' do
@@ -166,7 +163,7 @@ describe 'Questions API', type: :request do
         end
 
         it 'does not save answer in the database' do
-          expect { invalid_request }.to_not change(question.answers, :count)
+          expect { invalid_request }.to_not change(answers, :count)
         end
 
         it 'returns errors message' do
@@ -195,9 +192,7 @@ describe 'Questions API', type: :request do
                                         answer: { body: 'NewBody' } }, headers: headers
             end
 
-            it 'returns success status' do
-              expect(response).to be_successful
-            end
+            it_behaves_like 'Status Successful'
 
             it 'changes answer attributes' do
               expect(answer_json['body']).to eq assigns(:answer).body
@@ -242,6 +237,11 @@ describe 'Questions API', type: :request do
           it 'does not change answer attributes' do
             expect { invalid_request }.to_not change(answer, :body)
           end
+
+          it 'returns errors message' do
+            invalid_request
+            expect(json['errors']).to eq 'You are not authorized to access this page.'
+          end
         end
       end
     end
@@ -249,6 +249,7 @@ describe 'Questions API', type: :request do
 
   describe 'DELETE /api/v1/answers/:id' do
     let!(:answer) { create(:answer, user: user, question: question) }
+    let(:answers) { question.answers }
     let(:api_path) { "/api/v1/answers/#{answer.id}" }
 
     it_behaves_like 'API Authorizable' do
@@ -263,7 +264,7 @@ describe 'Questions API', type: :request do
         end
 
         it 'deletes the question' do
-          expect { valid_request }.to change(question.answers, :count).by(-1)
+          expect { valid_request }.to change(answers, :count).by(-1)
         end
 
         it 'returns no content status' do
@@ -284,7 +285,12 @@ describe 'Questions API', type: :request do
         end
 
         it 'does not delete answer' do
-          expect { invalid_request }.to_not change(question.answers, :count)
+          expect { invalid_request }.to_not change(answers, :count)
+        end
+
+        it 'returns errors message' do
+          invalid_request
+          expect(json['errors']).to eq 'You are not authorized to access this page.'
         end
       end
     end
