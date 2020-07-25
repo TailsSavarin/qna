@@ -116,4 +116,63 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+ describe 'POST /api/v1/questions/:id/answers' do
+    let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :post }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+      let(:answer_json) { json['answer'] }
+
+      context 'with valid attributes' do
+        let(:valid_request) do
+          post api_path, params: { access_token: access_token.token,
+                                   question_id: question,
+                                   answer: attributes_for(:answer) }, headers: headers
+        end
+
+        it 'returns success status' do
+          valid_request
+          expect(response).to be_successful
+        end
+
+        it 'saves a new answer in the database' do
+          expect { valid_request }.to change(question.answers, :count).by(1)
+        end
+
+        it 'returns all public fields' do
+          valid_request
+          %w[id user_id body created_at updated_at].each do |attr|
+            expect(answer_json[attr]).to eq assigns(:answer).send(attr).as_json
+          end
+        end
+      end
+
+      context 'with invalid attributes' do
+        let(:invalid_request) do
+          post api_path, params: { access_token: access_token.token,
+                                   question_id: question,
+                                   answer: attributes_for(:answer, :invalid) }, headers: headers
+        end
+
+        it 'returns unprocessable_entity status' do
+          invalid_request
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+
+        it 'does not save answer in the database' do
+          expect { invalid_request }.to_not change(question.answers, :count)
+        end
+
+        it 'returns errors message' do
+          invalid_request
+          expect(json['errors'].first).to eq "Body can't be blank"
+        end
+      end
+    end
+  end
 end
