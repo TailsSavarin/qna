@@ -267,7 +267,7 @@ describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
-      context 'author' do
+      context 'author of the question' do
         let(:valid_request) do
           delete api_path, params: { access_token: access_token.token,
                                      id: question }, headers: headers

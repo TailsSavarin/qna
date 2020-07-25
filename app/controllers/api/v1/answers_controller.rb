@@ -1,13 +1,14 @@
 class Api::V1::AnswersController < Api::V1::BaseController
-  before_action :set_answer, only: %i[update]
+  before_action :set_answer, only: %i[show update destroy]
   before_action :set_question, only: %i[index create]
+
+  authorize_resource
 
   def index
     render json: @question.answers, each_serializer: AnswersSerializer
   end
 
   def show
-    @answer = Answer.with_attached_files.find(params[:id])
     render json: @answer, serializer: AnswerSerializer
   end
 
@@ -28,6 +29,10 @@ class Api::V1::AnswersController < Api::V1::BaseController
     else
       render json: { errors: @answer.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @answer.destroy
   end
 
   private
