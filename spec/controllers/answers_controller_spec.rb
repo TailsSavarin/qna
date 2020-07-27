@@ -42,37 +42,42 @@ RSpec.describe AnswersController, type: :controller do
     let(:answers) { question.answers }
     let(:question) { create(:question) }
     let(:answer) { create(:answer, question: question, user: user) }
+    let(:valid_data_request) do
+      post :create, params: { question_id: question,
+                              answer: attributes_for(:answer) }, format: :js
+    end
 
     context 'authenticated user' do
       before { login(user) }
 
       context 'with valid attributes' do
         it 'saves a new answer in the database' do
-          expect {
-            post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
-          }.to change(answers, :count).by(1)
+          expect { valid_data_request }.to change(answers, :count).by(1)
         end
 
         it 'user is author of the answer' do
-          post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
+          valid_data_request
           expect(user).to be_author_of(assigns(:answer))
         end
 
         it 'renders create template' do
-          post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
+          valid_data_request
           expect(response).to render_template :create
         end
       end
 
       context 'with invalid attributes' do
+        let(:invalid_data_request) do
+          post :create, params: { question_id: question,
+                                  answer: attributes_for(:answer, :invalid) }, format: :js
+        end
+
         it 'does not save answer in the database' do
-          expect {
-            post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js
-          }.to_not change(answers, :count)
+          expect { invalid_data_request }.to_not change(answers, :count)
         end
 
         it 'renders create template' do
-          post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js
+          invalid_data_request
           expect(response).to render_template :create
         end
       end
@@ -80,13 +85,11 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'unauthenticated user' do
       it 'does not save answer in the database' do
-        expect {
-          post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
-        }.to_not change(answers, :count)
+        expect { valid_data_request }.to_not change(answers, :count)
       end
 
       it 'returns unauthorized status' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
+        valid_data_request
         expect(response).to have_http_status(:unauthorized) # 401
       end
     end
@@ -95,35 +98,39 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #update' do
     let(:question) { create(:question) }
     let(:answer) { create(:answer, question: question, user: user) }
+    let(:valid_data_request) do
+      patch :update, params: { id: answer,
+                               answer: { body: 'NewBody' } }, format: :js
+    end
 
     context 'authenticated user' do
       context 'auhtor of the answer' do
         before { login(user) }
 
         context 'with valid attributes' do
+          before { valid_data_request }
+
           it 'changes answer attributes' do
-            patch :update, params: { id: answer, answer: { body: 'NewBody' } }, format: :js
-
-            answer.reload
-
-            expect(answer.body).to eq 'NewBody'
+            expect(answer.reload.body).to eq 'NewBody'
           end
 
           it 'renders update template' do
-            patch :update, params: { id: answer, answer: { body: 'NewBody' } }, format: :js
             expect(response).to render_template :update
           end
         end
 
         context 'with ivalid attributes' do
+          let(:invalid_data_request) do
+            patch :update, params: { id: answer,
+                                     answer: attributes_for(:answer, :invalid) }, format: :js
+          end
+
           it 'does not change answer attributes' do
-            expect {
-              patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
-            }.to_not change(answer, :body)
+            expect { invalid_data_request }.to_not change(answer, :body)
           end
 
           it 'renders update view template' do
-            patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+            invalid_data_request
             expect(response).to render_template :update
           end
         end
@@ -132,13 +139,11 @@ RSpec.describe AnswersController, type: :controller do
           before { login(another_user) }
 
           it 'does not change answer attributes' do
-            expect {
-              patch :update, params: { id: answer, answer: { body: 'NewBody' } }, format: :js
-            }.to_not change(answer, :body)
+            expect { valid_data_request }.to_not change(answer, :body)
           end
 
           it 'returns forbidden status' do
-            patch :update, params: { id: answer, answer: { body: 'NewBody' } }, format: :js
+            valid_data_request
             expect(response).to have_http_status(:forbidden) # 403
           end
         end
@@ -147,13 +152,11 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'unauthenticated user' do
       it 'does not change answer attributes' do
-        expect {
-          patch :update, params: { id: answer, answer: { body: 'NewBody' } }, format: :js
-        }.to_not change(answer, :body)
+        expect { valid_data_request }.to_not change(answer, :body)
       end
 
       it 'returns unauthorized status' do
-        post :update, params: { id: answer, answer: { body: 'NewBody' } }, format: :js
+        valid_data_request
         expect(response).to have_http_status(:unauthorized) # 401
       end
     end
@@ -162,19 +165,18 @@ RSpec.describe AnswersController, type: :controller do
   describe 'DELETE #destroy' do
     let(:question) { create(:question) }
     let!(:answer) { create(:answer, question: question, user: user) }
+    let(:request_data) { delete :destroy, params: { id: answer }, format: :js }
 
     context 'authenticated user' do
       context 'author of the answer' do
         before { login(user) }
 
         it 'deletes answer from the database' do
-          expect {
-            delete :destroy, params: { id: answer }, format: :js
-          }.to change(Answer, :count).by(-1)
+          expect { request_data }.to change(Answer, :count).by(-1)
         end
 
         it 'renders destroy template' do
-          delete :destroy, params: { id: answer }, format: :js
+          request_data
           expect(response).to render_template :destroy
         end
       end
@@ -183,13 +185,11 @@ RSpec.describe AnswersController, type: :controller do
         before { login(another_user) }
 
         it 'does not delete answer from the database' do
-          expect {
-            delete :destroy, params: { id: answer }, format: :js
-          }.not_to change(Answer, :count)
+          expect { request_data }.not_to change(Answer, :count)
         end
 
         it 'returns forbidden status' do
-          delete :destroy, params: { id: answer }, format: :js
+          request_data
           expect(response).to have_http_status(:forbidden) # 403
         end
       end
@@ -197,13 +197,11 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'unauthenticated user' do
       it 'does not delete answer from the database' do
-        expect {
-          delete :destroy, params: { id: answer }, format: :js
-        }.not_to change(Answer, :count)
+        expect { request_data }.not_to change(Answer, :count)
       end
 
       it 'returns unauthorized status' do
-        delete :destroy, params: { id: answer }, format: :js
+        request_data
         expect(response).to have_http_status(:unauthorized) # 401
       end
     end
@@ -212,12 +210,13 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #choose_best' do
     let(:question) { create(:question, user: user) }
     let(:answer) { create(:answer, question: question) }
+    let(:request_data) { post :choose_best, params: { id: answer }, format: :js }
 
     context 'authenticated user' do
       context 'author of the question' do
         before do
           login(user)
-          post :choose_best, params: { id: answer }, format: :js
+          request_data
         end
 
         it 'assigns requested answer to @answer' do
@@ -225,9 +224,7 @@ RSpec.describe AnswersController, type: :controller do
         end
 
         it 'updates best attribute' do
-          answer.reload
-
-          expect(answer.best).to eq true
+          expect(answer.reload.best).to eq true
         end
 
         it 'renders choose best template' do
@@ -238,13 +235,11 @@ RSpec.describe AnswersController, type: :controller do
       context 'not author of the question' do
         before do
           login(another_user)
-          post :choose_best, params: { id: answer }, format: :js
+          request_data
         end
 
         it 'does not update best attribute' do
-          answer.reload
-
-          expect(answer.best).to_not eq true
+          expect(answer.reload.best).to_not eq true
         end
 
         it 'returns forbidden status' do
@@ -254,12 +249,10 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'unauthenticated user' do
-      before { post :choose_best, params: { id: answer }, format: :js }
+      before { request_data }
 
       it 'does not update best attribute' do
-        answer.reload
-
-        expect(answer.best).to_not eq true
+        expect(answer.reload.best).to_not eq true
       end
 
       it 'returns unauthorized status' do
