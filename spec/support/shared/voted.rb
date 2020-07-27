@@ -9,9 +9,7 @@ shared_examples_for 'voted' do
         before { login(user) }
 
         it 'creates vote up' do
-          expect {
-            request_data
-          }.to change(votable.votes, :count).by(1)
+          expect { request_data }.to change(votable.votes, :count).by(1)
         end
 
         it 'renders json response with votable id and rating' do
@@ -26,9 +24,7 @@ shared_examples_for 'voted' do
         before { login(another_user) }
 
         it 'does not create vote up' do
-          expect {
-            request_data
-          }.to_not change(votable.votes, :count)
+          expect { request_data }.to_not change(votable.votes, :count)
         end
 
         it 'returns forbidden status' do
@@ -40,9 +36,7 @@ shared_examples_for 'voted' do
 
     context 'unauthenticated user' do
       it 'does not create vote up' do
-        expect {
-          request_data
-        }.to_not change(votable.votes, :count)
+        expect { request_data }.to_not change(votable.votes, :count)
       end
 
       it 'returns unauthorized status' do
@@ -59,9 +53,7 @@ shared_examples_for 'voted' do
         before { login(user) }
 
         it 'creates vote down' do
-          expect {
-            request_data
-          }.to change(votable.votes, :count).by(1)
+          expect { request_data }.to change(votable.votes, :count).by(1)
         end
 
         it 'renders json response with votable id and rating' do
@@ -76,9 +68,7 @@ shared_examples_for 'voted' do
         before { login(another_user) }
 
         it 'does not create vote down' do
-          expect {
-            request_data
-          }.to_not change(votable.votes, :count)
+          expect { request_data }.to_not change(votable.votes, :count)
         end
 
         it 'returns forbidden status' do
@@ -90,9 +80,7 @@ shared_examples_for 'voted' do
 
     context 'unauthenticated user' do
       it 'does not create vote down' do
-        expect {
-          request_data
-        }.to_not change(votable.votes, :count)
+        expect { request_data }.to_not change(votable.votes, :count)
       end
 
       it 'returns unauthorized status' do
@@ -111,9 +99,7 @@ shared_examples_for 'voted' do
         before { login(user) }
 
         it 'removes past vote' do
-          expect {
-            request_data
-          }.to change(votable.votes, :count).by(-1)
+          expect { request_data }.to change(votable.votes, :count).by(-1)
         end
 
         it 'renders json response with votable id and rating' do
@@ -129,9 +115,7 @@ shared_examples_for 'voted' do
         before { login(another_user) }
 
         it 'dose not remove past vote' do
-          expect {
-            request_data
-          }.to_not change(votable.votes, :count)
+          expect { request_data }.to_not change(votable.votes, :count)
         end
 
         it 'returns forbidden status' do
@@ -143,9 +127,7 @@ shared_examples_for 'voted' do
 
     context 'unauthenticated user' do
       it 'dose not remove past vote' do
-        expect {
-          request_data
-        }.to_not change(votable.votes, :count)
+        expect { request_data }.to_not change(votable.votes, :count)
       end
 
       it 'returns unauthorized status' do
