@@ -5,8 +5,9 @@ class Question < ApplicationRecord
   include Authorable
   include Commentable
 
-  has_many :answers, dependent: :destroy
   has_one :reward, dependent: :destroy
+  has_many :answers, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   has_many_attached :files
 
