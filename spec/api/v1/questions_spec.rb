@@ -46,7 +46,7 @@ describe 'Questions API', type: :request do
         let(:answer) { answers.first }
         let(:answer_json) { question_json['answers'].first }
 
-        it 'return list of answers' do
+        it 'returns list of answers' do
           expect(question_json['answers'].size).to eq 2
         end
 
@@ -91,7 +91,7 @@ describe 'Questions API', type: :request do
       end
 
       describe 'files' do
-        it 'return list of files' do
+        it 'returns list of files' do
           expect(question_json['files_url'].size).to eq 1
         end
       end
@@ -99,7 +99,7 @@ describe 'Questions API', type: :request do
       describe 'links' do
         let(:link_json) { question_json['links'].first }
 
-        it 'return list of links' do
+        it 'returns list of links' do
           expect(question_json['links'].size).to eq 1
         end
 
@@ -113,11 +113,11 @@ describe 'Questions API', type: :request do
       describe 'comments' do
         let(:comment_json) { question_json['comments'].first }
 
-        it 'return list of comments' do
+        it 'returns list of comments' do
           expect(question_json['comments'].size).to eq 1
         end
 
-        it 'return all public fields' do
+        it 'returns all public fields' do
           %w[id commentable_type commentable_id user_id body created_at updated_at].each do |attr|
             expect(comment_json[attr]).to eq comment.send(attr).as_json
           end
@@ -137,22 +137,22 @@ describe 'Questions API', type: :request do
       let(:question_json) { json['question'] }
 
       context 'with valid attributes' do
-        let(:valid_request) do
+        let(:valid_data_request) do
           post api_path, params: { access_token: access_token.token,
                                    question: attributes_for(:question) }, headers: headers
         end
 
         it 'returns success status' do
-          valid_request
+          valid_data_request
           expect(response).to be_successful
         end
 
         it 'saves a new question in the database' do
-          expect { valid_request }.to change(Question, :count).by(1)
+          expect { valid_data_request }.to change(Question, :count).by(1)
         end
 
         it 'returns all public fields' do
-          valid_request
+          valid_data_request
           %w[id user_id title body created_at updated_at].each do |attr|
             expect(question_json[attr]).to eq assigns(:question).send(attr).as_json
           end
@@ -160,22 +160,22 @@ describe 'Questions API', type: :request do
       end
 
       context 'with invalid attributes' do
-        let(:invalid_request) do
+        let(:invalid_data_request) do
           post api_path, params: { access_token: access_token.token,
                                    question: attributes_for(:question, :invalid) }, headers: headers
         end
 
-        it 'returns unprocessable_entity status' do
-          invalid_request
+        it 'returns unprocessable entity status' do
+          invalid_data_request
           expect(response).to have_http_status(:unprocessable_entity)
         end
 
         it 'does not save question in the database' do
-          expect { invalid_request }.to_not change(Question, :count)
+          expect { invalid_data_request }.to_not change(Question, :count)
         end
 
         it 'returns errors message' do
-          invalid_request
+          invalid_data_request
           expect(json['errors'].first).to eq "Title can't be blank"
         end
       end
@@ -211,46 +211,46 @@ describe 'Questions API', type: :request do
         end
 
         context 'with invalid attributes' do
-          let(:invalid_request) do
+          let(:invalid_data_request) do
             patch api_path, params: { access_token: access_token.token,
                                       id: question,
                                       question: attributes_for(:question, :invalid) }, headers: headers
           end
 
-          it 'returns unprocessable_entity status' do
-            invalid_request
+          it 'returns unprocessable entity status' do
+            invalid_data_request
             expect(response).to have_http_status(:unprocessable_entity)
           end
 
           it 'does not change question attributes' do
-            expect { invalid_request }.to_not change(question, :title)
+            expect { invalid_data_request }.to_not change(question, :title)
           end
 
           it 'returns errors message' do
-            invalid_request
+            invalid_data_request
             expect(json['errors'].first).to eq "Title can't be blank"
           end
         end
       end
 
       context 'not author of the question' do
-        let(:invalid_request) do
+        let(:invalid_data_request) do
           patch api_path, params: { access_token: another_access_token.token,
                                     id: question,
                                     question: { title: 'NewTitle', body: 'NewBody' } }, headers: headers
         end
 
         it 'returns forbidden status' do
-          invalid_request
+          invalid_data_request
           expect(response).to have_http_status(:forbidden)
         end
 
         it 'does not change question attributes' do
-          expect { invalid_request }.to_not change(question, :title)
+          expect { invalid_data_request }.to_not change(question, :title)
         end
 
         it 'returns errors message' do
-          invalid_request
+          invalid_data_request
           expect(json['errors']).to eq 'You are not authorized to access this page.'
         end
       end
@@ -267,38 +267,38 @@ describe 'Questions API', type: :request do
 
     context 'authorized' do
       context 'author of the question' do
-        let(:valid_request) do
+        let(:valid_data_request) do
           delete api_path, params: { access_token: access_token.token,
                                      id: question }, headers: headers
         end
 
-        it 'deletes the question' do
-          expect { valid_request }.to change(Question, :count).by(-1)
+        it 'deletes the question from the database' do
+          expect { valid_data_request }.to change(Question, :count).by(-1)
         end
 
         it 'returns no content status' do
-          valid_request
+          valid_data_request
           expect(response).to have_http_status(:no_content)
         end
       end
 
       context 'not author of the question' do
-        let(:invalid_request) do
+        let(:invalid_data_request) do
           delete api_path, params: { access_token: another_access_token.token,
                                      id: question }, headers: headers
         end
 
         it 'returns forbidden status' do
-          invalid_request
+          invalid_data_request
           expect(response).to have_http_status(:forbidden)
         end
 
-        it 'does not delete question' do
-          expect { invalid_request }.to_not change(Question, :count)
+        it 'does not delete question from the database' do
+          expect { invalid_data_request }.to_not change(Question, :count)
         end
 
         it 'returns errors message' do
-          invalid_request
+          invalid_data_request
           expect(json['errors']).to eq 'You are not authorized to access this page.'
         end
       end
