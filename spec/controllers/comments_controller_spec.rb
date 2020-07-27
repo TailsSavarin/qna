@@ -6,37 +6,42 @@ RSpec.describe CommentsController, type: :controller do
 
   describe 'POST #create' do
     let(:comments) { question.comments }
+    let(:valid_data_request) do
+      post :create, params: { question_id: question,
+                              comment: attributes_for(:comment) }, format: :js
+    end
 
     context 'authenticated user' do
       before { login(user) }
 
       context 'with valid attributes' do
         it 'saves a new comment in the database' do
-          expect {
-            post :create, params: { question_id: question, comment: attributes_for(:comment) }, format: :js
-          }.to change(comments, :count).by(1)
+          expect { valid_data_request }.to change(comments, :count).by(1)
         end
 
         it 'user is author of the comment' do
-          post :create, params: { question_id: question, comment: attributes_for(:comment) }, format: :js
+          valid_data_request
           expect(user).to be_author_of(assigns(:comment))
         end
 
         it 'renders create template' do
-          post :create, params: { question_id: question, comment: attributes_for(:comment) }, format: :js
+          valid_data_request
           expect(response).to render_template :create
         end
       end
 
       context 'with invalid attributes' do
+        let(:invalid_data_request) do
+          post :create, params: { question_id: question,
+                                  comment: attributes_for(:comment, :invalid) }, format: :js
+        end
+
         it 'does not save comment in the database' do
-          expect {
-            post :create, params: { question_id: question, comment: attributes_for(:comment, :invalid) }, format: :js
-          }.to_not change(comments, :count)
+          expect { invalid_data_request }.to_not change(comments, :count)
         end
 
         it 'renders create template' do
-          post :create, params: { question_id: question, comment: attributes_for(:comment, :invalid) }, format: :js
+          invalid_data_request
           expect(response).to render_template :create
         end
       end
@@ -44,13 +49,11 @@ RSpec.describe CommentsController, type: :controller do
 
     context 'unauthenticated user' do
       it 'does not save comment in the database' do
-        expect {
-          post :create, params: { question_id: question, comment: attributes_for(:comment) }, format: :js
-        }.to_not change(comments, :count)
+        expect { valid_data_request }.to_not change(comments, :count)
       end
 
       it 'returns unauthorized status' do
-        post :create, params: { question_id: question, comment: attributes_for(:comment) }, format: :js
+        valid_data_request
         expect(response).to have_http_status(:unauthorized) # 401
       end
     end

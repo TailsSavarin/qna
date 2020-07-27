@@ -75,37 +75,36 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'POST #create' do
     let(:question) { create(:question, user: user) }
+    let(:valid_data_request) { post :create, params: { question: attributes_for(:question) } }
 
     context 'authenticated user' do
       before { login(user) }
 
       context 'with valid attributes' do
         it 'saves a new question in the database' do
-          expect {
-            post :create, params: { question: attributes_for(:question) }
-          }.to change(Question, :count).by(1)
+          expect { valid_data_request }.to change(Question, :count).by(1)
         end
 
         it 'user is author of the question' do
-          post :create, params: { question: attributes_for(:question) }
+          valid_data_request
           expect(user).to be_author_of(assigns(:question))
         end
 
         it 'redirects to show view' do
-          post :create, params: { question: attributes_for(:question) }
+          valid_data_request
           expect(response).to redirect_to assigns(:question)
         end
       end
 
       context 'with invalid attributes' do
+        let(:invalid_data_request) { post :create, params: { question: attributes_for(:question, :invalid) } }
+
         it 'does not save the question' do
-          expect {
-            post :create, params: { question: attributes_for(:question, :invalid) }
-          }.to_not change(Question, :count)
+          expect { invalid_data_request }.to_not change(Question, :count)
         end
 
         it 're-renders new template' do
-          post :create, params: { question: attributes_for(:question, :invalid) }
+          invalid_data_request
           expect(response).to render_template :new
         end
       end
@@ -113,13 +112,11 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'unauthenticated user' do
       it 'does not saves question in the database' do
-        expect {
-          post :create, params: { question: attributes_for(:question) }
-        }.to_not change(Question, :count)
+        expect { valid_data_request }.to_not change(Question, :count)
       end
 
       it 'redirects to sign in view' do
-        post :create, params: { question: attributes_for(:question) }
+        valid_data_request
         expect(response).to redirect_to new_user_session_path
       end
     end
@@ -127,21 +124,21 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'PATCH #update' do
     let(:question) { create(:question, user: user) }
+    let(:valid_data_request) do
+      patch :update, params: { id: question,
+                               question: { title: 'NewTitle', body: 'NewBody' } }, format: :js
+    end
 
     context 'authenticated user' do
       context 'author of the question' do
         before { login(user) }
 
         context 'with valid attributes' do
-          before do
-            patch :update, params: { id: question, question: { title: 'NewTitle', body: 'NewBody' } }, format: :js
-          end
+          before { valid_data_request }
 
           it 'changes question attributes' do
-            question.reload
-
-            expect(question.title).to eq 'NewTitle'
-            expect(question.body).to eq 'NewBody'
+            expect(question.reload.title).to eq 'NewTitle'
+            expect(question.reload.body).to eq 'NewBody'
           end
 
           it 'renders update template' do
@@ -150,14 +147,17 @@ RSpec.describe QuestionsController, type: :controller do
         end
 
         context 'with invalid attributes' do
+          let(:invalid_data_request) do
+            patch :update, params: { id: question,
+                                     question: attributes_for(:question, :invalid) }, format: :js
+          end
+
           it 'does not change question attributes' do
-            expect {
-              patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
-            }.to_not change(question, :title)
+            expect { invalid_data_request }.to_not change(question, :title)
           end
 
           it 'renders update template' do
-            patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+            invalid_data_request
             expect(response).to render_template :update
           end
         end
@@ -167,13 +167,11 @@ RSpec.describe QuestionsController, type: :controller do
         before { login(another_user) }
 
         it 'does not change question attributes' do
-          expect {
-            patch :update, params: { id: question, question: { title: 'NewTitle' } }, format: :js
-          }.to_not change(question, :title)
+          expect { valid_data_request }.to_not change(question, :title)
         end
 
         it 'returns forbidden status' do
-          patch :update, params: { id: question, question: { title: 'NewTitle' } }, format: :js
+          valid_data_request
           expect(response).to have_http_status(:forbidden) # 403
         end
       end
@@ -181,13 +179,11 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'unauthenticated user' do
       it 'does not change question attributes' do
-        expect {
-          patch :update, params: { id: question, question: { title: 'NewTitle' } }, format: :js
-        }.to_not change(question, :title)
+        expect { valid_data_request }.to_not change(question, :title)
       end
 
       it 'returns unauthorized status' do
-        patch :update, params: { id: question, question: { title: 'NewTitle' } }, format: :js
+        valid_data_request
         expect(response).to have_http_status(:unauthorized) # 401
       end
     end
@@ -196,19 +192,18 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'DELETE #destroy' do
     let!(:another_question) { create(:question) }
     let!(:question) { create(:question, user: user) }
+    let(:data_request) { delete :destroy, params: { id: question } }
 
     context 'authenticated user' do
       context 'author of the question' do
         before { login(user) }
 
         it 'deletes question from the database' do
-          expect {
-            delete :destroy, params: { id: question }
-          }.to change(Question, :count).by(-1)
+          expect { data_request }.to change(Question, :count).by(-1)
         end
 
         it 'redirects to index view' do
-          delete :destroy, params: { id: question }
+          data_request
           expect(response).to redirect_to questions_path
         end
       end
@@ -217,13 +212,11 @@ RSpec.describe QuestionsController, type: :controller do
         before { login(another_user) }
 
         it 'does not delete quesiton from the database' do
-          expect {
-            delete :destroy, params: { id: another_question }
-          }.not_to change(Question, :count)
+          expect { data_request }.not_to change(Question, :count)
         end
 
         it 'redirects to sign in view' do
-          delete :destroy, params: { id: another_question }
+          data_request
           expect(response).to redirect_to new_user_session_path
         end
       end
@@ -231,13 +224,11 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'unauthenticated user' do
       it 'does not delete quesiton from the database' do
-        expect {
-          delete :destroy, params: { id: question }
-        }.not_to change(Question, :count)
+        expect { data_request }.not_to change(Question, :count)
       end
 
       it 'redirects to sign in view' do
-        delete :destroy, params: { id: question }
+        data_request
         expect(response).to redirect_to new_user_session_path
       end
     end
