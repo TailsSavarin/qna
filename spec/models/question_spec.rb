@@ -8,8 +8,9 @@ RSpec.describe Question, type: :model do
 
   describe 'associations' do
     it { should have_one(:reward).dependent(:destroy) }
-    it { should have_many(:answers).dependent(:destroy) }
     it { should accept_nested_attributes_for(:reward) }
+    it { should have_many(:answers).dependent(:destroy) }
+    it { should have_many(:subscriptions).dependent(:destroy) }
   end
 
   describe 'validations' do

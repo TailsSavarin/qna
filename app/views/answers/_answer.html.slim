@@ -10,7 +10,7 @@ div id="answer-#{answer.id}"
     .card-body
       .answer-votes-rating.float-right
         .answer-rating= "Rating: #{answer.rating}"
-        div class="answer-voting-buttons-links #{hide_button_for(answer)}"
+        div class="answer-voting-buttons-links #{hide_vote_button_for(answer)}"
           - if can?(:vote_up, answer)
             = link_to 'Up', vote_up_answer_path(answer),
                           method: :post,
@@ -26,7 +26,7 @@ div id="answer-#{answer.id}"
           = link_to 'Revote', revote_answer_path(answer),
                             method: :post,
                             remote: true,
-                            class: "answer-revote-link text-secondary #{show_button_for(answer)}"
+                            class: "answer-revote-link text-secondary #{show_vote_button_for(answer)}"
       p= answer.body
       - if answer.links.present?
         | Links:

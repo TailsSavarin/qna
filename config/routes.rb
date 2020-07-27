@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'subscriptions/create'
   use_doorkeeper
   get 'rewards/index'
   get 'comments/create'
@@ -19,9 +20,10 @@ Rails.application.routes.draw do
       member do
         post :choose_best
       end
-      resources :comments
+      resources :comments, only: %i[create]
     end
-    resources :comments
+    resources :comments, only: %i[create]
+    resources :subscriptions, only: %i[create]
   end
 
   namespace :api do

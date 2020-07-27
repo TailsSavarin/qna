@@ -2,12 +2,18 @@
   .card.border-light.mb-2.mt-2
     .card-header
       h2= question.title
+      - if can?(:create, Subscription)
+        = link_to 'Subscribe', question_subscriptions_path(question),
+                               method: :post,
+                               remote: true,
+                               class: "question-subscribe-link #{hide_sub_button_for(@question)}"
+
       - if @question.reward.present?
         .reward-text.text-right Reward for best Answer active!
     .card-body
       .question-votes-rating.float-right
         .question-rating= "Rating: #{@question.rating}"
-        div class="question-voting-buttons-links #{hide_button_for(@question)}"
+        div class="question-voting-buttons-links #{hide_vote_button_for(@question)}"
           - if can?(:vote_up, @question)
             = link_to 'Up', vote_up_question_path(@question),
                             method: :post,
@@ -23,7 +29,7 @@
           = link_to 'Revote', revote_question_path(@question),
                               method: :post,
                               remote: true,
-                              class: "question-revote-link text-secondary #{show_button_for(@question)}"
+                              class: "question-revote-link text-secondary #{show_vote_button_for(@question)}"
       p= question.body
       - if @question.links.present?
         | Links:

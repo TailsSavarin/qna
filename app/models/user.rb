@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :rewards, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :questions, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
   has_many :authorizations, dependent: :destroy
 
   devise :validatable,
@@ -24,6 +25,10 @@ class User < ApplicationRecord
 
   def voted_for?(resource)
     resource.votes.exists?(user_id: id)
+  end
+
+  def subscribed?(resource)
+    resource.subscriptions.exists?(user_id: id)
   end
 
   def create_authorization(auth)
