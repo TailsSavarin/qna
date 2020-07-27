@@ -80,7 +80,7 @@ describe 'Questions API', type: :request do
       end
 
       describe 'files' do
-        it 'return list of files' do
+        it 'returns list of files' do
           expect(answer_json['files_url'].size).to eq 1
         end
       end
@@ -88,7 +88,7 @@ describe 'Questions API', type: :request do
       describe 'links' do
         let(:link_json) { answer_json['links'].first }
 
-        it 'return list of links' do
+        it 'returns list of links' do
           expect(answer_json['links'].size).to eq 1
         end
 
@@ -102,7 +102,7 @@ describe 'Questions API', type: :request do
       describe 'comments' do
         let(:comment_json) { answer_json['comments'].first }
 
-        it 'return list of comments' do
+        it 'returns list of comments' do
           expect(answer_json['comments'].size).to eq 1
         end
 
@@ -127,23 +127,23 @@ describe 'Questions API', type: :request do
       let(:answers) { question.answers }
 
       context 'with valid attributes' do
-        let(:valid_request) do
+        let(:valid_data_request) do
           post api_path, params: { access_token: access_token.token,
                                    question_id: question,
                                    answer: attributes_for(:answer) }, headers: headers
         end
 
         it 'returns success status' do
-          valid_request
+          valid_data_request
           expect(response).to be_successful
         end
 
         it 'saves a new answer in the database' do
-          expect { valid_request }.to change(answers, :count).by(1)
+          expect { valid_data_request }.to change(answers, :count).by(1)
         end
 
         it 'returns all public fields' do
-          valid_request
+          valid_data_request
           %w[id user_id body created_at updated_at].each do |attr|
             expect(answer_json[attr]).to eq assigns(:answer).send(attr).as_json
           end
@@ -151,23 +151,23 @@ describe 'Questions API', type: :request do
       end
 
       context 'with invalid attributes' do
-        let(:invalid_request) do
+        let(:invalid_data_request) do
           post api_path, params: { access_token: access_token.token,
                                    question_id: question,
                                    answer: attributes_for(:answer, :invalid) }, headers: headers
         end
 
         it 'returns unprocessable_entity status' do
-          invalid_request
+          invalid_data_request
           expect(response).to have_http_status(:unprocessable_entity)
         end
 
         it 'does not save answer in the database' do
-          expect { invalid_request }.to_not change(answers, :count)
+          expect { invalid_data_request }.to_not change(answers, :count)
         end
 
         it 'returns errors message' do
-          invalid_request
+          invalid_data_request
           expect(json['errors'].first).to eq "Body can't be blank"
         end
       end
@@ -200,46 +200,46 @@ describe 'Questions API', type: :request do
           end
 
           context 'with invalid attributes' do
-            let(:invalid_request) do
+            let(:invalid_data_request) do
               patch api_path, params: { access_token: access_token.token,
                                         id: answer,
                                         answer: attributes_for(:answer, :invalid) }, headers: headers
             end
 
             it 'returns unprocessable entity status' do
-              invalid_request
+              invalid_data_request
               expect(response).to have_http_status(:unprocessable_entity)
             end
 
             it 'does not change answer attributes' do
-              expect { invalid_request }.to_not change(answer, :body)
+              expect { invalid_data_request }.to_not change(answer, :body)
             end
 
             it 'returns errors message' do
-              invalid_request
+              invalid_data_request
               expect(json['errors'].first).to eq "Body can't be blank"
             end
           end
         end
 
         context 'not author of the answer' do
-          let(:invalid_request) do
+          let(:invalid_data_request) do
             patch api_path, params: { access_token: another_access_token.token,
                                       id: answer,
                                       answer: { body: 'NewBody' } }, headers: headers
           end
 
           it 'returns forbidden status' do
-            invalid_request
+            invalid_data_request
             expect(response).to have_http_status(:forbidden)
           end
 
           it 'does not change answer attributes' do
-            expect { invalid_request }.to_not change(answer, :body)
+            expect { invalid_data_request }.to_not change(answer, :body)
           end
 
           it 'returns errors message' do
-            invalid_request
+            invalid_data_request
             expect(json['errors']).to eq 'You are not authorized to access this page.'
           end
         end
@@ -258,38 +258,38 @@ describe 'Questions API', type: :request do
 
     context 'authorized' do
       context 'author of the answer' do
-        let(:valid_request) do
+        let(:valid_data_request) do
           delete api_path, params: { access_token: access_token.token,
                                      id: answer }, headers: headers
         end
 
-        it 'deletes the question' do
-          expect { valid_request }.to change(answers, :count).by(-1)
+        it 'deletes the question from the database' do
+          expect { valid_data_request }.to change(answers, :count).by(-1)
         end
 
         it 'returns no content status' do
-          valid_request
+          valid_data_request
           expect(response).to have_http_status(:no_content)
         end
       end
 
       context 'not author of the answer' do
-        let(:invalid_request) do
+        let(:invalid_data_request) do
           delete api_path, params: { access_token: another_access_token.token,
                                      id: answer }, headers: headers
         end
 
         it 'returns forbidden status' do
-          invalid_request
+          invalid_data_request
           expect(response).to have_http_status(:forbidden)
         end
 
-        it 'does not delete answer' do
-          expect { invalid_request }.to_not change(answers, :count)
+        it 'does not delete answer from the database' do
+          expect { invalid_data_request }.to_not change(answers, :count)
         end
 
         it 'returns errors message' do
-          invalid_request
+          invalid_data_request
           expect(json['errors']).to eq 'You are not authorized to access this page.'
         end
       end
