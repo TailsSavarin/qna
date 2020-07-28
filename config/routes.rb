@@ -1,9 +1,12 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
-  get 'subscriptions/create'
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   use_doorkeeper
-  get 'rewards/index'
-  get 'comments/create'
-  root 'questions#index'
+  root to: 'questions#index'
 
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 
