@@ -20,7 +20,7 @@ module Qna
     config.autoload_paths += [config.root.join('app')]
 
     # Sidekiq
-    confi.active_job.queue_adapter = :sidekiq
+    config.active_job.queue_adapter = :sidekiq
 
     # Rspec options for rails g controller
     config.generators do |g|
