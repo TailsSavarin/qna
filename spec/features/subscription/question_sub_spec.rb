@@ -8,7 +8,7 @@ feature 'User can subscribe for the question', %q(
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
-  scenario 'authenticated user tries to subscribe to the question' do
+  scenario 'authenticated user tries to subscribe to the question', js: true do
     sign_in(user)
     visit question_path(question)
     click_on 'Subscribe'
@@ -22,4 +22,3 @@ feature 'User can subscribe for the question', %q(
     expect(page).to_not have_link 'Subscribe'
   end
 end
-

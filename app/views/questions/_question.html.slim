@@ -3,11 +3,15 @@
     .card-header
       h2= question.title
       - if can?(:create, Subscription)
-        = link_to 'Subscribe', question_subscriptions_path(question),
+        = link_to 'Subscribe', question_subscriptions_path(@question),
                                method: :post,
                                remote: true,
-                               class: "question-subscribe-link #{hide_sub_button_for(@question)}"
-
+                               class: "question-subscribe-link #{'hidden' if current_user&.subscribed_to?(@question)}"
+      - if can?(:destroy, Subscription)
+        = link_to 'Unsubscribe', subscription_path(@question),
+                                 method: :delete,
+                                 remote: true,
+                                 class: "question-unsubscribe-link #{'hidden' unless current_user&.subscribed_to?(@question)}"
       - if @question.reward.present?
         .reward-text.text-right Reward for best Answer active!
     .card-body

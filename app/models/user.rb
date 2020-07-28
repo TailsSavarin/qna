@@ -27,8 +27,8 @@ class User < ApplicationRecord
     resource.votes.exists?(user_id: id)
   end
 
-  def subscribed?(resource)
-    resource.subscriptions.exists?(user_id: id)
+  def subscribed_to?(question)
+    subscriptions.exists?(question: question)
   end
 
   def create_authorization(auth)

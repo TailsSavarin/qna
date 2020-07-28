@@ -23,7 +23,7 @@ Rails.application.routes.draw do
       resources :comments, only: %i[create]
     end
     resources :comments, only: %i[create]
-    resources :subscriptions, only: %i[create]
+    resources :subscriptions, shallow: true, only: %i[create destroy]
   end
 
   namespace :api do
