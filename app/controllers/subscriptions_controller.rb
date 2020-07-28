@@ -5,14 +5,11 @@ class SubscriptionsController < ApplicationController
 
   def create
     @question = Question.find(params[:question_id])
+    current_user.subscriptions.find_or_create_by(question: @question)
+  end
 
-    @subscription = @question.subscriptions.find_or_initialize_by(user: current_user)
-    @subscription.save
-
-    if @subscription.save
-      head :created
-    else
-      render json: { errors: @subscription.errors.full_messages }, status: :unprocessable_entity
-    end
+  def destroy
+    @question = Question.find(params[:id])
+    current_user.subscriptions.find_by(question: @question)&.destroy
   end
 end
