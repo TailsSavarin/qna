@@ -5,5 +5,7 @@
   = "\r\n" * 2
 - else
   - @questions.each do |question|
-    ' #{question.title}
+    ' Question: #{question.title}
+    = "\r\n" * 2
+    = question.body.truncate(20)
     = "\r\n" * 2
