@@ -11,11 +11,19 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
+  after_commit :send_notice, on: :create
+
   def select_best
     Answer.transaction do
       Answer.where(question_id: question_id).update_all(best: false)
       question.reward&.update!(user_id: user_id)
       update!(best: true)
     end
+  end
+
+  private
+
+  def send_notice
+    NewAnswerNoticeJob.perform_later(self)
   end
 end

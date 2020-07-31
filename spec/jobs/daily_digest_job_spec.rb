@@ -5,7 +5,7 @@ RSpec.describe DailyDigestJob, type: :job do
 
   before { allow(DailyDigestService).to receive(:new).and_return(service) }
 
-  it 'calss DailyDigestService#send_digest' do
+  it 'calls DailyDigestService#send_digest' do
     expect(service).to receive(:send_digest)
     DailyDigestJob.perform_now
   end
