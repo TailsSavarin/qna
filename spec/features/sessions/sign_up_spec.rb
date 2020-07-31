@@ -5,34 +5,38 @@ feature 'User can register in the system', %q(
   As an unregistered user
   I'd like to be able to sign up
 ) do
+  given(:user_params) { attributes_for(:user) }
+
   background { visit new_user_registration_path }
 
-  scenario 'user tries to sign up' do
+  scenario 'sign up' do
     within '.card-body' do
-      fill_in 'Email', with: 'unregistered_user@test.com'
-      fill_in 'Password', with: '12345678'
-      fill_in 'Password confirmation', with: '12345678'
-
+      fill_in 'Email', with: user_params[:email]
+      fill_in 'Password', with: user_params[:password]
+      fill_in 'Password confirmation', with: user_params[:password]
       click_on 'Sign up'
     end
 
     expect(page).to have_content 'A message with a confirmation link has been sent to your email address.'
+    expect(current_path).to eq root_path
 
-    open_email('unregistered_user@test.com')
+    open_email(user_params[:email])
 
-    expect(current_email).to have_content 'Welcome unregistered_user@test.com!'
+    expect(current_email).to have_content "Welcome #{user_params[:email]}!"
 
     current_email.click_link 'Confirm My Account'
 
     expect(page).to have_content 'Your email address has been successfully confirmed'
+    expect(current_path).to eq new_user_session_path
   end
 
-  scenario 'user tries to sign up with errors' do
+  scenario 'sign up with invalid data' do
     within '.card-body' do
       click_on 'Sign up'
     end
 
     expect(page).to have_content "Email can't be blank"
     expect(page).to have_content "Password can't be blank"
+    expect(current_path).to eq user_registration_path
   end
 end
