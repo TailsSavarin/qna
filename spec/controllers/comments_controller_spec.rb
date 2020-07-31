@@ -19,6 +19,11 @@ RSpec.describe CommentsController, type: :controller do
           expect { valid_data_request }.to change(comments, :count).by(1)
         end
 
+        it 'returns success status' do
+          valid_data_request
+          expect(response).to have_http_status(:success)
+        end
+
         it 'user is author of the comment' do
           valid_data_request
           expect(user).to be_author_of(assigns(:comment))
@@ -38,6 +43,11 @@ RSpec.describe CommentsController, type: :controller do
 
         it 'does not save comment in the database' do
           expect { invalid_data_request }.to_not change(comments, :count)
+        end
+
+        it 'returns success status' do
+          invalid_data_request
+          expect(response).to have_http_status(:success)
         end
 
         it 'renders create template' do
