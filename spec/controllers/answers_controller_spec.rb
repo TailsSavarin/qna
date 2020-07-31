@@ -59,7 +59,6 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       context 'with valid attributes' do
-
         it 'returns success status' do
           valid_data_request
           expect(response).to have_http_status(:success)

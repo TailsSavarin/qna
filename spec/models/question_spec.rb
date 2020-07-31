@@ -20,6 +20,7 @@ RSpec.describe Question, type: :model do
 
   describe '#autosubscribe' do
     let(:question) { build(:question) }
+
     it 'calls autosubscribe' do
       expect(question).to receive(:autosubscribe)
       question.save!
