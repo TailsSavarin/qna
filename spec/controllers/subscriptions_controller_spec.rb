@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SubscriptionsController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question) }
+  let!(:question) { create(:question) }
   let(:subscriptions) { user.subscriptions }
 
   describe 'POST #create' do

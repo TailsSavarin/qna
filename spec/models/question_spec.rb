@@ -17,4 +17,17 @@ RSpec.describe Question, type: :model do
     it { should validate_presence_of(:body) }
     it { should validate_presence_of(:title) }
   end
+
+  describe '#autosubscribe' do
+    let(:question) { build(:question) }
+    it 'calls autosubscribe' do
+      expect(question).to receive(:autosubscribe)
+      question.save!
+    end
+
+    it 'subscribes user to the question' do
+      question.save!
+      expect(question.user).to be_subscribed_to(question)
+    end
+  end
 end

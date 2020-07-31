@@ -45,4 +45,16 @@ RSpec.describe User, type: :model do
       expect(user).to_not be_voted_for(question)
     end
   end
+
+  describe '#subscribed_to?' do
+    let(:subscription) { create(:subscription, user: user, question: question) }
+
+    it 'returns true if user has subscription to the question' do
+      expect(user).to be_subscribed_to(question)
+    end
+
+    it 'returns false if user does not have subscription to the question' do
+      expect(user).to_not be_subscribed_to(another_question)
+    end
+  end
 end
