@@ -9,8 +9,9 @@ RSpec.describe Answer, type: :model do
   it_behaves_like 'linkable'
   it_behaves_like 'attachable'
   it_behaves_like 'authorable'
+  it_behaves_like 'commentable'
 
-  describe 'default scopes' do
+  describe '.default scope' do
     let!(:answers) { create_list(:answer, 2, question: question) }
     let!(:best_answer) { create(:answer, question: question, best: true) }
 
@@ -35,8 +36,8 @@ RSpec.describe Answer, type: :model do
     it 'selects answer as best' do
       answer.select_best
 
-      expect(best_answer.reload.best).to eq false
-      expect(answer.reload.best).to eq true
+      expect(best_answer.reload.best).to be false
+      expect(answer.reload.best).to be true
     end
 
     it 'gives user reward for best answer' do

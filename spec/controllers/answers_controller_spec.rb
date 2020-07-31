@@ -259,7 +259,7 @@ RSpec.describe AnswersController, type: :controller do
         end
 
         it 'updates best attribute' do
-          expect(answer.reload.best).to eq true
+          expect(answer.reload.best).to be true
         end
 
         it 'renders choose best template' do
@@ -274,7 +274,7 @@ RSpec.describe AnswersController, type: :controller do
         end
 
         it 'does not update best attribute' do
-          expect(answer.reload.best).to_not eq true
+          expect(answer.reload.best).to_not be true
         end
 
         it 'returns forbidden status' do
@@ -287,7 +287,7 @@ RSpec.describe AnswersController, type: :controller do
       before { request_data }
 
       it 'does not update best attribute' do
-        expect(answer.reload.best).to_not eq true
+        expect(answer.reload.best).to_not be true
       end
 
       it 'returns unauthorized status' do

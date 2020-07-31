@@ -1,43 +1,56 @@
 require 'rails_helper'
 
-feature 'User can choose the best answer to his question', %q(
-  In order for other users to be informed and find best solution
+feature 'User can choose best answer', %q(
+  In order to highlight it
   As an question's author
-  I'd like to be able to choose the best answer for my question
+  I'd like to be able to choose best answer
 ) do
   given(:user) { create(:user) }
-  given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question) }
 
-  describe 'authenticated user' do
-    scenario 'author chooses the best answer', js: true do
-      sign_in(user)
-      visit question_path(question)
-
-      within '.answers' do
-        click_on 'Select as best'
-
-        expect(page).to have_content 'Best Answer'
-        expect(page).to_not have_link 'Select as best'
-      end
-    end
-
-    scenario 'not author tries to choose the best answer' do
-      sign_in(another_user)
-      visit question_path(question)
-
-      within '.answers' do
+  shared_examples 'cannot choose best answer' do
+    scenario 'cannot see select best link' do
+      within "#answer-#{answer.id}" do
         expect(page).to_not have_link 'Select as best'
       end
     end
   end
 
-  scenario 'unauthenticated user can not choose the best answer' do
-    visit question_path(question)
+  context 'as user' do
+    context 'as question author', :js do
+      background do
+        sign_in(user)
+        visit question_path(question)
+      end
 
-    within '.answers' do
-      expect(page).to_not have_link 'Select as best'
+      scenario 'choose best answer' do
+        within "#answer-#{answer.id}" do
+          click_on 'Select as best'
+        end
+
+        within '.answers' do
+          expect(page).to have_content 'Best Answer'
+          expect(page).to_not have_link 'Select as best'
+        end
+      end
     end
+
+    context 'not question author' do
+      given(:question) { create(:question) }
+
+      background do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      it_behaves_like 'cannot choose best answer'
+    end
+  end
+
+  context 'as guest' do
+    background { visit question_path(question) }
+
+    it_behaves_like 'cannot choose best answer'
   end
 end
