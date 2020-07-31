@@ -52,7 +52,7 @@ RSpec.describe Answer, type: :model do
 
     it 'calls NewAnswerNoticeJob' do
       expect(NewAnswerNoticeJob).to receive(:perform_later).with(answer)
-      answer.save
+      answer.save!
     end
   end
 end
