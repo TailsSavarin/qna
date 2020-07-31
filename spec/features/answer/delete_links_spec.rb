@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-feature 'User can delete link from the answer', %q(
-  In order to remove unnecessary or excess links
+feature 'User can delete links', %q(
+  If decide that it's necessary
   As an answer's author
   I'd like to be able to delete links
 ) do
