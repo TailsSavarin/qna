@@ -14,6 +14,10 @@ RSpec.describe RewardsController, type: :controller do
       expect(assigns(:rewards)).to match_array(user_rewards)
     end
 
+    it 'returns success status' do
+      expect(response).to have_http_status(:success)
+    end
+
     it 'renvers index view template' do
       expect(response).to render_template :index
     end

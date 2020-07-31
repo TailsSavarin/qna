@@ -20,6 +20,11 @@ RSpec.describe AttachmentsController, type: :controller do
           expect { request_data }.to change(ActiveStorage::Attachment, :count).by(-1)
         end
 
+        it 'returns success status' do
+          request_data
+          expect(response).to have_http_status(:success)
+        end
+
         it 'renders destroy template' do
           request_data
           expect(response).to render_template :destroy

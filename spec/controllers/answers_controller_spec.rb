@@ -11,6 +11,10 @@ RSpec.describe AnswersController, type: :controller do
 
     before { get :show, params: { id: answer } }
 
+    it 'returns success status' do
+      expect(response).to have_http_status(:success)
+    end
+
     it 'assigns the requested answer to @answer' do
       expect(assigns(:answer)).to eq answer
     end
@@ -27,6 +31,10 @@ RSpec.describe AnswersController, type: :controller do
     before do
       login(user)
       get :new, params: { question_id: question }
+    end
+
+    it 'returns success status' do
+      expect(response).to have_http_status(:success)
     end
 
     it 'assigns a new answer to @answer' do
@@ -51,6 +59,12 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       context 'with valid attributes' do
+
+        it 'returns success status' do
+          valid_data_request
+          expect(response).to have_http_status(:success)
+        end
+
         it 'saves a new answer in the database' do
           expect { valid_data_request }.to change(answers, :count).by(1)
         end
@@ -70,6 +84,11 @@ RSpec.describe AnswersController, type: :controller do
         let(:invalid_data_request) do
           post :create, params: { question_id: question,
                                   answer: attributes_for(:answer, :invalid) }, format: :js
+        end
+
+        it 'returns success status' do
+          invalid_data_request
+          expect(response).to have_http_status(:success)
         end
 
         it 'does not save answer in the database' do
@@ -110,6 +129,10 @@ RSpec.describe AnswersController, type: :controller do
         context 'with valid attributes' do
           before { valid_data_request }
 
+          it 'returns success status' do
+            expect(response).to have_http_status(:success)
+          end
+
           it 'changes answer attributes' do
             expect(answer.reload.body).to eq 'NewBody'
           end
@@ -127,6 +150,11 @@ RSpec.describe AnswersController, type: :controller do
 
           it 'does not change answer attributes' do
             expect { invalid_data_request }.to_not change(answer, :body)
+          end
+
+          it 'returns success status' do
+            invalid_data_request
+            expect(response).to have_http_status(:success)
           end
 
           it 'renders update view template' do
@@ -170,6 +198,10 @@ RSpec.describe AnswersController, type: :controller do
     context 'authenticated user' do
       context 'author of the answer' do
         before { login(user) }
+
+        it 'returns success status' do
+          expect(response).to have_http_status(:success)
+        end
 
         it 'deletes answer from the database' do
           expect { request_data }.to change(Answer, :count).by(-1)
@@ -221,6 +253,10 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'assigns requested answer to @answer' do
           expect(assigns(:answer)).to eq answer
+        end
+
+        it 'returns success status' do
+          expect(response).to have_http_status(:success)
         end
 
         it 'updates best attribute' do

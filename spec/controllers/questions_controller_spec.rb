@@ -15,6 +15,10 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:questions)).to match_array(questions)
     end
 
+    it 'returns success status' do
+      expect(response).to have_http_status(:success)
+    end
+
     it 'renders index template' do
       expect(response).to render_template :index
     end
@@ -24,6 +28,10 @@ RSpec.describe QuestionsController, type: :controller do
     let(:question) { create(:question) }
 
     before { get :show, params: { id: question } }
+
+    it 'returns success status' do
+      expect(response).to have_http_status(:success)
+    end
 
     it 'assigns the requested question to @question' do
       expect(assigns(:question)).to eq question
@@ -68,6 +76,10 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question).votes.first).to be_a_new(Vote)
     end
 
+    it 'returns success status' do
+      expect(response).to have_http_status(:success)
+    end
+
     it 'renders new template' do
       expect(response).to render_template :new
     end
@@ -83,6 +95,11 @@ RSpec.describe QuestionsController, type: :controller do
       context 'with valid attributes' do
         it 'saves a new question in the database' do
           expect { valid_data_request }.to change(Question, :count).by(1)
+        end
+
+        it 'returns found status' do
+          valid_data_request
+          expect(response).to have_http_status(:found)
         end
 
         it 'user is author of the question' do
@@ -101,6 +118,11 @@ RSpec.describe QuestionsController, type: :controller do
 
         it 'does not save the question' do
           expect { invalid_data_request }.to_not change(Question, :count)
+        end
+
+        it 'returns success status' do
+          invalid_data_request
+          expect(response).to have_http_status(:success)
         end
 
         it 're-renders new template' do
@@ -141,6 +163,10 @@ RSpec.describe QuestionsController, type: :controller do
             expect(question.reload.body).to eq 'NewBody'
           end
 
+          it 'returns success status' do
+            expect(response).to have_http_status(:success)
+          end
+
           it 'renders update template' do
             expect(response).to render_template :update
           end
@@ -150,6 +176,11 @@ RSpec.describe QuestionsController, type: :controller do
           let(:invalid_data_request) do
             patch :update, params: { id: question,
                                      question: attributes_for(:question, :invalid) }, format: :js
+          end
+
+          it 'returns success status' do
+            invalid_data_request
+            expect(response).to have_http_status(:success)
           end
 
           it 'does not change question attributes' do
@@ -202,6 +233,11 @@ RSpec.describe QuestionsController, type: :controller do
           expect { data_request }.to change(Question, :count).by(-1)
         end
 
+        it 'returns found status' do
+          data_request
+          expect(response).to have_http_status(:found)
+        end
+
         it 'redirects to index view' do
           data_request
           expect(response).to redirect_to questions_path
@@ -215,6 +251,11 @@ RSpec.describe QuestionsController, type: :controller do
           expect { data_request }.not_to change(Question, :count)
         end
 
+        it 'returns found status' do
+          data_request
+          expect(response).to have_http_status(:found)
+        end
+
         it 'redirects to sign in view' do
           data_request
           expect(response).to redirect_to new_user_session_path
@@ -225,6 +266,11 @@ RSpec.describe QuestionsController, type: :controller do
     context 'unauthenticated user' do
       it 'does not delete quesiton from the database' do
         expect { data_request }.not_to change(Question, :count)
+      end
+
+      it 'returns 302 status' do
+        data_request
+        expect(response).to have_http_status(:found)
       end
 
       it 'redirects to sign in view' do
