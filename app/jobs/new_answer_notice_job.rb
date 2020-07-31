@@ -1,5 +1,5 @@
 class NewAnswerNoticeJob < ApplicationJob
-  queue_as :default
+  queue_as :mailers
 
   def perform(answer)
     NewAnswerNoticeService.send_notice(answer)
