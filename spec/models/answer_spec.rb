@@ -46,4 +46,13 @@ RSpec.describe Answer, type: :model do
       expect(another_user.rewards.count).to eq 0
     end
   end
+
+  describe '#send_notice' do
+    let(:answer) { build(:answer) }
+
+    it 'calls NewAnswerNoticeJob' do
+      expect(NewAnswerNoticeJob).to receive(:perform_later).with(answer)
+      answer.save
+    end
+  end
 end

@@ -89,5 +89,10 @@ describe Ability do
       it { should be_able_to :destroy, answer.files.first }
       it { should_not be_able_to :destroy, another_answer.files.first }
     end
+
+    context 'subscriptions' do
+      it { should be_able_to :create, Subscription }
+      it { should be_able_to :destroy, Subscription }
+    end
   end
 end
