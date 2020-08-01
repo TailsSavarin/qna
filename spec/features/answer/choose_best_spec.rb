@@ -6,11 +6,12 @@ feature 'User can choose best answer', %q(
   I'd like to be able to choose best answer
 ) do
   given(:user) { create(:user) }
+  given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question) }
 
   shared_examples 'can not choose best answer' do
-    scenario 'can not see select best link' do
+    scenario 'can not see select as best link' do
       within "#answer-#{answer.id}" do
         expect(page).to_not have_link 'Select as best'
       end
@@ -37,10 +38,8 @@ feature 'User can choose best answer', %q(
     end
 
     context 'non-owner' do
-      given(:question) { create(:question) }
-
       background do
-        sign_in(user)
+        sign_in(another_user)
         visit question_path(question)
       end
 

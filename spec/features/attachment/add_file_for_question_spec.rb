@@ -6,8 +6,8 @@ feature 'add files to question', :js do
 
   context 'creates question' do
     it_behaves_like 'files features' do
-      given(:filable_selector) { '#files' }
-      given(:filable_btn) { click_on 'Create Your Question' }
+      given(:file_selector) { '#files' }
+      given(:file_btn) { click_on 'Create Your Question' }
       given(:background_info) do
         visit new_question_path
         fill_in 'Title', with: 'Test question'
@@ -18,8 +18,8 @@ feature 'add files to question', :js do
 
   context 'edits question' do
     it_behaves_like 'files features' do
-      given(:filable_selector) { '#edit-question' }
-      given(:filable_btn) { click_on 'Update Your Question' }
+      given(:file_selector) { '#edit-question' }
+      given(:file_btn) { click_on 'Update Your Question' }
       given(:background_info) do
         visit question_path(question)
         click_on 'Edit Question'

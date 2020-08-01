@@ -6,6 +6,7 @@ feature 'User can delete answer', %q(
   I'd like to be able to delete answer
 ) do
   given(:user) { create(:user) }
+  given(:another_user) { create(:user) }
   given(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
@@ -18,12 +19,12 @@ feature 'User can delete answer', %q(
   end
 
   context 'as user' do
-    background do
-      sign_in(user)
-      visit question_path(question)
-    end
-
     context 'as author', :js do
+      background do
+        sign_in(user)
+        visit question_path(question)
+      end
+
       scenario 'deletes answer' do
         within "#answer-#{answer.id}" do
           click_on 'Delete Answer'
@@ -34,8 +35,11 @@ feature 'User can delete answer', %q(
       end
     end
 
-    context 'non-owner' do
-      given(:answer) { create(:answer, question: question) }
+    context 'not author' do
+      background do
+        sign_in(another_user)
+        visit question_path(question)
+      end
 
       it_behaves_like 'can not delete answer'
     end

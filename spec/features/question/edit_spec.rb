@@ -6,6 +6,7 @@ feature 'User can edit question', %q(
   I'd like to be able to make changes
 ) do
   given(:user) { create(:user) }
+  given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
   shared_examples 'can not edit question' do
@@ -15,13 +16,12 @@ feature 'User can edit question', %q(
   end
 
   context 'as user' do
-    background do
-      sign_in(user)
-      visit question_path(question)
-    end
-
     context 'as author', :js do
-      background { click_on 'Edit Question' }
+      background do
+        sign_in(user)
+        visit question_path(question)
+        click_on 'Edit Question'
+      end
 
       scenario 'updates question with valid data' do
         fill_in 'Title', with: 'Edited title'
@@ -45,8 +45,11 @@ feature 'User can edit question', %q(
       end
     end
 
-    context 'non-author' do
-      given(:question) { create(:question) }
+    context 'not author' do
+      background do
+        sign_in(another_user)
+        visit question_path(question)
+      end
 
       it_behaves_like 'can not edit question'
     end
