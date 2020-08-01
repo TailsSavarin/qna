@@ -1,17 +1,17 @@
 require 'rails_helper'
 
-feature 'User can add links to answer', %q(
-  In order to add additional information
+feature 'User can delete links from answer', %q(
+  In order to delete additional information
   As an authenticated user when create
-  As an answer's author when edit
-  I'd like to be able to add links
+  As an answer's author
+  I'd like to be able to delete links
 ) do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
   context 'creates answer' do
-    it_behaves_like 'add links features' do
+    it_behaves_like 'delete links features' do
       given(:linkable_selector) { '.new-answer' }
       given(:linkable_btn) { click_on 'Post Your Answer' }
       given(:background_info) do
@@ -22,7 +22,7 @@ feature 'User can add links to answer', %q(
   end
 
   context 'edits answer' do
-    it_behaves_like 'add links features' do
+    it_behaves_like 'delete links features' do
       given(:linkable_selector) { "#answer-#{answer.id}" }
       given(:linkable_btn) { click_on 'Update Your Answer' }
       given(:background_info) do
