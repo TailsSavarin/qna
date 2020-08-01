@@ -1,86 +1,75 @@
 require 'rails_helper'
 
-feature 'User can create the question', %q(
-  In order to get answer from a community
+feature 'User can create question', %q(
+  In order to get an answer to it
   As an authenticated user
   I'd like to be able to create a question
 ) do
   given(:user) { create(:user) }
 
-  describe 'authenticated user' do
+  context 'as user' do
     background do
       sign_in(user)
       visit questions_path
       click_on 'Ask Question'
     end
 
-    scenario 'creates the question' do
+    scenario 'creates question with valid data' do
       fill_in 'Title', with: 'Test question'
-      fill_in 'Body', with: 'text text text'
-
+      fill_in 'Body', with: 'test text'
       click_on 'Create Your Question'
 
       expect(page).to have_content 'Your question successfully created.'
       expect(page).to have_content 'Test question'
-      expect(page).to have_content 'text text text'
+      expect(page).to have_content 'test text'
     end
 
-    scenario 'creates the question with errors' do
+    scenario 'can not create question with invalid data' do
+      fill_in 'Title', with: ''
+      fill_in 'Body', with: ''
       click_on 'Create Your Question'
 
-      expect(page).to have_content "Title can't be blank"
-      expect(page).to have_content "Body can't be blank"
-    end
-
-    scenario 'creates a question with attached files' do
-      fill_in 'Title', with: 'Test question'
-      fill_in 'Body', with: 'text text text'
-
-      attach_file 'File', [
-        Rails.root / 'spec' / 'fixtures' / 'files' / 'test.jpg',
-        Rails.root / 'spec' / 'fixtures' / 'files' / 'test.png'
-      ]
-
-      click_on 'Create Your Question'
-
-      expect(page).to have_link 'test.jpg'
-      expect(page).to have_link 'test.png'
+      expect(page).to have_content 'Title can\'t be blank'
+      expect(page).to have_content 'Body can\'t be blank'
     end
   end
 
-  scenario 'unauthenticated user tries to ask the question' do
-    visit questions_path
+  context 'as guest' do
+    background { visit questions_path }
 
-    click_on 'Ask Question'
+    scenario 'can not create question' do
+      click_on 'Ask Question'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(current_path).to eq new_user_session_path
+    end
   end
 
   context 'multiple sessions' do
-    scenario 'question appears on another user page', js: true do
-      Capybara.using_session('authenticated user') do
+    scenario 'question appears on another user page', :js do
+      Capybara.using_session('user') do
         sign_in(user)
         visit questions_path
       end
 
-      Capybara.using_session('unauthenticated user') do
+      Capybara.using_session('guest') do
         visit questions_path
       end
 
-      Capybara.using_session('authenticated user') do
+      Capybara.using_session('user') do
         click_on 'Ask Question'
         fill_in 'Title', with: 'Test question'
-        fill_in 'Body', with: 'text text text'
-
+        fill_in 'Body', with: 'test text'
         click_on 'Create Your Question'
 
         expect(page).to have_content 'Your question successfully created.'
         expect(page).to have_content 'Test question'
-        expect(page).to have_content 'text text text'
+        expect(page).to have_content 'test text'
       end
 
-      Capybara.using_session('unauthenticated user') do
+      Capybara.using_session('guest') do
         expect(page).to have_content 'Test question'
+        expect(page).to have_content 'test text'
       end
     end
   end
