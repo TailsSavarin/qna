@@ -5,7 +5,7 @@ feature 'add files to question', :js do
   given!(:question) { create(:question, user: user) }
 
   context 'creates question' do
-    it_behaves_like 'files features' do
+    it_behaves_like 'file adding features' do
       given(:file_selector) { '#files' }
       given(:file_btn) { click_on 'Create Your Question' }
       given(:background_info) do
@@ -17,7 +17,7 @@ feature 'add files to question', :js do
   end
 
   context 'edits question' do
-    it_behaves_like 'files features' do
+    it_behaves_like 'file adding features' do
       given(:file_selector) { '#edit-question' }
       given(:file_btn) { click_on 'Update Your Question' }
       given(:background_info) do

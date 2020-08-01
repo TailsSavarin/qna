@@ -13,20 +13,20 @@ div id="answer-#{answer.id}"
         div class="answer-voting-buttons-links #{hide_vote_button_for(answer)}"
           - if can?(:vote_up, answer)
             = link_to 'Up', vote_up_answer_path(answer),
-                          method: :post,
-                          remote: true,
-                          class: 'text-secondary'
-          |  
-          - if can?(:vote_down, answer)
-            = link_to 'Down', vote_down_answer_path(answer),
                             method: :post,
                             remote: true,
                             class: 'text-secondary'
+          |  
+          - if can?(:vote_down, answer)
+            = link_to 'Down', vote_down_answer_path(answer),
+                              method: :post,
+                              remote: true,
+                              class: 'text-secondary'
         - if can?(:revote, answer)
           = link_to 'Revote', revote_answer_path(answer),
-                            method: :post,
-                            remote: true,
-                            class: "answer-revote-link text-secondary #{show_vote_button_for(answer)}"
+                              method: :post,
+                              remote: true,
+                              class: "answer-revote-link text-secondary #{show_vote_button_for(answer)}"
       p= answer.body
       - if answer.links.present?
         | Links:
@@ -37,13 +37,14 @@ div id="answer-#{answer.id}"
       div id="answer-#{answer.id}-comments"
         small
           | Comments:
-        = render answer.comments.order(:created_at)
-      - if can?(:create, Comment)
-        = render 'comments/form', commentable: answer, local: Comment.new
-        .answer-add-comment-link
-          p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
-                                           data: { commentable_type: answer.class.name.downcase,
-                                           commentable_id: answer.id }
+        - if answer.comments.present?
+          = render answer.comments.order(:created_at)
+        - if can?(:create, Comment)
+          = render 'comments/form', commentable: answer, local: Comment.new
+          .answer-add-comment-link
+            p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
+                                             data: { commentable_type: answer.class.name.downcase,
+                                             commentable_id: answer.id }
       = render 'answers/form_edit', answer: answer if can?(:update, answer)
       .answer-action-buttons.float-right
         - if can?(:update, answer)

@@ -10,7 +10,7 @@ feature 'User can add links to question', %q(
   given!(:question) { create(:question, user: user) }
 
   context 'creates question' do
-    it_behaves_like 'add links features' do
+    it_behaves_like 'link adding features' do
       given(:linkable_selector) { '#links' }
       given(:linkable_btn) { click_on 'Create Your Question' }
       given(:background_info) do
@@ -22,7 +22,7 @@ feature 'User can add links to question', %q(
   end
 
   context 'edits question' do
-    it_behaves_like 'add links features' do
+    it_behaves_like 'link adding features' do
       given(:linkable_selector) { '#edit-question' }
       given(:linkable_btn) { click_on 'Update Your Question' }
       given(:background_info) do

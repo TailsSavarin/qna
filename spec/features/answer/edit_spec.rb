@@ -19,11 +19,6 @@ feature 'User can edit answer', %q(
   end
 
   context 'as user' do
-    background do
-      sign_in(user)
-      visit question_path(question)
-    end
-
     context 'as author', :js do
       background do
         sign_in(user)

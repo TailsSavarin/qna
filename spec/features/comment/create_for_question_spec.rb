@@ -1,59 +1,31 @@
 require 'rails_helper'
 
 feature 'User can add comments to question', %q(
-  In order to clarify information or correct the author
-  As an authenticated user
+  In order to discuss
+  As user
   I'd like to be able to add comments
 ) do
   given(:user) { create(:user) }
-  given!(:question) { create(:question) }
+  given(:question) { create(:question) }
 
-  describe 'authenticated user', js: true do
-    background do
-      sign_in(user)
-      visit question_path(question)
-    end
-
-    scenario 'adds comment to the question' do
-      click_on 'Add a comment'
-
-      fill_in :comment_body, with: 'Test comment'
-
-      click_on 'Post Your Comment'
-
-      expect(page).to have_content 'Test comment'
-    end
-
-    scenario 'adds comment to the question with errors' do
-      click_on 'Add a comment'
-
-      click_on 'Post Your Comment'
-
-      expect(page).to have_content "Body can't be blank"
-    end
-  end
-
-  scenario 'unauthenticated user can not add comment to the question' do
-    visit question_path(question)
-    expect(page).to_not have_link 'Add a comment'
+  it_behaves_like 'comments adding features' do
+    given(:commentable_selector) { "#question-#{question.id}-comments" }
   end
 
   context 'multiple sessions' do
-    scenario 'question comment appears on another user page', js: true do
-      Capybara.using_session('authenticated_user') do
+    scenario 'question comment appears on another user page', :js do
+      Capybara.using_session('user') do
         sign_in(user)
         visit question_path(question)
       end
 
-      Capybara.using_session('unauthenticated_user') do
+      Capybara.using_session('guest') do
         visit question_path(question)
       end
 
-      Capybara.using_session('authenticated_user') do
+      Capybara.using_session('user') do
         click_on 'Add a comment'
-
         fill_in :comment_body, with: 'Test comment'
-
         click_on 'Post Your Comment'
 
         within "#question-#{question.id}-comments" do
@@ -61,7 +33,7 @@ feature 'User can add comments to question', %q(
         end
       end
 
-      Capybara.using_session('unauthenticated_user') do
+      Capybara.using_session('guest') do
         expect(page).to have_content 'Test comment'
       end
     end
