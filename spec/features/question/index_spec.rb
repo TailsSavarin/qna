@@ -1,21 +1,21 @@
 require 'rails_helper'
 
-feature 'User can watch all the questions', %q(
-  In order to find the right question
-  As an user
-  I'd like to be able to watch all the questions
+feature 'User can see list of questions', %q(
+  In order to look for questions
+  As user
+  I'd like to be able to see all questions
 ) do
   given(:user) { create(:user) }
   given!(:questions) { create_list(:question, 5) }
 
-  scenario 'authenticated user tries to watch all the questions' do
+  scenario 'user sees list of questions' do
     sign_in(user)
     visit questions_path
 
     questions.each { |question| expect(page).to have_content question.title }
   end
 
-  scenario 'unauthenticated user tries to watch all the questions' do
+  scenario 'guest sees list of questions' do
     visit questions_path
 
     questions.each { |question| expect(page).to have_content question.title }
