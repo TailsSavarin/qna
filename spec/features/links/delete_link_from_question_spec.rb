@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can delete links from question', %q(
   In order to delete additional information
-  As an authenticated user when create
+  As user when create
   As an question's author
   I'd like to be able to delete links
 ) do

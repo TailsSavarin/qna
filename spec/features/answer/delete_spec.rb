@@ -11,7 +11,7 @@ feature 'User can delete answer', %q(
   given!(:answer) { create(:answer, question: question, user: user) }
 
   shared_examples 'can not delete answer' do
-    scenario 'can not see delete link' do
+    scenario 'can not see delete answer link' do
       within "#answer-#{answer.id}" do
         expect(page).to_not have_link 'Delete Answer'
       end

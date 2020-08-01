@@ -11,7 +11,7 @@ feature 'User can edit answer', %q(
   given!(:answer) { create(:answer, question: question, user: user) }
 
   shared_examples 'can not edit answer' do
-    scenario 'can not see edit link' do
+    scenario 'can not see edit answer link' do
       within "#answer-#{answer.id}" do
         expect(page).to_not have_link('Edit Answer')
       end

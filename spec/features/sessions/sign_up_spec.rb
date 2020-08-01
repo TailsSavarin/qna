@@ -2,14 +2,14 @@ require 'rails_helper'
 
 feature 'User can register in the system', %q(
   In order to fully use the available functionality
-  As an unregistered user
+  As guest
   I'd like to be able to sign up
 ) do
   given(:user_params) { attributes_for(:user) }
 
   background { visit new_user_registration_path }
 
-  scenario 'sign up' do
+  scenario 'sign up with valid data' do
     within '.card-body' do
       fill_in 'Email', with: user_params[:email]
       fill_in 'Password', with: user_params[:password]

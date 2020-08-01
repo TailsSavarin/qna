@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-feature 'User can subscribe for the question', %q(
+feature 'User can subscribe for question', %q(
   In order to receive notifications about new answers
-  As an authenticated user
+  As user
   I'd like to be able to subscribe
 ) do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
-  scenario 'authenticated user tries to subscribe to the question', js: true do
+  scenario 'user subscribes', :js do
     sign_in(user)
     visit question_path(question)
     click_on 'Subscribe'
@@ -16,7 +16,7 @@ feature 'User can subscribe for the question', %q(
     expect(page).to_not have_link 'Subscribe'
   end
 
-  scenario 'unauthenticated can not subscribe to the question' do
+  scenario 'guest can not see subscribe link' do
     visit question_path(question)
 
     expect(page).to_not have_link 'Subscribe'

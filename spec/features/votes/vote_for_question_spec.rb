@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can vote for question', %q(
   In order to highlight it
-  As an authenticated user
+  As user
   I'd like to be able to vote
 ) do
   given(:user) { create(:user) }
