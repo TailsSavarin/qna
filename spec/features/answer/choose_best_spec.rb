@@ -2,15 +2,15 @@ require 'rails_helper'
 
 feature 'User can choose best answer', %q(
   In order to highlight it
-  As an question's author
+  As question's author
   I'd like to be able to choose best answer
 ) do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question) }
 
-  shared_examples 'cannot choose best answer' do
-    scenario 'cannot see select best link' do
+  shared_examples 'can not choose best answer' do
+    scenario 'can not see select best link' do
       within "#answer-#{answer.id}" do
         expect(page).to_not have_link 'Select as best'
       end
@@ -24,7 +24,7 @@ feature 'User can choose best answer', %q(
         visit question_path(question)
       end
 
-      scenario 'choose best answer' do
+      scenario 'chooses best answer' do
         within "#answer-#{answer.id}" do
           click_on 'Select as best'
         end
@@ -36,7 +36,7 @@ feature 'User can choose best answer', %q(
       end
     end
 
-    context 'not question author' do
+    context 'non-owner' do
       given(:question) { create(:question) }
 
       background do
@@ -44,13 +44,13 @@ feature 'User can choose best answer', %q(
         visit question_path(question)
       end
 
-      it_behaves_like 'cannot choose best answer'
+      it_behaves_like 'can not choose best answer'
     end
   end
 
   context 'as guest' do
     background { visit question_path(question) }
 
-    it_behaves_like 'cannot choose best answer'
+    it_behaves_like 'can not choose best answer'
   end
 end
