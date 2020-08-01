@@ -16,12 +16,12 @@ feature 'User can delete question', %q(
   end
 
   context 'as user' do
-    background do
-      sign_in(user)
-      visit question_path(question)
-    end
-
     context 'as author' do
+      background do
+        sign_in(user)
+        visit question_path(question)
+      end
+
       scenario 'deletes question' do
         click_on 'Delete Question'
 
@@ -31,8 +31,11 @@ feature 'User can delete question', %q(
       end
     end
 
-    context 'non-author' do
-      given(:question) { create(:question) }
+    context 'not author' do
+      background do
+        sign_in(another_user)
+        visit question_path(question)
+      end
 
       it_behaves_like 'can not delete question'
     end

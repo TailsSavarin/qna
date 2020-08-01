@@ -6,6 +6,7 @@ feature 'User can edit answer', %q(
   I'd like to be able to edit answer
 ) do
   given(:user) { create(:user) }
+  given(:another_user) { create(:user) }
   given(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
@@ -25,6 +26,8 @@ feature 'User can edit answer', %q(
 
     context 'as author', :js do
       background do
+        sign_in(user)
+        visit question_path(question)
         within "#answer-#{answer.id}" do
           click_on 'Edit Answer'
         end
@@ -50,8 +53,11 @@ feature 'User can edit answer', %q(
       end
     end
 
-    context 'non-owner' do
-      given(:answer) { create(:answer, question: question) }
+    context 'not author' do
+      background do
+        sign_in(another_user)
+        visit question_path(question)
+      end
 
       it_behaves_like 'can not edit answer'
     end
