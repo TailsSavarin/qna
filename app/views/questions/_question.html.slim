@@ -46,12 +46,12 @@
           |Comments:
         - if @question.comments.present?
           = render @question.comments.order(:created_at)
-      - if can?(:create, Comment)
-        = render 'comments/form', commentable: @question, local: Comment.new
-        .question-add-comment-link
-          p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
-                                           data: { commentable_type: @question.class.name.downcase,
-                                                   commentable_id: @question.id }
+        - if can?(:create, Comment)
+          = render 'comments/form', commentable: @question, local: Comment.new
+          .question-add-comment-link
+            p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
+                                             data: { commentable_type: @question.class.name.downcase,
+                                                     commentable_id: @question.id }
       = render 'form_edit' if can?(:update, @question)
       .question-action-buttons
         - if can?(:update, @question)
@@ -59,8 +59,8 @@
         |  
         - if can?(:destroy, @question)
           = link_to 'Delete Question', question_path(@question), class: 'text-secondary',
-                                                                method: :delete,
-                                                                data: { confirm: 'Are you sure?' }
+                                                                 method: :delete,
+                                                                 data: { confirm: 'Are you sure?' }
       strong Answers:
       .answers
         - if @question.answers.present?

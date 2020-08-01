@@ -1,4 +1,4 @@
-shared_examples 'files features', :js do
+shared_examples 'file adding features', :js do
   background do
     sign_in(user)
     background_info
@@ -19,14 +19,13 @@ shared_examples 'files features', :js do
   end
 end
 
-shared_examples 'delete file' do
+shared_examples 'file deleting features' do
   shared_examples 'can not delete attached file' do
     scenario 'can not see delete file link' do
       within file_selector.to_s do
         expect(page).to_not have_link 'Delete File'
       end
     end
-
   end
   context 'as user' do
     context 'as author', :js do
@@ -63,4 +62,3 @@ shared_examples 'delete file' do
     it_behaves_like 'can not delete attached file'
   end
 end
-

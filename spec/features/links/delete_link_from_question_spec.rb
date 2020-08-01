@@ -10,7 +10,7 @@ feature 'User can delete links from question', %q(
   given!(:question) { create(:question, user: user) }
 
   context 'creates question' do
-    it_behaves_like 'delete links features' do
+    it_behaves_like 'link deleting features' do
       given(:linkable_selector) { '#links' }
       given(:linkable_btn) { click_on 'Create Your Question' }
       given(:background_info) do
@@ -22,7 +22,7 @@ feature 'User can delete links from question', %q(
   end
 
   context 'edits question' do
-    it_behaves_like 'delete links features' do
+    it_behaves_like 'link deleting features' do
       given(:linkable_selector) { '#edit-question' }
       given(:linkable_btn) { click_on 'Update Your Question' }
       given(:background_info) do

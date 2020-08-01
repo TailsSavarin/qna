@@ -13,7 +13,7 @@ feature 'User can delete files from question or answer', %q(
     question.files.attach(create_file_blob(filename: 'test.png'))
   end
 
-  it_behaves_like 'delete file' do
-    given(:file_selector) { "#question" }
+  it_behaves_like 'file deleting features' do
+    given(:file_selector) { '#question' }
   end
 end

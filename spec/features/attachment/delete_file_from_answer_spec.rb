@@ -14,7 +14,7 @@ feature 'User can delete files from answer', %q(
     answer.files.attach(create_file_blob(filename: 'test.png'))
   end
 
-  it_behaves_like 'delete file' do
+  it_behaves_like 'file deleting features' do
     given(:file_selector) { "#answer-#{answer.id}" }
   end
 end

@@ -1,4 +1,4 @@
-shared_examples 'add links features', :js do
+shared_examples 'link adding features', :js do
   given(:bad_url) { 'www.google.com' }
   given(:good_url) { 'https://www.google.com' }
   given(:gist_url) { 'https://gist.github.com/TailsSavarin/2d313a9ece10a0c17cb3decee000e294' }
@@ -45,7 +45,7 @@ shared_examples 'add links features', :js do
   end
 end
 
-shared_examples 'delete links features', :js do
+shared_examples 'link deleting features', :js do
   given(:good_url) { 'https://www.google.com' }
 
   background do

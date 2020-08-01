@@ -11,7 +11,7 @@ feature 'User can add links to answer', %q(
   given!(:answer) { create(:answer, question: question, user: user) }
 
   context 'creates answer' do
-    it_behaves_like 'add links features' do
+    it_behaves_like 'link adding features' do
       given(:linkable_selector) { '.new-answer' }
       given(:linkable_btn) { click_on 'Post Your Answer' }
       given(:background_info) do
@@ -22,7 +22,7 @@ feature 'User can add links to answer', %q(
   end
 
   context 'edits answer' do
-    it_behaves_like 'add links features' do
+    it_behaves_like 'link adding features' do
       given(:linkable_selector) { "#answer-#{answer.id}" }
       given(:linkable_btn) { click_on 'Update Your Answer' }
       given(:background_info) do
