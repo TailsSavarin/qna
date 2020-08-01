@@ -34,7 +34,7 @@ feature 'User can create answer', %q(
   end
 
   context 'as guest' do
-    scenario 'can not see create button' do
+    scenario 'can not see create answer link' do
       visit question_path(question)
 
       expect(page).to_not have_link 'Post Your Answer'

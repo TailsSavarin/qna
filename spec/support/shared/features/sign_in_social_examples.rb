@@ -7,7 +7,7 @@ shared_examples 'sign in features' do
   end
 
   scenario 'handle authentication error' do
-    mock_auth_error
+    mock_auth_invalid
     click_on "Sign in with #{social_network}"
 
     expect(page).to have_content %(Could not authenticate you from #{social_network} because "Invalid credentials")

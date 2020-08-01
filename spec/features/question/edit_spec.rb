@@ -10,7 +10,7 @@ feature 'User can edit question', %q(
   given(:question) { create(:question, user: user) }
 
   shared_examples 'can not edit question' do
-    scenario 'can not see edit link' do
+    scenario 'can not see edit question link' do
       expect(page).to_not have_link 'Edit Question'
     end
   end

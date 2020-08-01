@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-feature 'User can delete files from question or answer', %q(
-  In order to delete excess or unnecessary files
+feature 'User can delete files from question', %q(
+  In order to delete additional information
   As an file's author
   I'd like to be able to delete attached files
 ) do

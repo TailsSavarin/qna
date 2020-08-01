@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can add links to answer', %q(
   In order to add additional information
-  As an authenticated user when create
+  As user when create
   As an answer's author when edit
   I'd like to be able to add links
 ) do

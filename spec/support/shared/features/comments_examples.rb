@@ -35,4 +35,3 @@ shared_examples 'comments adding features' do
     end
   end
 end
-

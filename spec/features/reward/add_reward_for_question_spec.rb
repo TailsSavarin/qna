@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can add reward for new question', %q(
   In order to reward another user for the best answer
-  As an authenticated user
+  As user
   I'd like to be able to add reward
 ) do
   given(:user) { create(:user) }
@@ -10,32 +10,34 @@ feature 'User can add reward for new question', %q(
     attach_file 'Reward Image', Rails.root / 'spec' / 'fixtures' / 'files' / 'test.jpg'
   end
 
-  background do
-    sign_in(user)
-    visit new_question_path
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'Test text'
-  end
-
-  scenario 'user adds reward with valid data' do
-    within '#reward' do
-      fill_in 'Reward Title', with: 'My Reward'
-      attach_reward
+  context 'as user' do
+    background do
+      sign_in(user)
+      visit new_question_path
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'Test text'
     end
 
-    click_on 'Create Your Question'
+    scenario 'adds reward with valid data' do
+      within '#reward' do
+        fill_in 'Reward Title', with: 'My Reward'
+        attach_reward
+      end
 
-    expect(page).to have_content 'Reward for best Answer active!'
-  end
+      click_on 'Create Your Question'
 
-  scenario 'user adds reward with invalid data' do
-    within '#reward' do
-      fill_in 'Reward Title', with: ''
-      attach_reward
+      expect(page).to have_content 'Reward for best Answer active!'
     end
 
-    click_on 'Create Your Question'
+    scenario 'adds reward with invalid data' do
+      within '#reward' do
+        fill_in 'Reward Title', with: ''
+        attach_reward
+      end
 
-    expect(page).to have_content 'Reward title can\'t be blank'
+      click_on 'Create Your Question'
+
+      expect(page).to have_content 'Reward title can\'t be blank'
+    end
   end
 end

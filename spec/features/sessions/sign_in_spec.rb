@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can sign in', %q(
   In order to ask questions
-  As an authenticated user
+  As user
   I'd like to be able to sign in
 ) do
   given(:confirmed_user) { create(:user) }
@@ -49,7 +49,7 @@ feature 'User can sign in', %q(
     it_behaves_like 'sign in features' do
       given(:mock_auth) { mock_auth_github }
       given(:social_network) { 'GitHub' }
-      given(:mock_auth_error) do
+      given(:mock_auth_invalid) do
         OmniAuth.config.mock_auth[:github] = :invalid_credentials
       end
     end
@@ -59,7 +59,7 @@ feature 'User can sign in', %q(
     it_behaves_like 'sign in features' do
       given(:mock_auth) { mock_auth_twitter }
       given(:social_network) { 'Twitter' }
-      given(:mock_auth_error) do
+      given(:mock_auth_invalid) do
         OmniAuth.config.mock_auth[:twitter] = :invalid_credentials
       end
     end
@@ -69,7 +69,7 @@ feature 'User can sign in', %q(
     it_behaves_like 'sign in features' do
       given(:mock_auth) { mock_auth_facebook }
       given(:social_network) { 'Facebook' }
-      given(:mock_auth_error) do
+      given(:mock_auth_invalid) do
         OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
       end
     end

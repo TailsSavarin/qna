@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can create question', %q(
   In order to get an answer to it
-  As an user
+  As user
   I'd like to be able to create a question
 ) do
   given(:user) { create(:user) }

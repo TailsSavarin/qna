@@ -10,7 +10,7 @@ feature 'User can delete question', %q(
   given(:question) { create(:question, user: user) }
 
   shared_examples 'can not delete question' do
-    scenario 'can not see delete link' do
+    scenario 'can not see delete question link' do
       expect(page).to_not have_link 'Delete Question'
     end
   end

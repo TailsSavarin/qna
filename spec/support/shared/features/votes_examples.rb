@@ -1,6 +1,6 @@
 shared_examples 'votes features' do
   context 'as user', :js do
-    context 'non-author' do
+    context 'not author' do
       background do
         sign_in(user)
         visit question_path(question)
