@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can create question', %q(
   In order to get an answer to it
-  As an authenticated user
+  As an user
   I'd like to be able to create a question
 ) do
   given(:user) { create(:user) }
@@ -16,15 +16,15 @@ feature 'User can create question', %q(
 
     scenario 'creates question with valid data' do
       fill_in 'Title', with: 'Test question'
-      fill_in 'Body', with: 'test text'
+      fill_in 'Body', with: 'Test text'
       click_on 'Create Your Question'
 
       expect(page).to have_content 'Your question successfully created.'
       expect(page).to have_content 'Test question'
-      expect(page).to have_content 'test text'
+      expect(page).to have_content 'Test text'
     end
 
-    scenario 'can not create question with invalid data' do
+    scenario 'creates question with invalid data' do
       fill_in 'Title', with: ''
       fill_in 'Body', with: ''
       click_on 'Create Your Question'
@@ -59,17 +59,17 @@ feature 'User can create question', %q(
       Capybara.using_session('user') do
         click_on 'Ask Question'
         fill_in 'Title', with: 'Test question'
-        fill_in 'Body', with: 'test text'
+        fill_in 'Body', with: 'Test text'
         click_on 'Create Your Question'
 
         expect(page).to have_content 'Your question successfully created.'
         expect(page).to have_content 'Test question'
-        expect(page).to have_content 'test text'
+        expect(page).to have_content 'Test text'
       end
 
       Capybara.using_session('guest') do
         expect(page).to have_content 'Test question'
-        expect(page).to have_content 'test text'
+        expect(page).to have_content 'Test text'
       end
     end
   end
