@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can create answer', %q(
   In order to help another user slove his problem
-  As an authenticated user
+  As user
   I'd like to be able to create answer
 ) do
   given(:user) { create(:user) }
@@ -14,7 +14,7 @@ feature 'User can create answer', %q(
       visit question_path(question)
     end
 
-    scenario 'creates answer' do
+    scenario 'creates answer with valid data' do
       within '.new-answer' do
         fill_in 'Your Answer:', with: 'Test Answer'
         click_on 'Post Your Answer'
@@ -23,7 +23,7 @@ feature 'User can create answer', %q(
       expect(page).to have_content 'Test Answer'
     end
 
-    scenario 'invalid answer data' do
+    scenario 'creates answer with invalid data' do
       within '.new-answer' do
         fill_in 'Your Answer:', with: ''
         click_on 'Post Your Answer'
@@ -34,9 +34,9 @@ feature 'User can create answer', %q(
   end
 
   context 'as guest' do
-    background { visit question_path(question) }
+    scenario 'can not see create button' do
+      visit question_path(question)
 
-    scenario 'cannot see create button' do
       expect(page).to_not have_link 'Post Your Answer'
     end
   end
