@@ -1,11 +1,11 @@
-shared_examples 'links features', :js do
+shared_examples 'add links features', :js do
   given(:bad_url) { 'www.google.com' }
   given(:good_url) { 'https://www.google.com' }
   given(:gist_url) { 'https://gist.github.com/TailsSavarin/2d313a9ece10a0c17cb3decee000e294' }
 
   background do
     sign_in(user)
-    background_i
+    background_info
   end
 
   scenario 'adds link with valid data' do
