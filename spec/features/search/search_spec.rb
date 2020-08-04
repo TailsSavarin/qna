@@ -12,8 +12,9 @@ feature 'User can use search', %q(
 
   background { visit root_path }
 
-  scenario 'user searchs All', :sphinx do
+  scenario 'user searchs All', sphinx: true do
     ThinkingSphinx::Test.run do
+      select 'All', from: :resource
       fill_in 'Search', with: ''
       click_on 'Search'
 
@@ -24,64 +25,47 @@ feature 'User can use search', %q(
     end
   end
 
-  scenario 'user searchs Question' do
+  scenario 'user searchs Question', sphinx: true do
     ThinkingSphinx::Test.run do
       select 'Question', from: :resource
       fill_in 'Search', with: question.title
       click_on 'Search'
 
+      expect(page).to have_content '1 result'
       expect(page).to have_content question.title
-      within '.container' do
-        %w[Answer Comment User].each do |resource|
-          expect(page).to_not have_content resource
-        end
-      end
     end
   end
 
-  scenario 'user searchs Answer' do
+  scenario 'user searchs Answer', sphinx: true do
     ThinkingSphinx::Test.run do
       select 'Answer', from: :resource
       fill_in 'Search', with: answer.body
       click_on 'Search'
 
+      expect(page).to have_content '1 result'
       expect(page).to have_content answer.body
-      within '.container' do
-        %w[Question Comment User].each do |resource|
-          expect(page).to_not have_content resource
-        end
-      end
     end
   end
 
-  scenario 'user searchs Comment' do
+  scenario 'user searchs Comment', sphinx: true do
     ThinkingSphinx::Test.run do
       select 'Comment', from: :resource
       fill_in 'Search', with: question_comment.body
       click_on 'Search'
 
-      save_and_open_page
+      expect(page).to have_content '1 result'
       expect(page).to have_content question_comment.body
-      within '.container' do
-        %w[Question User].each do |resource|
-          expect(page).to_not have_content resource
-        end
-      end
     end
   end
 
-  scenario 'user searchs Comment' do
+  scenario 'user searchs Comment', sphinx: true do
     ThinkingSphinx::Test.run do
       select 'User', from: :resource
       fill_in 'Search', with: user.email
       click_on 'Search'
 
+      expect(page).to have_content '1 result'
       expect(page).to have_content user.email
-      within '.container' do
-        %w[Question Answer Comment].each do |resource|
-          expect(page).to_not have_content resource
-        end
-      end
     end
   end
 end
