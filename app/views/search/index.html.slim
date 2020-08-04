@@ -1,0 +1,7 @@
+h2.text-center.mt-3
+  strong= 'Searching results'
+- if @results.present?
+  -@results.each do |result|
+    = render "search/#{result.class.name.underscore}", resource: result
+- else
+  h3.text-center Nothing found
