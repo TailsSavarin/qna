@@ -8,7 +8,7 @@ RSpec.describe SearchService do
 
   it 'calls search for all others resources' do
     %w[Question Answer Comment User].each do |resource|
-      allow(resource.constantize).to receive(:search).with(ThinkingSphinx::Query.escape('query'))
+      expect(resource.constantize).to receive(:search).with(ThinkingSphinx::Query.escape('query'))
       SearchService.new(resource, 'query').call
     end
   end
