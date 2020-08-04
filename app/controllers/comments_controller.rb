@@ -26,9 +26,10 @@ class CommentsController < ApplicationController
   end
 
   def publish_comment
-    if @commentable.is_a?(Question)
+    case @commentable
+    when Question
       ActionCable.server.broadcast "question_#{@commentable.id}-comments", @comment unless @comment.errors.any?
-    elsif @commentable.is_a?(Answer)
+    when Answer
       ActionCable.server.broadcast "question_#{@commentable.question.id}-comments", @comment unless @comment.errors.any?
     end
   end

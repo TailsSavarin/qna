@@ -4,6 +4,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.justify-content-end
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
     ul.navbar-nav.ml-auto.mr-4
+      li.nav-item
+        = render 'search/form'
       - if user_signed_in?
         span.navbar-text.ml-auto.mr-2
           = "Welcome #{current_user.email}!"

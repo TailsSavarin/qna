@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-
 ruby '2.7.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -60,7 +59,7 @@ gem 'oj'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'whenever', require: false
-gem 'mysql2', '~> 0.5.0', :platform => :ruby
+gem 'mysql2', '~> 0.5.0', platform: :ruby
 gem 'thinking-sphinx', '~> 5.0'
 
 group :development, :test do
@@ -97,6 +96,7 @@ group :test do
   gem 'rails-controller-testing'
   # For save_and_open_page option
   gem 'launchy'
+  gem 'database_cleaner-active_record'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

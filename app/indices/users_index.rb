@@ -4,3 +4,4 @@ ThinkingSphinx::Index.define :user, with: :active_record do
 
   # attributes
   has created_at
+end

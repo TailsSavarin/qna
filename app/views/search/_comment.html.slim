@@ -1,0 +1,5 @@
+h3 Comment:
+- if resource.commentable.is_a?(Question)
+  p= link_to resource.body, question_path(resource.commentable)
+- else
+  p= link_to resource.body, question_path(resource.commentable.question)
