@@ -7,6 +7,6 @@ class SearchService
   end
 
   def call
-    @resource == 'All' ? ThinkingSphinx.search(@query) : @resource.classify.constantize.search(@query)
+    @resource == 'All' ? ThinkingSphinx.search(@query) : @resource.constantize.search(@query)
   end
 end

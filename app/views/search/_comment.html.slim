@@ -1,5 +1,7 @@
-h3 Comment:
-- if resource.commentable.is_a?(Question)
-  p= link_to resource.body, question_path(resource.commentable)
-- else
-  p= link_to resource.body, question_path(resource.commentable.question)
+li.list-group-item
+  = commentable_link(resource)
+  br
+  = resource.body.truncate(50)
+  .creation-comment-info.text-right
+    small.text-secondary commented #{creation_time(resource)} by 
+    small.text-info #{resource.user.email}
