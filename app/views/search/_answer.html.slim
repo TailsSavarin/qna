@@ -1,2 +1,11 @@
-h3 Answer:
-p= link_to resource.body, question_path(resource.question)
+li.list-group-item
+  .secondary-info-answer.text-right
+    small #{resource.rating} votes
+    br
+    small #{pluralize(resource.comments.count, 'comment')}
+  = link_to "A: #{resource.question.title}", question_path(resource.question)
+  br
+  = resource.body.truncate(100)
+  .creation-info-answer.text-right
+    small.text-secondary asked #{creation_time(resource)} by 
+    small.text-info #{resource.user.email}

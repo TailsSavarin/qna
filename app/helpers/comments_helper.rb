@@ -1,5 +1,9 @@
 module CommentsHelper
-  def creation_time(comment)
-    comment.created_at.to_s(:short)
+  def commentable_link(resource)
+    if resource.commentable.is_a?(Question)
+      link_to "C: #{resource.commentable.title}", question_path(resource.commentable)
+    else
+      link_to "C: #{resource.commentable.body}", question_path(resource.commentable.question)
+    end
   end
 end

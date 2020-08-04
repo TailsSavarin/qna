@@ -3,9 +3,9 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.justify-content-end
   button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button" 
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
+    .nav-item.ml-4
+      = render 'search/form'
     ul.navbar-nav.ml-auto.mr-4
-      li.nav-item
-        = render 'search/form'
       - if user_signed_in?
         span.navbar-text.ml-auto.mr-2
           = "Welcome #{current_user.email}!"
