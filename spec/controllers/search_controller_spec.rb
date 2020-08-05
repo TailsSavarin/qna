@@ -5,7 +5,7 @@ RSpec.describe SearchController, type: :controller do
     let(:service) { double('SearchService') }
 
     before do
-      allow(SearchService).to receive(:new).with('All', '').and_return(service)
+      allow(SearchService).to receive(:new).and_return(service)
       allow(service).to receive(:call)
       get :index, params: { resource: 'All', query: '' }
     end
