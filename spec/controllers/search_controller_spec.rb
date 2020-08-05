@@ -6,7 +6,7 @@ RSpec.describe SearchController, type: :controller do
 
     before do
       allow(SearchService).to receive(:new).and_return(service)
-      allow(service).to receive(:call)
+      allow(service).to receive_message_chain(:call, :paginate)
       get :index, params: { resource: 'All', query: '' }
     end
 

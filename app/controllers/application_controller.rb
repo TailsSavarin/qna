@@ -1,5 +1,3 @@
-require 'will_paginate/array'
-
 class ApplicationController < ActionController::Base
   before_action :gon_user, unless: :devise_controller?
 
