@@ -10,3 +10,4 @@
         = render "search/#{result.class.name.underscore}", resource: result
     - else
       h3.text-center Nothing found
+    = will_paginate @results, renderer: WillPaginate::ActionView::BootstrapLinkRenderer
