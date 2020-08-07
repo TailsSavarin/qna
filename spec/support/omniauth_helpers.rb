@@ -7,14 +7,6 @@ module OmniauthHelpers
     })
   end
 
-  def mock_auth_twitter
-    OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new({
-      provider: 'twitter',
-      uid: '123456',
-      info: { email: 'twitter_test@user.com' }
-    })
-  end
-
   def mock_auth_facebook
     OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
       provider: 'facebook',
