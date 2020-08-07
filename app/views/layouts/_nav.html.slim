@@ -1,20 +1,20 @@
-nav.navbar.navbar-expand-lg.navbar-light.bg-light.justify-content-end
-  = link_to image_tag('qna-logo.png', class: 'logo-session-nav', alt: 'qna'), root_path
+nav.navbar.navbar-expand-lg.navbar-light.bg-light
+  .navbar-brand
+    = link_to image_tag('qna-logo.png', width: '50', height: '30', class: 'd-inline-block', alt: 'QnA'), root_path
   button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button" 
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
-    .nav-item.ml-4
-      = render 'search/form'
-    ul.navbar-nav.ml-auto.mr-4
+    = render 'search/form'
+    ul.navbar-nav.ml-auto
       - if user_signed_in?
-        span.navbar-text.ml-auto.mr-2
+        li.navbar-text
           = "Welcome #{current_user.email}!"
-        li.nav-item.active.mr-2
+        li.nav-item.active
           = link_to 'My Rewards', rewards_path, class: 'nav-link'
         li.nav-item
           = link_to 'Log out', destroy_user_session_path, method: :delete, class: 'btn btn-outline-danger'
       - else
-        li.nav-item.mr-2
-          = link_to 'Log in', new_user_session_path, class: 'btn btn-outline-info'
         li.nav-item
-          = link_to 'Sign up', new_user_registration_path, class: 'btn btn-primary'
+          = link_to 'Log in', new_user_session_path, class: 'btn btn-outline-info my-2 my-sm-0 mr-2'
+        li.nav-item
+          = link_to 'Sign up', new_user_registration_path, class: 'btn btn-primary my-2 my-sm-0'
