@@ -55,16 +55,6 @@ feature 'User can sign in', %q(
     end
   end
 
-  context 'sign in with Twitter' do
-    it_behaves_like 'sign in features' do
-      given(:mock_auth) { mock_auth_twitter }
-      given(:social_network) { 'Twitter' }
-      given(:mock_auth_invalid) do
-        OmniAuth.config.mock_auth[:twitter] = :invalid_credentials
-      end
-    end
-  end
-
   context 'sign in with Facebook' do
     it_behaves_like 'sign in features' do
       given(:mock_auth) { mock_auth_facebook }

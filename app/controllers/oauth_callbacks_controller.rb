@@ -3,10 +3,6 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
     authentication_with_oauth
   end
 
-  def twitter
-    authentication_with_oauth
-  end
-
   def facebook
     authentication_with_oauth
   end

@@ -264,11 +264,6 @@ Devise.setup do |config|
                   Rails.application.credentials[Rails.env.to_sym][:github][:app_secret],
                   scope: 'user:email, read:user'
 
-  config.omniauth :twitter,
-                  Rails.application.credentials[Rails.env.to_sym][:twitter][:app_id],
-                  Rails.application.credentials[Rails.env.to_sym][:twitter][:app_secret],
-                  scope: 'email'
-
   config.omniauth :facebook,
                   Rails.application.credentials[Rails.env.to_sym][:facebook][:app_id],
                   Rails.application.credentials[Rails.env.to_sym][:facebook][:app_secret],

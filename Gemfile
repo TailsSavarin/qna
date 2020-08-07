@@ -45,7 +45,6 @@ gem 'doorkeeper', '5.1.1'
 # Oauth.
 gem 'omniauth'
 gem 'omniauth-github'
-gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 # Social buttons.
 gem 'bootstrap-social-rails'
