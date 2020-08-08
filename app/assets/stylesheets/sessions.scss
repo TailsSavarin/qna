@@ -21,3 +21,9 @@
 .logo-session {
   width: 120px;
 }
+
+.blue-line-hide:focus {
+  outline: 0 !important;
+  border-color: initial;
+  box-shadow: none;
+}
