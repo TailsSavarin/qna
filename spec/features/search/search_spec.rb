@@ -14,9 +14,11 @@ feature 'User can use search', %q(
 
   scenario 'user searchs All', sphinx: true do
     ThinkingSphinx::Test.run do
-      select 'All', from: :resource
-      fill_in 'Search', with: ''
-      click_on 'Search'
+      within '.input-group' do
+        fill_in :query, with: ''
+        select 'All', from: :resource
+        click_on 'Search'
+      end
 
       expect(page).to have_content user.email
       expect(page).to have_content question.title
@@ -27,9 +29,11 @@ feature 'User can use search', %q(
 
   scenario 'user searchs Question', sphinx: true do
     ThinkingSphinx::Test.run do
-      select 'Question', from: :resource
-      fill_in 'Search', with: question.title
-      click_on 'Search'
+      within '.input-group' do
+        fill_in :query, with: question.title
+        select 'Question', from: :resource
+        click_on 'Search'
+      end
 
       expect(page).to have_content '1 result'
       expect(page).to have_content question.title
@@ -38,9 +42,11 @@ feature 'User can use search', %q(
 
   scenario 'user searchs Answer', sphinx: true do
     ThinkingSphinx::Test.run do
-      select 'Answer', from: :resource
-      fill_in 'Search', with: answer.body
-      click_on 'Search'
+      within '.input-group' do
+        fill_in :query, with: answer.body
+        select 'Answer', from: :resource
+        click_on 'Search'
+      end
 
       expect(page).to have_content '1 result'
       expect(page).to have_content answer.body
@@ -49,20 +55,24 @@ feature 'User can use search', %q(
 
   scenario 'user searchs Comment', sphinx: true do
     ThinkingSphinx::Test.run do
-      select 'Comment', from: :resource
-      fill_in 'Search', with: question_comment.body
-      click_on 'Search'
+      within '.input-group' do
+        fill_in :query, with: question_comment.body
+        select 'Comment', from: :resource
+        click_on 'Search'
+      end
 
       expect(page).to have_content '1 result'
       expect(page).to have_content question_comment.body
     end
   end
 
-  scenario 'user searchs Comment', sphinx: true do
+  scenario 'user searchs User', sphinx: true do
     ThinkingSphinx::Test.run do
-      select 'User', from: :resource
-      fill_in 'Search', with: user.email
-      click_on 'Search'
+      within '.input-group' do
+        fill_in :query, with: user.email
+        select 'User', from: :resource
+        click_on 'Search'
+      end
 
       expect(page).to have_content '1 result'
       expect(page).to have_content user.email
