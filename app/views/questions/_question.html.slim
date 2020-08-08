@@ -48,10 +48,11 @@
           = render @question.comments.order(:created_at)
         - if can?(:create, Comment)
           = render 'comments/form', commentable: @question, local: Comment.new
-          .question-add-comment-link
-            p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
-                                             data: { commentable_type: @question.class.name.downcase,
-                                                     commentable_id: @question.id }
+      .question-add-comment-link
+        - if can?(:create, Comment)
+          p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
+                                           data: { commentable_type: @question.class.name.downcase,
+                                                   commentable_id: @question.id }
       = render 'form_edit' if can?(:update, @question)
       .question-action-buttons
         - if can?(:update, @question)
