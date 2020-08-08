@@ -6,8 +6,10 @@ shared_examples 'comments adding features' do
     end
 
     scenario 'adds comment with valid data' do
-      within commentable_selector do
+      within add_comment do
         click_on 'Add a comment'
+      end
+      within commentable_selector do
         fill_in :comment_body, with: 'Test comment'
         click_on 'Post Your Comment'
 
@@ -16,8 +18,10 @@ shared_examples 'comments adding features' do
     end
 
     scenario 'adds comment with invalid data' do
-      within commentable_selector do
+      within add_comment do
         click_on 'Add a comment'
+      end
+      within commentable_selector do
         fill_in :comment_body, with: ''
         click_on 'Post Your Comment'
 
@@ -29,7 +33,7 @@ shared_examples 'comments adding features' do
   context 'as guest' do
     scenario 'can not see add comment link' do
       visit question_path(question)
-      within commentable_selector do
+      within add_comment do
         expect(page).to_not have_link 'Add a comment'
       end
     end

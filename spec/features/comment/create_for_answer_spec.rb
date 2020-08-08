@@ -11,6 +11,7 @@ feature 'User can add comments to answer', %q(
 
   it_behaves_like 'comments adding features' do
     given(:commentable_selector) { "#answer-#{answer.id}-comments" }
+    given(:add_comment) { '.answer-add-comment-link' }
   end
 
   context 'multiple sessions' do
