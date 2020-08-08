@@ -1,26 +1,26 @@
-.row.justify-content-center.mt-3
+.row.justify-content-center.mt-4
   .col.col-md-4
-    .h2.text-center
-      = link_to image_tag('qna-logo.png', class: 'logo-session', alt: 'qna'), root_path
-    .mb-3
+    .logo.text-center
+      = link_to image_tag('qna-logo.png', class: 'logo-session', alt: 'qna', width: 112, heaight: 112), root_path
+    .oauth.mb-2
       = render 'devise/shared/links_oauth'
     .card.shadow-lg.p-3.mb-5.bg-white.rounded
       .card-body
         = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
           .form-group
-            p
+            .email.mb-2
               strong= f.label :email
               = f.email_field :email, class: 'form-control', autofocus: true, autocomplete: 'email'
-            p
+            .password.mb-2
               strong= f.label :password
               small.float-right
                 = render 'devise/shared/links_password'
               = f.password_field :password, class: 'form-control', autocomplete: 'current-password'
-          - if devise_mapping.rememberable?
-            .form-check
-              = f.label :remember_me, class: 'form-check-input' do
-                = f.check_box :remember_me, class: 'form-check-label'
-                |  Remember me
-          = f.submit 'Log in', class: 'btn-session'
-    .text-center
+            - if devise_mapping.rememberable?
+              .form-check
+                = f.label :remember_me, class: 'form-check-input' do
+                  = f.check_box :remember_me, class: 'form-check-label'
+                  |  Remember me
+            = f.submit 'Log in', class: 'btn-session'
+    .links.text-center
       = render 'devise/shared/links'
