@@ -13,7 +13,7 @@ feature 'User can see rewards', %q(
     sign_in(user)
     visit rewards_path
 
-    expect(page).to have_content 'Your Rewards List'
+    expect(page).to have_content 'Your Reward List'
     expect(page).to have_link reward.question.title
     expect(page).to have_content reward.title
     have_css("img[src*='test.jpg']")

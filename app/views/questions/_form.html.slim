@@ -1,6 +1,6 @@
-= form_with model: @question, local: true do |f|
+= form_with model: question, local: true do |f|
   .form-group
-    = render 'shared/errors', resource: @question
+    = render 'shared/errors', resource: question
     p.text-center
       strong= f.label :title
       br

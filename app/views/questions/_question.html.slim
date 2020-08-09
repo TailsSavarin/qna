@@ -53,7 +53,7 @@
           p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
                                            data: { commentable_type: @question.class.name.downcase,
                                                    commentable_id: @question.id }
-      = render 'form_edit' if can?(:update, @question)
+      = render 'questions/form_edit', question: @question if can?(:update, @question)
       .question-action-buttons
         - if can?(:update, @question)
           = link_to 'Edit Question', '#', id: 'question-edit-link', class: 'text-secondary'
