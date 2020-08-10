@@ -62,6 +62,7 @@ gem 'mysql2', '~> 0.5.0', platform: :ruby
 gem 'thinking-sphinx', '~> 5.0'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap4'
+gem 'mini_racer'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -88,7 +89,6 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-passenger', require: false
-  gem 'capistrano-sidekiq', require: false
 end
 
 group :test do
