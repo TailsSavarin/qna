@@ -81,6 +81,13 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Email Preview
   gem 'letter_opener'
+
+  # Deploy
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-passenger', require: false
 end
 
 group :test do
