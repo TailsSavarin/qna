@@ -1,14 +1,15 @@
-.row.justify-content-center.mt-3
-  .col.col-md-8
-    = link_to 'Ask Question', new_question_path, class: 'btn btn-lg btn-primary pull-right'
-    h1.mt-3 All Questions
-    .questions-list
-      - if @questions.present?
-        h4= count_of(@questions)
-        - @questions.each do |question|
-          .card.mb-2
-            .card-body
-              h4= link_to question.title, question
-              = question.body
-      - else
-        h4 No questions
+- cache collection_cache_key_for :question do
+  .row.justify-content-center.mt-3
+    .col.col-md-8
+      = link_to 'Ask Question', new_question_path, class: 'btn btn-lg btn-primary pull-right'
+      h1.mt-3 All Questions
+      .questions-list
+        - if @questions.present?
+          h4= count_of(@questions)
+          - @questions.each do |question|
+            .card.mb-2
+              .card-body
+                h4= link_to question.title, question
+                = question.body
+        - else
+          h4 No questions

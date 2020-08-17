@@ -1,58 +1,59 @@
-div id="answer-#{answer.id}"
-  .card.border-light.mb-2.mt-2
-    .card-header.text-center
-      - if can?(:choose_best, answer) && !answer.best?
-        = link_to 'Select as best', choose_best_answer_path(answer), class: 'text-success', method: :post, remote: true
-      - if answer.best?
-        .best-answer
-          | Best Answer 
-          = octicon 'check-circle-fill'
-    .card-body
-      .answer-votes-rating.float-right
-        .answer-rating= "Rating: #{answer.rating}"
-        div class="answer-voting-buttons-links #{hide_vote_button_for(answer)}"
-          - if can?(:vote_up, answer)
-            = link_to 'Up', vote_up_answer_path(answer),
-                            method: :post,
-                            remote: true,
-                            class: 'text-secondary'
-          |  
-          - if can?(:vote_down, answer)
-            = link_to 'Down', vote_down_answer_path(answer),
+- cache answer do
+  div id="answer-#{answer.id}"
+    .card.border-light.mb-2.mt-2
+      .card-header.text-center
+        - if can?(:choose_best, answer) && !answer.best?
+          = link_to 'Select as best', choose_best_answer_path(answer), class: 'text-success', method: :post, remote: true
+        - if answer.best?
+          .best-answer
+            | Best Answer 
+            = octicon 'check-circle-fill'
+      .card-body
+        .answer-votes-rating.float-right
+          .answer-rating= "Rating: #{answer.rating}"
+          div class="answer-voting-buttons-links #{hide_vote_button_for(answer)}"
+            - if can?(:vote_up, answer)
+              = link_to 'Up', vote_up_answer_path(answer),
                               method: :post,
                               remote: true,
                               class: 'text-secondary'
-        - if can?(:revote, answer)
-          = link_to 'Revote', revote_answer_path(answer),
-                              method: :post,
-                              remote: true,
-                              class: "answer-revote-link text-secondary #{show_vote_button_for(answer)}"
-      p= answer.body
-      - if answer.links.present?
-        | Links:
-        = render answer.links
-      - if answer.files.attached?
-        | Files: 
-        = render partial: 'attachments/attachment', collection: answer.files
-      div id="answer-#{answer.id}-comments"
-        small
-          | Comments:
-        - if answer.comments.present?
-          = render answer.comments.order(:created_at)
-        - if can?(:create, Comment)
-          = render 'comments/form', commentable: answer, local: Comment.new
-      .answer-add-comment-link
-        - if can?(:create, Comment)
-          p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
-                                           data: { commentable_type: answer.class.name.downcase,
-                                                   commentable_id: answer.id }
-      = render 'answers/form_edit', answer: answer if can?(:update, answer)
-      .answer-action-buttons.float-right
-        - if can?(:update, answer)
-          = link_to 'Edit Answer', '#', class: 'text-secondary edit-answer-link', data: { answer_id: answer.id }
-        |  
-        - if can?(:destroy, answer)
-          = link_to 'Delete Answer', answer_path(answer), class: 'text-secondary',
-                                                          method: :delete,
-                                                          remote: true,
-                                                          data: { confirm: 'Are you sure?' }
+            |  
+            - if can?(:vote_down, answer)
+              = link_to 'Down', vote_down_answer_path(answer),
+                                method: :post,
+                                remote: true,
+                                class: 'text-secondary'
+          - if can?(:revote, answer)
+            = link_to 'Revote', revote_answer_path(answer),
+                                method: :post,
+                                remote: true,
+                                class: "answer-revote-link text-secondary #{show_vote_button_for(answer)}"
+        p= answer.body
+        - if answer.links.present?
+          | Links:
+          = render answer.links
+        - if answer.files.attached?
+          | Files: 
+          = render partial: 'attachments/attachment', collection: answer.files
+        div id="answer-#{answer.id}-comments"
+          small
+            | Comments:
+          - if answer.comments.present?
+            = render answer.comments.order(:created_at)
+          - if can?(:create, Comment)
+            = render 'comments/form', commentable: answer, local: Comment.new
+        .answer-add-comment-link
+          - if can?(:create, Comment)
+            p= link_to 'Add a comment', '#', class: 'add-comment-link text-secondary',
+                                            data: { commentable_type: answer.class.name.downcase,
+                                                    commentable_id: answer.id }
+        = render 'answers/form_edit', answer: answer if can?(:update, answer)
+        .answer-action-buttons.float-right
+          - if can?(:update, answer)
+            = link_to 'Edit Answer', '#', class: 'text-secondary edit-answer-link', data: { answer_id: answer.id }
+          |  
+          - if can?(:destroy, answer)
+            = link_to 'Delete Answer', answer_path(answer), class: 'text-secondary',
+                                                            method: :delete,
+                                                            remote: true,
+                                                            data: { confirm: 'Are you sure?' }
