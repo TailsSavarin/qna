@@ -1,10 +1,11 @@
-div id="comment-#{comment.id}"
-  .card.border-light
-    .card-body
-      = comment.body
-      br
-      small.text-primary
-        = comment.user.email
-      small.text-secondary
-        |  
-        = creation_time(comment)
+- cache comment do
+  div id="comment-#{comment.id}"
+    .card.border-light
+      .card-body
+        = comment.body
+        br
+        small.text-primary
+          = comment.user.email
+        small.text-secondary
+          |  
+          = creation_time(comment)

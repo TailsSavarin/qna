@@ -7,7 +7,7 @@ class Answer < ApplicationRecord
 
   default_scope { order('best desc, created_at') }
 
-  belongs_to :question
+  belongs_to :question, touch: true
 
   validates :body, presence: true
 
