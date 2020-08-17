@@ -52,6 +52,7 @@ gem 'bootstrap-social-rails'
 gem 'font-awesome-rails'
 # For nested forms.
 gem 'cocoon'
+gem 'redis-rails'
 
 gem 'active_model_serializers', '~> 0.10'
 gem 'oj'
