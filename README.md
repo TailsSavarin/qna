@@ -38,4 +38,5 @@ __A simple stackoverflow clone.__
     * Daily digest notifications
 * Questions and answers rating system
 * Best answer reward and common rewards list
+
 Under the direciton of [Thinknetica](https://thinknetica.com/)
