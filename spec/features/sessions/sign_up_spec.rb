@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can register in the system', %q(
+feature 'User can register in the system', "
   In order to fully use the available functionality
   As guest
   I'd like to be able to sign up
-) do
+" do
   given(:user_params) { attributes_for(:user) }
 
   background { visit new_user_registration_path }

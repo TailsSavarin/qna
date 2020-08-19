@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can vote for question', %q(
+feature 'User can vote for question', "
   In order to highlight it
   As user
   I'd like to be able to vote
-) do
+" do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 

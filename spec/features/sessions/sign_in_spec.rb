@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can sign in', %q(
+feature 'User can sign in', "
   In order to ask questions
   As user
   I'd like to be able to sign in
-) do
+" do
   given(:confirmed_user) { create(:user) }
   given(:unconfirmed_user) { create(:user, confirmed_at: '') }
 

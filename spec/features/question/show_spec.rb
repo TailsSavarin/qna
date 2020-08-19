@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can see question with answers', %q(
+feature 'User can see question with answers', "
   In order to find information
   As user
   I'd like to be able to see question
-) do
+" do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
   given!(:answers) { create_list(:answer, 2, question: question) }

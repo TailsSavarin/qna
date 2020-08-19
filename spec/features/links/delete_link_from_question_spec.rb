@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-feature 'User can delete links from question', %q(
+feature 'User can delete links from question', "
   In order to delete additional information
   As user when create
   As an question's author
   I'd like to be able to delete links
-) do
+" do
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 

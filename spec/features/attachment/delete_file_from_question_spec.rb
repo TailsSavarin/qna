@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can delete files from question', %q(
+feature 'User can delete files from question', "
   In order to delete additional information
   As an file's author
   I'd like to be able to delete attached files
-) do
+" do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }

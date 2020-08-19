@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-feature 'User can add links to question', %q(
+feature 'User can add links to question', "
   In order to add additional information
   As user when create
   As an question's author when edit
   I'd like to be able to add links
-) do
+" do
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 

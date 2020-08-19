@@ -7,20 +7,12 @@ AllCops:
     - 'config/**/*.rb'
     - 'script/**/*.rb'
     - 'node_modules/**/*'
-    - 'spec/rails_helper.rb'
-    - 'spec/spec_helper.rb'
-    - !ruby/regexp /old_and_unused\.rb$/
-
   NewCops: enable
   DisplayCopNames: true
   StyleGuideCopsOnly: false
-
+ 
 Layout/LineLength:
-  Max: 120
-  Exclude:
-    - 'spec/**/*.rb'
-
-Layout/FirstHashElementIndentation:
+  Max: 100
   Exclude:
     - 'spec/**/*.rb'
 
@@ -38,13 +30,12 @@ Metrics/MethodLength:
   Exclude:
     - 'spec/**/*.rb'
 
-Style/IdenticalConditionalBranches:
-  Exclude:
-    - 'app/services/*.rb'
+Style/Documentation:
+  Enabled: false
 
 Style/ClassAndModuleChildren:
   Exclude:
-    - 'app/controllers/api/**/*.rb'
+    - 'app/controllers/**/*.rb'
 
 Style/FrozenStringLiteralComment:
   Enabled: false
@@ -52,21 +43,9 @@ Style/FrozenStringLiteralComment:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
-Style/Documentation:
-  Enabled: false
-
 Style/BlockComments:
-  Enabled: false
-
-Bundler/OrderedGems:
-  Enabled: false
+  Exclude:
+    - 'spec/*.rb'
 
 Style/BlockDelimiters:
   BracesRequiredMethods: ['expect']
-
-Style/RedundantPercentQ:
-  Enabled: false
-
-Rails/SkipsModelValidations:
-  Exclude:
-    - 'app/models/answer.rb'

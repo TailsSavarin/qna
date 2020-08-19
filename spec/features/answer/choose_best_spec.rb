@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can choose best answer', %q(
+feature 'User can choose best answer', "
   In order to highlight it
   As question's author
   I'd like to be able to choose best answer
-) do
+" do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }

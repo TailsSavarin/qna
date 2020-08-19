@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can edit question', %q(
+feature 'User can edit question', "
   In order to correct mistakes
   As question's author
   I'd like to be able to make changes
-) do
+" do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }

@@ -44,8 +44,8 @@ gem 'gon'
 gem 'doorkeeper', '5.1.1'
 # Oauth.
 gem 'omniauth'
-gem 'omniauth-github'
 gem 'omniauth-facebook'
+gem 'omniauth-github'
 # Social buttons.
 gem 'bootstrap-social-rails'
 # Web fonts and stylesheets.
@@ -55,16 +55,16 @@ gem 'cocoon'
 gem 'redis-rails'
 
 gem 'active_model_serializers', '~> 0.10'
+gem 'mini_racer'
+gem 'mysql2', '~> 0.5.0', platform: :ruby
 gem 'oj'
 gem 'sidekiq', '< 6'
 gem 'sinatra', require: false
-gem 'whenever', require: false
-gem 'mysql2', '~> 0.5.0', platform: :ruby
 gem 'thinking-sphinx', '~> 5.0'
+gem 'unicorn'
+gem 'whenever', require: false
 gem 'will_paginate'
 gem 'will_paginate-bootstrap4'
-gem 'mini_racer'
-gem 'unicorn'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -77,8 +77,8 @@ end
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.2'
+  gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background.
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
@@ -87,12 +87,12 @@ group :development do
 
   # Deploy
   gem 'capistrano', require: false
+  gem 'capistrano3-unicorn', require: false
   gem 'capistrano-bundler', require: false
+  gem 'capistrano-passenger', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
-  gem 'capistrano-passenger', require: false
   gem 'capistrano-sidekiq', require: false
-  gem 'capistrano3-unicorn', require: false
 end
 
 group :test do
@@ -108,8 +108,8 @@ group :test do
   # Tests for controllers
   gem 'rails-controller-testing'
   # For save_and_open_page option
-  gem 'launchy'
   gem 'database_cleaner-active_record'
+  gem 'launchy'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

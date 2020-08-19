@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can delete answer', %q(
+feature 'User can delete answer', "
   If decide that it's necessary
   As answer's author
   I'd like to be able to delete answer
-) do
+" do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question) }

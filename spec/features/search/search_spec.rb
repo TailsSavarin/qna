@@ -1,10 +1,10 @@
 require 'sphinx_helper'
 
-feature 'User can use search', %q(
+feature 'User can use search', "
   In order to find information he needs
   As guest
   I'd like to be able to use search
-) do
+" do
   given!(:user) { create(:user) }
   given!(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question) }

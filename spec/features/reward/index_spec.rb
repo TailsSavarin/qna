@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can see rewards', %q(
+feature 'User can see rewards', "
   In order to get information about rewards
   As an reward's owner
   I'd like to be able to see rewards
-) do
+" do
   given(:user) { create(:user) }
   given!(:reward) { create(:reward, user: user) }
 

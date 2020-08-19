@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can add comments to question', %q(
+feature 'User can add comments to question', "
   In order to discuss
   As user
   I'd like to be able to add comments
-) do
+" do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 

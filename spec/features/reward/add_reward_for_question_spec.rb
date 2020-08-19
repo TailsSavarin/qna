@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can add reward for new question', %q(
+feature 'User can add reward for new question', "
   In order to reward another user for the best answer
   As user
   I'd like to be able to add reward
-) do
+" do
   given(:user) { create(:user) }
   given(:attach_reward) do
     attach_file 'Reward Image', Rails.root / 'spec' / 'fixtures' / 'files' / 'test.jpg'

@@ -5,6 +5,7 @@ class FindForOauthService
     @auth = auth
   end
 
+  # rubocop:disable Layout/LineLength
   def call
     authorization = Authorization.find_by(provider: auth.provider, uid: auth.uid.to_s)
     return authorization.user if authorization
@@ -12,16 +13,13 @@ class FindForOauthService
     email = auth.info[:email]
     user = User.find_by(email: email)
     if user
-      user.create_authorization(auth)
     else
       password = Devise.friendly_token[0, 20]
-      user = User.create!(email: email,
-                          password: password,
-                          password_confirmation: password,
-                          confirmed_at: Time.zone.now)
-      user.create_authorization(auth)
+      user = User.create!(email: email, password: password, password_confirmation: password, confirmed_at: Time.zone.now)
     end
+    user.create_authorization(auth)
 
     user
   end
+  # rubocop:enable Layout/LineLength
 end
