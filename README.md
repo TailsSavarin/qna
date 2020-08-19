@@ -13,3 +13,16 @@ __A simple stackoverflow clone.__
 3. Database - ***PostgreSQL***
 
 ##### Features:
+- Authentication with ***Devise***
+- Social login with ***OAuth***
+    - GitHub
+    - Facebook
+- Authorization with ***CanCanCan***
+- Covered with tests by ***RSpec***
+    - Acceptance tests
+    - Unit tests 
+
+Under the direciton of [Thinknetica](https://thinknetica.com/)
+
+_Creation date:_
+>03 / 06 / 2020
