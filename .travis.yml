@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-  - 1.29.9
+  - 2.7.1
 
 notifications:
   email: false
