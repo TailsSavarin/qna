@@ -17,7 +17,7 @@ cache: bundler
 before_script:
   - psql -c 'create database qna_test;' -U postgres
   - cp config/database.travis.yml config/database.yml
-  - bundle exec rake RAILS_ENV=test db:setup
+  - bundle exec rake db:setup
   - 'bundle exec rackup -s puma -E production private_pub.ru &'
   - sleep 3
 
