@@ -13,12 +13,12 @@ before_install:
 before_script:
   - bundle install --jobs=3 --retry=3
   - yarn
-  - bundle exec rake db:create
-  - bundle ecec rake db:shema:load
+  - RAILS_ENV=test bundle exec rake db:create
+  - RAILS_ENV=test bundle ecec rake db:shema:load
 
 script:
-  - bundle exec rake test
-  - bundle exec rake test:system
+  - RAILS_ENV=test bundle exec rake test
+  - RAILS_ENV=test bundle exec rake test:system
 
 gemfile:
   - Gemfile
