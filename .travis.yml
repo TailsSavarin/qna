@@ -1,24 +1,17 @@
 language: ruby
 rvm:
-  - 2.7.1
-
+- 2.7.1
 notifications:
   email: false
-
 addons:
-  postgresql: "10"
-
+  postgresql: '10'
 services:
-  - redis-server
-
+- redis-server
+bundler_args: --jobs=3 --retry=3
 cache: bundler
-
 before_script:
-  - psql -c 'create database qna_test;' -U postgres
-  - bundle exec rails db:setup RAILS_ENV=test
-
+- cp config/database.travis.yml config/database.yml
+- psql -c 'create database qna_test;' -U postgres
+- RAILS_ENV=test bundle exec rake db:setup
 script:
-  - bundle exec rspec --tag ~visual
-
-gemfile:
-  - Gemfile
+- bundle exec rspec --tag ~visual
