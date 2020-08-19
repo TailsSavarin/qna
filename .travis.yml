@@ -1,24 +1,29 @@
 language: ruby
+rvm:
+  - 1.29.9
 
-cache:
-  - bundler
-  - yarn
+notifications:
+  email: false
+
+addons:
+  postresql: "9.4"
 
 services:
-  - postgresql
+  - redis-server
 
-before_install:
-  - nvm install --lts
+bundler_args: --without development --deployment --jobs=3 --retry=3
+cache: bundler
 
 before_script:
-  - bundle install --jobs=3 --retry=3
-  - yarn
-  - RAILS_ENV=test bundle exec rake db:create
-  - RAILS_ENV=test bundle ecec rake db:shema:load
+  - psql -c 'create database qna_test;' -U postgres
+  - cp config/database.travis.yml config/database.yml
+  - cp config/secrets.travis.yml config/secrets.yml
+  - bundle exec rake db:setup
+  - 'bundle exec rackup -s puma -E production private_pub.ru &'
+  - sleep 3
 
 script:
-  - RAILS_ENV=test bundle exec rake test
-  - RAILS_ENV=test bundle exec rake test:system
+  - bundle exec rspec --tag ~visual
 
 gemfile:
   - Gemfile
