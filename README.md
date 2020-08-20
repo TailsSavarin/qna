@@ -1,3 +1,5 @@
+![travis-ci](https://travis-ci.com/TailsSavarin/qna.svg?branch=master)
+
 <img src="app/assets/images/qna-logo.png" width="200"/>
 
 ###### :page_with_curl: QnA project
