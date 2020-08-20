@@ -1,4 +1,5 @@
-![travis-ci](https://travis-ci.com/TailsSavarin/qna.svg?branch=master)
+![Travis-ci](https://travis-ci.com/TailsSavarin/qna.svg?branch=master)
+![CI](https://github.com/TailsSavarin/qna/workflows/CI/badge.svg?branch=master)
 
 <img src="app/assets/images/qna-logo.png" width="200"/>
 
