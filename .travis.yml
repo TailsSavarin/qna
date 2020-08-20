@@ -1,0 +1,43 @@
+language: ruby
+
+rvm:
+- 2.7.1
+
+addons:
+  postgresql: '10'
+  chrome: stable
+
+services:
+- redis-server
+
+cache:
+  bundler: true
+  yarn: true
+  directories:
+    - node_modules
+
+env:
+  global:
+    - DB_HOST=localhost
+    - DB_USERNAME=postgres
+    - DB_PASSWORD=postgres
+
+install:
+  - bundle install --jobs 4 --retry 3
+  - nvm install node
+  - node -v
+  - npm i -g yarn
+  - yarn install
+  - sudo apt-get install sphinxsearch
+
+before_script:
+- psql -c 'create database qna_test;' -U postgres
+- cp config/database.yml.sample config/database.yml
+- bundle exec rails db:setup
+- bundle exec rails ts:index
+
+script:
+- bundle exec rails spec
+
+gemfile:
+- Gemfile
