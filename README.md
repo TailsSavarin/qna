@@ -24,35 +24,41 @@ __A simple stackoverflow clone.__
 - Covered with tests by ***RSpec***
     - Acceptance tests
     - Unit tests
+- ***CRUD***
+    - Questions
+    - Answers
+    - Comments
 - ***AJAX*** elements
 - Files management with ***ActiveStorage*** and ***AWS***
 - Links management with ***Cocoon Gem***
 - WebSocket pub/sub with ***ActionCable***
 - ***REST API***
-    - #GET /api/v1/profiles
-    - #GET /api/v1/profiles/me
+    - #GET _/api/v1/profiles_
+    - #GET _/api/v1/profiles/me_
     -
-    - #GET /api/v1/questions
-    - #GET /api/v1/questions/:id
-    - #POST /api/v1/questions
-    - #PATCH /api/v1/questions/:id
-    - #DELETE /api/v1/questions/:id
+    - #GET _/api/v1/questions_
+    - #GET _/api/v1/questions/:id_
+    - #POST _/api/v1/questions_
+    - #PATCH _/api/v1/questions/:id_
+    - #DELETE _/api/v1/questions/:id_
     -
-    - #GET /api/v1/questions/:id/answers
-    - #GET /api/v1/answers/:id
-    - #POST /api/v1/questions/:id/answers
-    - #PATCH /api/v1/answers/:id
-    - #DELETE /api/v1/answers/:id
+    - #GET _/api/v1/questions/:id/answers_
+    - #GET _/api/v1/answers/:id_
+    - #POST _/api/v1/questions/:id/answers_
+    - #PATCH _/api/v1/answers/:id_
+    - #DELETE _/api/v1/answers/:id_
 - Background jobs with ***ActiveJob***
 - Full text search with ***Sphinx***
 - ***Deploy***
     - Main tool ***Capistrano***
     - Monitoring with ***Monit***
-    - ***Unicorn***
+    - HTTP server ***Unicorn***
     - Backup with ***Backup Gem***
 - Caching elements
 - Visual design - ***Bootstrap 4.5***
-- ***Rating*** for questions & answers
+- ***Rating system*** for questions & answers
+- Author of question can choose the ***best answer***
+- For the best answer, user can get ***reward***
 - ***Mailers***
     - Subscriptions for questions (_new answers notification_)
     - Daily Digest (_all new questions in 24 hours_)
