@@ -50,6 +50,7 @@ __A simple stackoverflow clone.__
 - Background jobs with ***ActiveJob***
 - Full text search with ***Sphinx***
 - ***Deploy***
+    - Web Server ***Nginx***
     - Main tool ***Capistrano***
     - Monitoring with ***Monit***
     - HTTP server ***Unicorn***
