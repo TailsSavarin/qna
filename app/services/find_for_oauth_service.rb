@@ -5,7 +5,7 @@ class FindForOauthService
     @auth = auth
   end
 
-  # rubocop:disable Layout/LineLength
+  # rubocop:disable Layout/LineLength, Lint/EmptyConditionalBody
   def call
     authorization = Authorization.find_by(provider: auth.provider, uid: auth.uid.to_s)
     return authorization.user if authorization
@@ -21,5 +21,5 @@ class FindForOauthService
 
     user
   end
-  # rubocop:enable Layout/LineLength
+  # rubocop:enable Layout/LineLength, Lint/EmptyConditionalBody
 end
