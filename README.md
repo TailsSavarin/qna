@@ -51,9 +51,9 @@ __A simple stackoverflow clone.__
 - Full text search with ***Sphinx***
 - ***Deploy***
     - Web Server ***Nginx***
+    - App Server ***Unicorn***
     - Main tool ***Capistrano***
     - Monitoring with ***Monit***
-    - HTTP server ***Unicorn***
     - Backup with ***Backup Gem***
 - Caching elements
 - Visual design - ***Bootstrap 4.5***
