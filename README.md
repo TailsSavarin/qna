@@ -35,13 +35,13 @@ __A simple stackoverflow clone.__
 - ***REST API***
     - #GET _/api/v1/profiles_
     - #GET _/api/v1/profiles/me_
-    -
+
     - #GET _/api/v1/questions_
     - #GET _/api/v1/questions/:id_
     - #POST _/api/v1/questions_
     - #PATCH _/api/v1/questions/:id_
     - #DELETE _/api/v1/questions/:id_
-    -
+
     - #GET _/api/v1/questions/:id/answers_
     - #GET _/api/v1/answers/:id_
     - #POST _/api/v1/questions/:id/answers_
