@@ -1,7 +1,7 @@
 shared_examples 'link adding features', :js do
   given(:bad_url) { 'www.google.com' }
   given(:good_url) { 'https://www.google.com' }
-  given(:gist_url) { 'https://gist.github.com/TailsSavarin/2d313a9ece10a0c17cb3decee000e294' }
+  given(:gist_url) { 'https://gist.github.com/TailsSavarin/e9b5462d68fe140c4baf0ccc1d3569aa' }
 
   background do
     sign_in(user)
@@ -41,7 +41,7 @@ shared_examples 'link adding features', :js do
 
     linkable_btn
 
-    expect(page).to have_content 'test-guru-question.txt hosted with ❤ by GitHub'
+    expect(page).to have_content '1 hosted with ❤ by GitHub'
   end
 end
 
