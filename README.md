@@ -48,7 +48,7 @@ __A simple stackoverflow clone.__
     - #PATCH _/api/v1/answers/:id_
     - #DELETE _/api/v1/answers/:id_
 - Background jobs with ***ActiveJob***
-- Full text search with ***Sphinx***
+- Full text search with ***ThinkingSphinx***
 - ***Deploy***
     - Web Server ***Nginx***
     - App Server ***Unicorn***
