@@ -5,7 +5,7 @@ class Answer < ApplicationRecord
   include Authorable
   include Commentable
 
-  default_scope { order(best: :desc, :created_at) }
+  default_scope { order(best: :desc, created_at: :asc) }
 
   belongs_to :question, touch: true
 
