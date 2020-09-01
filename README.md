@@ -5,7 +5,7 @@
 
 ###### :page_with_curl: QnA project
 ---
-### Educational project from a programming school
+### Educational project
 ###### by Alexandr Babitsky
 
 __A simple stackoverflow clone.__
