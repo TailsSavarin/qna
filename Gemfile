@@ -60,7 +60,7 @@ gem 'mysql2', '~> 0.5.0', platform: :ruby
 # A fast JSON parser and object marshaller
 gem 'oj'
 # Simple and efficient background processing
-gem 'sidekiq', '< 6'
+gem 'sidekiq', '< 7'
 # DSL for web applications
 gem 'sinatra', require: false
 # Full text search
