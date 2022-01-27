@@ -109,9 +109,10 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
-    capistrano-sidekiq (1.0.3)
+    capistrano-sidekiq (2.0.0)
       capistrano (>= 3.9.0)
-      sidekiq (>= 3.4, < 6.0)
+      capistrano-bundler
+      sidekiq (>= 6.0)
     capistrano3-unicorn (0.2.1)
       capistrano (~> 3.1, >= 3.1.0)
     capybara (3.33.0)
@@ -130,8 +131,8 @@ GEM
     childprocess (3.0.0)
     chronic (0.10.2)
     cocoon (1.2.14)
-    concurrent-ruby (1.1.7)
-    connection_pool (2.2.3)
+    concurrent-ruby (1.1.9)
+    connection_pool (2.2.5)
     crass (1.0.6)
     database_cleaner (1.8.5)
     database_cleaner-active_record (1.8.0)
@@ -168,7 +169,7 @@ GEM
       multi_json
       request_store (>= 1.0)
     hashie (4.1.0)
-    i18n (1.8.5)
+    i18n (1.9.0)
       concurrent-ruby (~> 1.0)
     innertube (1.1.0)
     jbuilder (2.10.0)
@@ -259,7 +260,7 @@ GEM
       nio4r (~> 2.0)
     puma (4.3.5-java)
       nio4r (~> 2.0)
-    rack (2.0.9)
+    rack (2.2.3)
     rack-protection (2.0.8.1)
       rack
     rack-proxy (0.6.5)
@@ -298,7 +299,7 @@ GEM
       thor (>= 0.20.3, < 2.0)
     rainbow (3.0.0)
     raindrops (0.19.1)
-    rake (13.0.1)
+    rake (13.0.6)
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -380,11 +381,10 @@ GEM
     semantic_range (2.3.0)
     shoulda-matchers (4.4.1)
       activesupport (>= 4.2.0)
-    sidekiq (5.2.8)
-      connection_pool (~> 2.2, >= 2.2.2)
-      rack (< 2.1.0)
-      rack-protection (>= 1.5.0)
-      redis (>= 3.3.5, < 5)
+    sidekiq (6.4.0)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
     sinatra (2.0.8.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -408,7 +408,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sshkit (1.21.0)
+    sshkit (1.21.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     temple (0.8.2)
@@ -516,7 +516,7 @@ DEPENDENCIES
   sass-rails
   selenium-webdriver
   shoulda-matchers
-  sidekiq (< 6)
+  sidekiq (< 7)
   sinatra
   slim-rails
   spring
